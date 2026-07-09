@@ -17,6 +17,7 @@ BASE = ("https://raw.githubusercontent.com/emdann/"
 
 FILES = {
     "cluster_autoimmune_enrichment_results.csv": "cluster_autoimmune_enrichment_results.suppl_table.csv",
+    "DE_stats.csv": "DE_stats.suppl_table.csv",
     "guide_kd_efficiency.csv": "guide_kd_efficiency.suppl_table.csv",
     "sgrna_library_metadata.csv": "sgrna_library_metadata.suppl_table.csv",
     "Th2_Th1_polarization_signature_DE_results_full.csv": "Th2_Th1_polarization_signature_DE_results_full.suppl_table.csv",
