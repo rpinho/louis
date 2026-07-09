@@ -1,0 +1,7 @@
+data/*.csv
+data/*.h5ad
+data/*.h5mu
+__pycache__/
+*.pyc
+.DS_Store
+.venv/
