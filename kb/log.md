@@ -14,3 +14,4 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-10 — verdict GLS [rheumatoid arthritis]: strong #2 - run in parallel with DOT1L
 - 2026-07-10 — verdict AHR [rheumatoid arthritis]: deprioritize - druggable but not novel
 - 2026-07-10 — verdict RIPK1 [rheumatoid arthritis]: skip - already clinically tested in RA
+- 2026-07-10 — remember DOT1L (rheumatoid arthritis): VERIFIED (independent PubMed check, prompted by Claude Science's reviewer flaggi
