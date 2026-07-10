@@ -157,6 +157,20 @@ def _polarization_map() -> dict[str, float]:
     return dict(zip(sig["variable"], sig["log_fc"]))
 
 
+@lru_cache(maxsize=None)
+def _cluster_regulators_map() -> dict:
+    """cluster id -> its regulator members (union of disease-intersecting regulators across diseases)."""
+    enr = load_enrichment()
+    reg = enr[enr["gene_set"] == "regulators"]
+    out: dict[int, list[str]] = {}
+    for cid, grp in reg.groupby("cluster"):
+        genes: set[str] = set()
+        for s in grp["intersecting_genes"]:
+            genes |= set(_parse_gene_list(s))
+        out[int(cid)] = sorted(genes)
+    return out
+
+
 def _confidence(kd_verified, offtarget, perturbed: bool) -> str:
     if not perturbed:
         return "Downstream only (not directly perturbed here)"
@@ -219,6 +233,68 @@ def disease_targets(disease: str, fdr: float = 0.05, top: int | None = None) -> 
     df = df.sort_values(["disease_odds_ratio", "controls_n_genes"],
                         ascending=[False, False]).reset_index(drop=True)
     return df.head(top) if top else df
+
+
+def disease_mechanisms(disease: str, fdr: float = 0.05, top_modules: int = 8) -> list[dict]:
+    """
+    Mechanistic discovery — beyond ranking known regulators.
+
+    For a disease, returns the GRN modules whose DOWNSTREAM program is enriched in the disease's
+    own risk genes, each with: the specific risk genes, the activation state it fires in, and the
+    candidate regulator HANDLES (druggable entry points) that co-cluster with that module —
+    annotated with trust (knockdown QC) and activation state.
+
+    This is the substrate for novel, testable hypotheses — "perturb handle X to move the disease
+    risk program [genes] in state S" — rather than re-surfacing the obvious top-enrichment gene.
+    Handles are sorted trust-first. NOTE: these are module-level (co-cluster) associations, i.e.
+    candidate upstream controllers to test, not proven gene-level edges.
+    """
+    enr = load_enrichment()
+    dwn = enr[(enr["disease"] == disease)
+              & (enr["gene_set"].str.startswith("downstream"))
+              & (enr["p_adj_fdr"] < fdr)].sort_values("odds_ratio", ascending=False)
+    if dwn.empty:
+        return []
+
+    regmap = _cluster_regulators_map()
+    grn = _grn_summary()
+    sinfo = _state_info()
+    perturbed = set(grn.index)
+
+    out, seen = [], set()
+    for _, r in dwn.iterrows():
+        cid = int(r["cluster"])
+        if cid in seen:
+            continue
+        seen.add(cid)
+        handles = []
+        for h in regmap.get(cid, []):
+            if h in perturbed:
+                g = grn.loc[h]
+                controls = int(g["controls_n_genes"]) if pd.notna(g["controls_n_genes"]) else None
+                handles.append({
+                    "gene": h,
+                    "confidence": _confidence(bool(g["kd_verified"]), bool(g["offtarget_risk"]), True),
+                    "kd_verified": bool(g["kd_verified"]),
+                    "controls_n_genes": controls,
+                    "state_pattern": sinfo.loc[h, "state_pattern"] if h in sinfo.index else None,
+                })
+            else:
+                handles.append({"gene": h, "confidence": "not perturbed in screen",
+                                "kd_verified": False, "controls_n_genes": None, "state_pattern": None})
+        # trust-first, then most influential
+        handles.sort(key=lambda d: (d["kd_verified"], d["controls_n_genes"] or 0), reverse=True)
+        out.append({
+            "module": cid,
+            "fires_in_state": r["gene_set"].replace("downstream_", ""),
+            "odds_ratio": round(float(r["odds_ratio"]), 1),
+            "fdr": float(r["p_adj_fdr"]),
+            "disease_risk_genes": _parse_gene_list(r["intersecting_genes"]),
+            "candidate_handles": handles[:12],
+        })
+        if len(out) >= top_modules:
+            break
+    return out
 
 
 def regulator_detail(gene: str) -> dict:
@@ -374,6 +450,12 @@ if __name__ == "__main__":  # smoke test + demo-invariant check
     itk = state_profile("ITK")
     assert itk and itk["state_pattern"] == "activation-induced", "REGRESSION: ITK state pattern changed"
     print(f"✓ activation-state layer OK — ITK: {itk['summary']}")
+    # Discovery: RA must surface druggable handles wired to its risk-gene modules.
+    ra_mech = disease_mechanisms("rheumatoid arthritis")
+    ra_handles = {h["gene"] for m in ra_mech for h in m["candidate_handles"]}
+    assert ra_mech and {"DOT1L", "AHR", "GLS"} & ra_handles, "REGRESSION: RA discovery handles changed"
+    print(f"✓ discovery OK — RA surfaces {len(ra_mech)} risk-gene modules; "
+          f"handles incl {sorted({'DOT1L','AHR','GLS'} & ra_handles)}")
     print(
         f"\n✓ demo invariant OK — Crohn's #1 = STAT3: "
         f"OR {ev['odds_ratio']:.1f}, controls {ev['controls_n_genes']} genes "
