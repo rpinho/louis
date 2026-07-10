@@ -1,7 +1,10 @@
+# Core engine + MCP server — the product. Runs inside Claude (Desktop / Code),
+# reasoning on your subscription, no API key.
 pandas>=2.0
+mcp>=1.2
+
+# Optional: local Streamlit web UI (visual browser) + its in-app Claude Q&A,
+# which calls the Anthropic API directly and needs ANTHROPIC_API_KEY.
 streamlit>=1.50
-anthropic>=0.40
 altair>=5.0
-# optional, only for the GRN-edge detail from GWCD4i.DE_stats.h5ad:
-# scanpy>=1.9
-# anndata>=0.9
+anthropic>=0.40

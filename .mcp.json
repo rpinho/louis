@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tcell-target-explorer": {
+      "command": ".venv/bin/tcell-targets-mcp",
+      "args": []
+    }
+  }
+}
