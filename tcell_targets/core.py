@@ -90,10 +90,17 @@ def _grn_summary() -> pd.DataFrame:
 
 
 @lru_cache(maxsize=None)
+def _grn_out_degrees() -> pd.Series:
+    """Out-degree (controls_n_genes) for every perturbed regulator, for percentiles."""
+    return _grn_summary()["controls_n_genes"].dropna()
+
+
+@lru_cache(maxsize=None)
 def _polarization_map() -> dict[str, float]:
-    """gene -> Th2_vs_Th1 log2 fold change (significant only). >0 = Th2, <0 = Th1."""
+    """gene -> Th2_vs_Th1 log2 fold change (most significant row). >0 = Th2, <0 = Th1."""
     pol = load_polarization()
-    sig = pol[pol["adj_p_value"] < 0.05]
+    sig = pol[pol["adj_p_value"] < 0.05].sort_values("adj_p_value")
+    sig = sig.drop_duplicates("variable", keep="first")  # most significant row per gene
     return dict(zip(sig["variable"], sig["log_fc"]))
 
 
@@ -180,6 +187,71 @@ def regulator_detail(gene: str) -> dict:
             "max_controls": int(sub["n_downstream"].max())}
 
 
+def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
+    """
+    Assemble the full 'why this target' case for one gene in one disease.
+
+    Bundles the four independent lines of evidence a bench scientist weighs before
+    committing to a target — disease link, network influence, experimental trust,
+    and functional readout — each computed from the authors' precomputed tables.
+    Returns None if the gene is not a candidate for the disease.
+    """
+    df = disease_targets(disease, fdr=fdr)
+    if df.empty or gene not in set(df["gene"]):
+        return None
+    row = df[df["gene"] == gene].iloc[0]
+    rank = int(df.index[df["gene"] == gene][0]) + 1
+
+    # --- disease link: which enriched program placed this gene, and its peers ---
+    enr = load_enrichment()
+    hits = enr[(enr["disease"] == disease) & (enr["p_adj_fdr"] < fdr)].copy()
+    hits = hits[hits["intersecting_genes"].map(lambda s: gene in _parse_gene_list(s))]
+    best = hits.sort_values("odds_ratio", ascending=False).iloc[0]
+    peers = [g for g in _parse_gene_list(best["intersecting_genes"]) if g != gene]
+
+    # --- network influence: out-degree percentile among all perturbed regulators ---
+    controls = row["controls_n_genes"]
+    controls = int(controls) if pd.notna(controls) else None
+    dist = _grn_out_degrees()
+    percentile = float((dist < controls).mean() * 100) if controls is not None else None
+
+    # --- experimental trust: on-target KD + off-target flag, across conditions ---
+    det = regulator_detail(gene)
+    conds = det.get("by_condition", {}) if det.get("perturbed") else {}
+    n_verified = sum(1 for c in conds.values() if c["kd_verified"])
+
+    # --- functional readout: Th1/Th2 polarization ---
+    lfc = row["th2_vs_th1_lfc"]
+    lfc = float(lfc) if pd.notna(lfc) else None
+    polarization = None if lfc is None else ("Th2" if lfc > 0 else "Th1")
+
+    return {
+        "disease": disease,
+        "gene": gene,
+        "rank": rank,
+        "confidence": row["confidence"],
+        # disease link
+        "odds_ratio": float(best["odds_ratio"]),
+        "fdr": float(best["p_adj_fdr"]),
+        "program": str(best["gene_set"]),
+        "cluster": int(best["cluster"]),
+        "program_peers": peers,
+        # network influence
+        "controls_n_genes": controls,
+        "percentile": percentile,
+        "n_regulators": int(len(dist)),
+        "median_out_degree": int(dist.median()),
+        # experimental trust
+        "kd_verified": bool(row["kd_verified"]),
+        "offtarget_risk": bool(row["offtarget_risk"]),
+        "n_conditions": len(conds),
+        "n_conditions_verified": n_verified,
+        # functional readout
+        "th2_vs_th1_lfc": lfc,
+        "polarization": polarization,
+    }
+
+
 def summary(disease: str, fdr: float = 0.05) -> dict:
     df = disease_targets(disease, fdr=fdr)
     if df.empty:
@@ -192,7 +264,7 @@ def summary(disease: str, fdr: float = 0.05) -> dict:
     }
 
 
-if __name__ == "__main__":  # tiny smoke test
+if __name__ == "__main__":  # smoke test + demo-invariant check
     print(f"{len(list_diseases())} diseases available")
     for dz in ["Crohn's disease", "asthma", "rheumatoid arthritis"]:
         s = summary(dz)
@@ -201,3 +273,16 @@ if __name__ == "__main__":  # tiny smoke test
         for _, r in df.iterrows():
             print(f"   {r['gene']:8} OR={r['disease_odds_ratio']:.1f}  "
                   f"controls {r['controls_n_genes']} genes  [{r['confidence']}]")
+
+    # Lock the demo story: Crohn's -> STAT3 must stay the #1, high-confidence hit.
+    ev = target_evidence("Crohn's disease", "STAT3")
+    assert ev and ev["rank"] == 1, "REGRESSION: STAT3 is no longer the top Crohn's target"
+    assert ev["confidence"].startswith("High"), "REGRESSION: STAT3 lost High confidence"
+    assert ev["kd_verified"] and not ev["offtarget_risk"], "REGRESSION: STAT3 trust flags changed"
+    print(
+        f"\n✓ demo invariant OK — Crohn's #1 = STAT3: "
+        f"OR {ev['odds_ratio']:.1f}, controls {ev['controls_n_genes']} genes "
+        f"(top {100 - ev['percentile']:.1f}% of {ev['n_regulators']:,}), "
+        f"{ev['n_conditions_verified']}/{ev['n_conditions']} conditions verified, "
+        f"program peers {ev['program_peers']}"
+    )
