@@ -74,21 +74,27 @@ if ev:
         )
 
         p1, p2, p3, p4 = st.columns(4)
-        p1.metric("Disease enrichment", f"{ev['odds_ratio']:.1f}",
-                  f"odds ratio · FDR {ev['fdr']:.1e}", delta_color="off")
-        if ev["controls_n_genes"] is not None:
-            p2.metric("Genes it controls", f"{ev['controls_n_genes']:,}",
-                      f"top {100 - ev['percentile']:.1f}% of {ev['n_regulators']:,} screened",
-                      delta_color="off")
-        else:
-            p2.metric("Genes it controls", "—", "not directly perturbed", delta_color="off")
-        val, sub = _confidence_pillar(ev)
-        p3.metric("CRISPRi knockdown", val, sub, delta_color="off")
-        if ev["polarization"]:
-            p4.metric("T-helper skew", ev["polarization"],
-                      f"Th2/Th1 log2FC {ev['th2_vs_th1_lfc']:+.2f}", delta_color="off")
-        else:
-            p4.metric("T-helper skew", "—", "no significant signature", delta_color="off")
+        with p1:
+            st.metric("Disease enrichment", f"{ev['odds_ratio']:.1f}")
+            st.caption(f"odds ratio · FDR {ev['fdr']:.1e}")
+        with p2:
+            if ev["controls_n_genes"] is not None:
+                st.metric("Genes it controls", f"{ev['controls_n_genes']:,}")
+                st.caption(f"top {100 - ev['percentile']:.1f}% of {ev['n_regulators']:,} screened")
+            else:
+                st.metric("Genes it controls", "—")
+                st.caption("not directly perturbed in the screen")
+        with p3:
+            val, sub = _confidence_pillar(ev)
+            st.metric("CRISPRi knockdown", val)
+            st.caption(sub)
+        with p4:
+            if ev["polarization"]:
+                st.metric("T-helper skew", ev["polarization"])
+                st.caption(f"Th2/Th1 log2FC {ev['th2_vs_th1_lfc']:+.2f}")
+            else:
+                st.metric("T-helper skew", "—")
+                st.caption("no significant signature")
 
         if ev["program_peers"]:
             peers = ", ".join(f"**{g}**" for g in ev["program_peers"][:4])
