@@ -1,5 +1,7 @@
 pandas>=2.0
 streamlit>=1.50
+anthropic>=0.40
+altair>=5.0
 # optional, only for the GRN-edge detail from GWCD4i.DE_stats.h5ad:
 # scanpy>=1.9
 # anndata>=0.9

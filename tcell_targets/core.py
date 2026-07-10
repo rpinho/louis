@@ -95,6 +95,59 @@ def _grn_out_degrees() -> pd.Series:
     return _grn_summary()["controls_n_genes"].dropna()
 
 
+# ---------------------------------------------------------------------------
+# Activation-state layer: a regulator's role shifts with the T cell's state.
+# The screen was run in three activation states (Rest / Stim8hr / Stim48hr);
+# ~87% of hub regulators change their GRN out-degree >=2x across them. Bench
+# immunologists can't read that state-dependence without re-running the assay —
+# so we surface the state the authors already measured, per target.
+# ---------------------------------------------------------------------------
+STATES = ("Rest", "Stim8hr", "Stim48hr")
+
+
+@lru_cache(maxsize=None)
+def _grn_state_table() -> pd.DataFrame:
+    """Per regulator x activation state: GRN out-degree (columns Rest/Stim8hr/Stim48hr)."""
+    de = load_de_stats()
+    piv = (de.groupby(["target_contrast_gene_name", "culture_condition"])["n_downstream"]
+             .max().unstack("culture_condition"))
+    return piv[[c for c in STATES if c in piv.columns]]
+
+
+def _classify_state(by_state: dict) -> tuple[str, str]:
+    """(label, plain-English summary) for how out-degree shifts across activation states."""
+    vals = [v for v in by_state.values() if v is not None]
+    if not vals or max(vals) < 20:
+        return "minimal", "minimal regulatory influence in any state"
+    rest = by_state.get("Rest")
+    stim = [by_state[s] for s in ("Stim8hr", "Stim48hr") if by_state.get(s) is not None]
+    activated = max(stim) if stim else None
+    hi, lo = max(vals), min(vals)
+    fmt = lambda n: f"{int(n):,}"
+    if rest is not None and activated is not None:
+        if activated >= 100 and activated >= 3 * max(rest, 1):
+            return "activation-induced", (
+                f"switches on with activation — {fmt(rest)} at rest → {fmt(activated)} genes when stimulated")
+        if rest >= 100 and rest >= 3 * max(activated, 1):
+            return "resting-state", (
+                f"active in resting cells ({fmt(rest)} genes) but fades with activation → {fmt(activated)}")
+    if hi >= 2 * max(lo, 1):
+        return "activation-modulated", f"influence shifts with activation state ({fmt(lo)}–{fmt(hi)} genes across states)"
+    return "constitutive", f"active across all activation states ({fmt(lo)}–{fmt(hi)} genes)"
+
+
+@lru_cache(maxsize=None)
+def _state_info() -> pd.DataFrame:
+    """One row per perturbed regulator: by_state out-degrees + state label + summary."""
+    tab = _grn_state_table()
+    recs = {}
+    for gene, row in tab.iterrows():
+        by = {s: (int(row[s]) if s in row.index and pd.notna(row[s]) else None) for s in STATES}
+        label, summ = _classify_state(by)
+        recs[gene] = {"state_pattern": label, "state_summary": summ, "by_state": by}
+    return pd.DataFrame.from_dict(recs, orient="index")
+
+
 @lru_cache(maxsize=None)
 def _polarization_map() -> dict[str, float]:
     """gene -> Th2_vs_Th1 log2 fold change (most significant row). >0 = Th2, <0 = Th1."""
@@ -156,6 +209,7 @@ def disease_targets(disease: str, fdr: float = 0.05, top: int | None = None) -> 
     df["kd_verified"] = df["gene"].map(grn["kd_verified"]).fillna(False).astype(bool)
     df["offtarget_risk"] = df["gene"].map(grn["offtarget_risk"]).fillna(False).astype(bool)
     df["th2_vs_th1_lfc"] = df["gene"].map(pol)
+    df["state_pattern"] = df["gene"].map(_state_info()["state_pattern"])
     perturbed = set(grn.index)
     df["confidence"] = [
         _confidence(k, o, g in perturbed)
@@ -185,6 +239,35 @@ def regulator_detail(gene: str) -> dict:
     }
     return {"gene": gene, "perturbed": True, "by_condition": by_cond,
             "max_controls": int(sub["n_downstream"].max())}
+
+
+def state_profile(gene: str) -> dict | None:
+    """
+    How a regulator's GRN influence shifts across T-cell activation states.
+
+    The screen measured each perturbation in Rest / Stim8hr / Stim48hr; this returns
+    the out-degree per state, which state it peaks in, and a plain-English label
+    (activation-induced / resting-state / activation-modulated / constitutive) — the
+    state-dependence a bench immunologist otherwise needs a whole experiment to read.
+    Returns None if the gene was not directly perturbed.
+    """
+    info = _state_info()
+    if gene not in info.index:
+        return None
+    r = info.loc[gene]
+    by = r["by_state"]
+    present = [s for s in STATES if by.get(s) is not None]
+    peak = max(present, key=lambda s: by[s], default=None)
+    stim = [by[s] for s in ("Stim8hr", "Stim48hr") if by.get(s) is not None]
+    return {
+        "gene": gene,
+        "by_state": by,
+        "state_pattern": r["state_pattern"],
+        "summary": r["state_summary"],
+        "peak_state": peak,
+        "resting": by.get("Rest"),
+        "activated_max": max(stim) if stim else None,
+    }
 
 
 def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
@@ -225,6 +308,9 @@ def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
     lfc = float(lfc) if pd.notna(lfc) else None
     polarization = None if lfc is None else ("Th2" if lfc > 0 else "Th1")
 
+    # --- activation state: where in the T cell's life this target actually acts ---
+    sp = state_profile(gene)
+
     return {
         "disease": disease,
         "gene": gene,
@@ -249,6 +335,11 @@ def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
         # functional readout
         "th2_vs_th1_lfc": lfc,
         "polarization": polarization,
+        # activation state
+        "state_pattern": sp["state_pattern"] if sp else None,
+        "state_summary": sp["summary"] if sp else None,
+        "by_state": sp["by_state"] if sp else None,
+        "peak_state": sp["peak_state"] if sp else None,
     }
 
 
@@ -279,6 +370,10 @@ if __name__ == "__main__":  # smoke test + demo-invariant check
     assert ev and ev["rank"] == 1, "REGRESSION: STAT3 is no longer the top Crohn's target"
     assert ev["confidence"].startswith("High"), "REGRESSION: STAT3 lost High confidence"
     assert ev["kd_verified"] and not ev["offtarget_risk"], "REGRESSION: STAT3 trust flags changed"
+    # Activation-state layer: ITK must read as activation-induced (the demo beat).
+    itk = state_profile("ITK")
+    assert itk and itk["state_pattern"] == "activation-induced", "REGRESSION: ITK state pattern changed"
+    print(f"✓ activation-state layer OK — ITK: {itk['summary']}")
     print(
         f"\n✓ demo invariant OK — Crohn's #1 = STAT3: "
         f"OR {ev['odds_ratio']:.1f}, controls {ev['controls_n_genes']} genes "
