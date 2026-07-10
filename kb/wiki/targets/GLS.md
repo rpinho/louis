@@ -1,0 +1,8 @@
+# GLS
+
+*CD4+ T-cell regulator — target profile. Data facts, novelty, mechanism, and scientist verdicts, each with provenance.*
+
+## Findings
+
+- **2026-07-10** (rheumatoid arthritis): Claude Science validation: strong #2 RA lead (4.03). Genuine CD4 biology (Johnson 2018 Cell: GLS gates Th17/Th1 metabolism), but existing RA literature is fibroblast-like-synoviocyte-centric, NOT CD4 - so the CD4-in-RA angle is the novel test. Druggable: telaglenastat/CB-839 (Ph2, oncology). Autoimmune GWAS hits co-map with STAT1/STAT4 (2q locus-sharing, not a GLS edge). 0 RA trials.  — *source: Claude Science validation 2026-07-10*
+- **VERDICT 2026-07-10** (rheumatoid arthritis): **strong #2 - run in parallel with DOT1L** — druggable (CB-839) + real CD4 metabolic biology; the CD4-in-RA angle is novel since existing RA lit is synoviocyte-centric.
