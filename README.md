@@ -1,6 +1,6 @@
 # 🧬 T-Cell Target Explorer
 
-**Ask Claude what to target for an autoimmune disease — and get trust-ranked CD4+ T-cell candidates grounded in a real CRISPR screen, right inside your Claude session.**
+**Ask Claude to discover novel, druggable CD4+ T-cell drug targets for an autoimmune disease — grounded in a real CRISPR screen, validated against the scientific web, and remembered — right inside your Claude session.**
 
 An **MCP server**: no separate app, no API key, no metered credits. You talk to Claude the way you already do; this server grounds every answer in the **Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq** (Zhu, Dann, …, Pritchard, Marson 2025; [preprint](https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1) · [CZI Virtual Cells Platform](https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq)) — disease enrichment, gene-network influence, CRISPRi knockdown QC, and activation-state dependence.
 
@@ -16,25 +16,32 @@ So don't make one. **Meet them where they already are: inside Claude.**
 
 ## What it does
 
-Add the server to Claude, then just ask. Claude calls the tools, reads the real numbers, and answers — **trust verdict first**.
+Add the server to Claude, then just ask. It does three things — **discover, validate, remember** — grounded in the screen and trust-verdict first.
 
-> **You:** *For Crohn's, what should I target, and which hits can I actually trust?*
+**Discover** — not the obvious target, the novel one:
+> **You:** *For rheumatoid arthritis, skip the obvious targets — find understudied, druggable handles wired to the disease's own risk genes.*
 >
-> **Claude** *(via the MCP)*: **STAT3** — the #1 candidate. Its regulatory program is the most disease-enriched (odds ratio 58, FDR 3.3e-4), it's a top-1% network hub (controls 1,592 genes vs. a median of 4), and its CRISPRi knockdown was **verified clean** in all three conditions. It sits with IRF4 and BATF — the core Th17 axis — so it's biologically coherent. ⚠️ **IPMK** sits in that *same* program with the *identical* enrichment score, but its knockdown was never confirmed — enrichment alone would rank it a top hit; don't spend bench time on it.
+> **Claude** *(via the MCP)*: **DOT1L** — an epigenetic enzyme (pinometostat is in the clinic) — controls a module carrying the RA risk genes **IL21R** and **PTGER4** in *resting* T cells, knockdown verified clean. **GLS** (glutaminase) sits over a **PTPN22 / TRAF1** module in *activated* cells. Mechanistic, testable leads — and the regulator→risk-gene links exist in **no external database**, only in this screen.
+
+**Validate** — hand the leads to Claude Science's scientific web (Open Targets, ChEMBL, PubMed, GWAS Catalog). In our run it ranked **DOT1L** the top novel + druggable RA lead, *caught* that the Open Targets scores were ontology-propagation artifacts (not real RA evidence), and independently confirmed the regulator→risk-gene links live only in the Perturb-seq.
+
+**Remember** — the knowledge base files the whole chain with provenance *and confidence level*; `kb_recall(DOT1L)` returns discovery + novelty + validation + verdict in one shareable profile, so it's never re-derived.
+
+Underneath it all, the **trust flag** — the difference between a hit worth bench time and one that wastes it:
+> **You:** *For Crohn's, what should I target, and which can I trust?*
 >
-> **You:** *Which Crohn's targets only switch on when the T cell is activated?*
->
-> **Claude**: EGR2 is **activation-induced** (854 genes when stimulated, near-silent at rest)… *(For asthma, ITK goes 1 → 3,392 genes rest → activated — the TCR signalosome, recovered from the data.)*
+> **Claude**: **STAT3** — verified clean knockdown, top-1% network hub. ⚠️ **IPMK** sits in the *same* program with the *identical* enrichment, but its knockdown was never confirmed — enrichment alone would rank it a co-top hit; don't spend bench time on it.
 
 The tools (all grounded, no LLM guessing):
 
 | Tool | Returns |
 |---|---|
+| `disease_mechanisms` | **discovery** — druggable handles wired to a disease's risk-gene modules, per activation state |
+| `disease_targets` | ranked candidates + OR, GRN influence, **trust flag**, activation state, Th1/Th2 |
+| `target_evidence` | the full "why this target" case for one gene |
+| `regulator_detail` · `state_profile` | per-condition GRN + CRISPRi QC · activation-state trajectory |
+| `kb_recall` · `kb_remember` · `kb_verdict` | the **knowledge base** — recall before deriving, file findings with provenance, record verdicts |
 | `list_diseases` | the 17 autoimmune diseases in the screen |
-| `disease_targets` | ranked candidates + OR, GRN influence, **trust flag**, **activation state**, Th1/Th2 |
-| `target_evidence` | the full "why this target" case for one gene, with program peers + per-state trajectory |
-| `regulator_detail` | per-condition GRN out-degree + CRISPRi QC |
-| `state_profile` | how a regulator's influence shifts Rest → Stim8hr → Stim48hr |
 
 ## Quick start
 
@@ -67,12 +74,14 @@ Sanity-check the engine + server without Claude:
 python -m tcell_targets.core     # prints top targets, asserts the Crohn's→STAT3 demo invariant
 ```
 
-## What makes a hit trustworthy — and *when* it acts
+## What makes it more than a lookup
 
-Two layers a literature search can't give you, because they live in the assay, not the papers:
+Four things, none of which a literature search can give you — because they live in the assay and in the screen's network structure, not the papers:
 
-- **Trust flag.** Derived from the screen's own QC — was the CRISPRi **knockdown verified on-target**, and is the guide **off-target**? *High* = verified + clean; *Low* = knockdown not confirmed. This is what stops you spending months on a hit that only *looks* good (see IPMK above).
-- **Activation state.** A T cell's regulators shift with its state, and the screen measured three (Rest / Stim8hr / Stim48hr). ~87% of hub regulators change their influence ≥2× across them. The server surfaces which state a target acts in — *activation-induced*, *resting-state*, *constitutive* — the state-dependence a bench immunologist otherwise needs a whole experiment to read. (It's surfacing the **three measured states**, not modeling unmeasured ones.)
+- **Mechanistic discovery.** The screen's gene-regulatory clusters carry *both* their regulators and their downstream genes, so `disease_mechanisms` wires a druggable **handle** to the disease's own risk-gene **module**, in a specific state — "perturb DOT1L to move the RA IL21R/PTGER4 program in resting cells." That's a testable hypothesis, and the edge exists in no external database. (Module-level co-cluster — a candidate controller to *test*, not a proven gene-level edge; those need the full `.h5ad`.)
+- **Trust flag.** From the screen's own QC — was the CRISPRi **knockdown verified on-target**, and is the guide **off-target**? This is what stops you spending months on a hit that only *looks* good (see IPMK above).
+- **Activation state.** A T cell's regulators shift with its state; the screen measured three (Rest / Stim8hr / Stim48hr) and ~87% of hub regulators change ≥2× across them. The server surfaces which state a target acts in — the state-dependence a bench immunologist otherwise needs a whole experiment to read. (The **three measured states**, not modeling unmeasured ones.)
+- **A learning knowledge base.** `kb_recall / kb_remember / kb_verdict` maintain a git-tracked markdown KB (a target profile is a reputation record: data facts + literature novelty + validation + the scientist's verdict, each with provenance). Recall before deriving; file findings back so nothing is re-derived; hand the whole thing to a student.
 
 ## Optional: local visual browser
 
