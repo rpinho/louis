@@ -59,6 +59,8 @@ ev = target_evidence("Crohn's disease", "STAT3")   # the full evidence case for 
 
 Uses the authors' **precomputed** supplementary tables (auto-downloaded): cluster↔autoimmune-disease enrichment, per-perturbation DE stats (with `n_downstream` = GRN out-degree), guide knockdown efficiency, sgRNA off-target library, and the Th1/Th2 polarization signature. The full ~22M-cell AnnData is **not** required. Optional GRN-edge detail (`GWCD4i.DE_stats.h5ad`, 33,983 perturbations × 10,282 genes) is available via the CZI Virtual Cells Platform.
 
+Those supplementary tables are distributed by the study authors under the MIT License via their public analysis repository. This project re-uses those public tables; it does not redistribute the underlying single-cell AnnData.
+
 ## Scope / honesty
 
 17 autoimmune diseases, 185 significant disease↔program links. This surfaces and *trust-ranks* candidate targets from a published dataset — it is a hypothesis-generation and prioritization tool for bench scientists, **not** a validated clinical claim. Confidence flags reflect experimental QC of the CRISPRi perturbation, not therapeutic efficacy.

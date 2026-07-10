@@ -19,11 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Data: this tool uses precomputed supplementary tables from the genome-scale
-CD4+ T-cell Perturb-seq study (Zhu, Dann, ..., Pritchard, Marson 2025),
-distributed by the authors under the MIT License via their public analysis
-repository. This project re-uses those public tables; it does not redistribute
-the underlying single-cell AnnData.
