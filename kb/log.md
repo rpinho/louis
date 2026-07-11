@@ -323,3 +323,28 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember IL2: profile opened for community signal
 - 2026-07-11 — community_signal IL2 (target): filed 5 posts (harvested 2026-07-11)
 - 2026-07-11 — community_signal JAK2 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember PRDM1: profile opened for community signal
+- 2026-07-11 — community_signal PRDM1 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember TCF7: profile opened for community signal
+- 2026-07-11 — community_signal TCF7 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal CD44 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember DPP4: profile opened for community signal
+- 2026-07-11 — community_signal DPP4 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal IL13 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal LEF1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember NCOR2: profile opened for community signal
+- 2026-07-11 — community_signal NCOR2 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal SOCS1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ZC3H12C: profile opened for community signal
+- 2026-07-11 — community_signal ZC3H12C (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal BATF3 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember BCL6: profile opened for community signal
+- 2026-07-11 — community_signal BCL6 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal CCR2 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal CD69 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal CD83 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal CIITA (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember DUSP5: profile opened for community signal
+- 2026-07-11 — community_signal DUSP5 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember FUT8: profile opened for community signal
+- 2026-07-11 — community_signal FUT8 (target): filed 1 posts (harvested 2026-07-11)
