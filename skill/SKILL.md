@@ -93,6 +93,20 @@ is actively discussing. Treat posts as leads to weigh, not validated claims.
 fresh chatter where X access exists (Claude Code / Desktop). In this sandbox there is no X access,
 so read the **baked** signal from the KB via `kb.recall`.
 
+**Follow the pointers, and reach the PRE-PAPER sources (this is the whole product — be the
+"phone-a-friend" that knows what isn't published yet).** For each lead, don't stop at the tweet —
+chase it and pull the pre-paper record the published-literature connectors lag on:
+- **Follow the links** in the community posts (each post carries expanded URLs). Papers → pull the
+  abstract; labs → who's working on it; videos/long-forms → the content. Use your connectors /
+  web fetch; **Europe PMC** (open) resolves most DOIs, including **bioRxiv/medRxiv preprints**.
+- **Preprints** — search Europe PMC with `SRC:PPR` (or OpenAlex) for the gene + a T-cell/autoimmune
+  context: the freshest bioRxiv/medRxiv work, often weeks ahead of PubMed.
+- **Conferences** — the exact gap ("presenting at a conference, not published yet"). Rheumatology
+  abstracts are searchable at **acrabstracts.org** (ACR Convergence) and EULAR's *Annals* supplement;
+  immunology at AAI/FOCIS/Keystone. Conference abstracts are pre-paper knowledge.
+Record what you find with `kb.remember`, and **always label its confidence** — peer-reviewed paper vs.
+preprint vs. conference abstract (a preprint/abstract is a lead, not an established result).
+
 ## 4 — REMEMBER (so nothing is re-derived, and it's shareable)
 
 ```python

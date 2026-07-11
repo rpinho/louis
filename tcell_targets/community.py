@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 from datetime import datetime
@@ -79,6 +80,11 @@ def _build_query(entity: str, kind: str) -> str:
         phrase = f'"{e}"' if " " in e else e
         # Technical anchor filters out the wellness/patient chatter that dominates a bare query.
         return f'{phrase} {_TECH_BASKET} lang:en -is:retweet'
+    if kind == "drug":
+        # Clinical/pipeline context — drug chatter is trial/FDA/efficacy language, not scRNA/CRISPR.
+        return (f'{e} (trial OR phase OR FDA OR approval OR efficacy OR clinical OR inhibitor '
+                f'OR autoimmune OR immune OR "T cell" OR Treg OR therapy OR indication) '
+                f'lang:en -is:retweet')
     # gene/target: the symbol + a broad bio guard (gene symbols are already highly specific).
     return f'{e} {_GENE_GUARD} lang:en -is:retweet'
 
@@ -100,7 +106,7 @@ class RateLimited(RuntimeError):
 def _run_search(query: str, max_results: int) -> dict:
     url = ("/2/tweets/search/recent?query=" + quote(query)
            + f"&max_results={max(10, min(max_results, 100))}"
-           + "&tweet.fields=note_tweet,created_at,public_metrics"
+           + "&tweet.fields=note_tweet,created_at,public_metrics,entities"
            + "&expansions=author_id&user.fields=username,name,verified")
     proc = subprocess.run([_xurl_path() or "xurl", url], capture_output=True, text=True, timeout=40)
     out, err = proc.stdout or "", proc.stderr or ""
@@ -135,6 +141,22 @@ def _score(text: str, user: dict, metrics: dict) -> float:
     return research + eng + (35 if _signal_name(user) else 0) + (12 if user.get("verified") else 0) - penalty
 
 
+def _post_links(t: dict) -> list:
+    """Expanded (real) URLs a tweet points to — papers, labs, YouTube, Substack — minus X self-links."""
+    urls = []
+    for ent in (t.get("entities") or {}), ((t.get("note_tweet") or {}).get("entities") or {}):
+        for u in ent.get("urls", []) or []:
+            exp = u.get("expanded_url") or u.get("url") or ""
+            if exp and not re.search(r"https?://(x\.com|twitter\.com|t\.co)/", exp):
+                urls.append(exp.split("?")[0])   # drop tracking query params
+    seen, out = set(), []
+    for u in urls:
+        if u not in seen:
+            seen.add(u)
+            out.append(u)
+    return out
+
+
 def _extract_posts(d: dict, min_engagement: int = 0) -> tuple[list, int]:
     """Parse a search response into scored post dicts (carrying _score/_research). Returns (posts, n_vetoed)."""
     users = {u["id"]: u for u in d.get("includes", {}).get("users", [])}
@@ -158,6 +180,7 @@ def _extract_posts(d: dict, min_engagement: int = 0) -> tuple[list, int]:
             "likes": m.get("like_count", 0),
             "retweets": m.get("retweet_count", 0),
             "url": f"https://x.com/{u.get('username', 'i')}/status/{t.get('id', '')}",
+            "links": _post_links(t),                                    # expanded URLs to chase
             "high_signal": signal,
             "_score": _score(txt, u, m),
             "_research": signal or _count(txt, _RESEARCH_TERMS) >= 2,   # research account OR >=2 terms

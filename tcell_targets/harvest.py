@@ -235,6 +235,47 @@ def harvest_pathways(pathways=None, per_top=8, pause=2.0, cooldown=900, max_retr
     return {"filed": filed, "empty": empty, "rate_limited": rate_limited}
 
 
+# The DRUGS/compounds dimension — the clinical matter our validation surfaces for each lead.
+# Searching the drug names closes the loop over ALL the tool's outputs (genes + pathways + DRUGS).
+DRUG_MAP = {
+    "DOT1L": ["pinometostat"],
+    "MEN1": ["revumenib", "ziftomenib"],
+    "GLS": ["telaglenastat", "CB-839"],
+    "AHR": ["tapinarof"],
+    "RIPK1": ["eclitasertib"],
+    "JAK2": ["upadacitinib", "baricitinib"],
+    "TYK2": ["deucravacitinib"],
+    "IL23R": ["risankizumab", "guselkumab"],
+    "HDAC7": ["vorinostat"],
+}
+
+
+def harvest_drugs(drug_map=None, per_top=6, pause=2.0, verbose=True):
+    """Search X for the clinical compounds tied to each validated target; file to that target's profile."""
+    drug_map = drug_map or DRUG_MAP
+    filed = {}
+    for target, drugs in drug_map.items():
+        for drug in drugs:
+            p = kb._target_path(target)
+            if p.exists() and f"drug:{drug} —" in p.read_text():   # already filed — idempotent
+                if verbose:
+                    print(f"  {target}/{drug}: (already filed)", flush=True)
+                continue
+            sig = community.community_signal(drug, kind="drug", top=per_top)  # clinical/pipeline context
+            posts = sig.get("posts", [])
+            if posts:
+                kb.remember_signal(target, posts, kind="target",
+                                   query=f"drug:{drug} — {sig.get('query', '')}",
+                                   harvested=sig.get("harvested", ""))
+                filed[f"{target}/{drug}"] = len(posts)
+            if verbose:
+                print(f"  {target}/{drug}: {len(posts) if posts else '—'}", flush=True)
+            time.sleep(pause)
+    idx = kb.reindex()
+    print(f"Reindexed KB: {idx['n']} profiles.")
+    return filed
+
+
 def write_rollup(summary: dict, handles: dict, risk: dict):
     """Write a navigable index of genes that lit up this week -> kb/community_signal.md."""
     lines = ["# Community signal index",
@@ -256,6 +297,13 @@ def write_rollup(summary: dict, handles: dict, risk: dict):
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+
+    if "--drugs" in argv:
+        n = sum(len(v) for v in DRUG_MAP.values())
+        print(f"Harvesting community signal for {n} clinical compounds across {len(DRUG_MAP)} targets…")
+        filed = harvest_drugs()
+        print(f"\nDone. filed={len(filed)}: {', '.join(f'{k}({v})' for k, v in filed.items())}")
+        return filed
 
     if "--pathways" in argv:
         print(f"Harvesting community signal for {len(PATHWAYS)} pathways/mechanisms…")

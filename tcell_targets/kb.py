@@ -134,9 +134,12 @@ def remember_signal(entity: str, posts: list[dict], query: str = "",
     for p in posts:
         flag = " ⭐" if p.get("high_signal") else ""
         metric = f"♥{p.get('likes', 0)}"
-        lines.append(f"- **@{p.get('handle', '?')}**{flag} ({p.get('author', '?')}) · "
-                     f"{p.get('date', '?')} · {metric}: {p.get('text', '')[:240]} "
-                     f"— [link]({p.get('url', '')})")
+        line = (f"- **@{p.get('handle', '?')}**{flag} ({p.get('author', '?')}) · "
+                f"{p.get('date', '?')} · {metric}: {p.get('text', '')[:240]} "
+                f"— [tweet]({p.get('url', '')})")
+        for lk in p.get("links", [])[:3]:      # expanded URLs the post points to (paper/lab/video)
+            line += f" · [↗]({lk})"
+        lines.append(line)
     with path.open("a") as f:
         f.write("\n".join(lines) + "\n")
     if kind == "target":

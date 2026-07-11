@@ -47,3 +47,6 @@ Target profiles (one row per gene). Read this first.
 - [IRF1](wiki/targets/IRF1.md)
 - [UST](wiki/targets/UST.md)
 - [DNMT3A](wiki/targets/DNMT3A.md)
+- [MEN1](wiki/targets/MEN1.md)
+- [TYK2](wiki/targets/TYK2.md)
+- [IL23R](wiki/targets/IL23R.md)

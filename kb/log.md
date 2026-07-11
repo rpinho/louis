@@ -116,3 +116,17 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-10 — community_signal T cell exhaustion (topic): filed 3 posts (harvested 2026-07-10)
 - 2026-07-10 — community_signal immunometabolism (topic): filed 1 posts (harvested 2026-07-10)
 - 2026-07-10 — community_signal cytokine signaling (topic): filed 4 posts (harvested 2026-07-10)
+- 2026-07-11 — community_signal JAK2 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember MEN1: profile opened for community signal
+- 2026-07-11 — community_signal MEN1 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal JAK2 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember TYK2: profile opened for community signal
+- 2026-07-11 — community_signal TYK2 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IL23R: profile opened for community signal
+- 2026-07-11 — community_signal IL23R (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember DNMT3A (rheumatoid arthritis): PAPER (followed from the @ACR_Journals tweet link -> Europe PMC): 'DNA (cytosine
+- 2026-07-11 — remember DOT1L (rheumatoid arthritis): PREPRINT (bioRxiv, NOT peer-reviewed) — found via Europe PMC preprint search (SR
+- 2026-07-11 — remember DNMT3A (rheumatoid arthritis): PREPRINT (bioRxiv, NOT peer-reviewed) — found via Europe PMC preprint search (SR
+- 2026-07-11 — remember DOT1L (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2023, #1589, acrabstracts.org — pre-paper, 
+- 2026-07-11 — remember DNMT3A (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2023, #1589, acrabstracts.org — pre-paper, 
+- 2026-07-11 — remember TET2 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2023, #2451, acrabstracts.org — pre-paper):
