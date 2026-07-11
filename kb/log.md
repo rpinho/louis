@@ -242,3 +242,31 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — community_signal ARID5B (target): filed 3 posts (harvested 2026-07-11)
 - 2026-07-11 — remember ASXL1: profile opened for community signal
 - 2026-07-11 — community_signal ASXL1 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember DOCK2: profile opened for community signal
+- 2026-07-11 — community_signal DOCK2 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember HDAC7: profile opened for community signal
+- 2026-07-11 — community_signal HDAC7 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IPMK: profile opened for community signal
+- 2026-07-11 — community_signal IPMK (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal ATM (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember BATF: profile opened for community signal
+- 2026-07-11 — community_signal BATF (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember CD5: profile opened for community signal
+- 2026-07-11 — community_signal CD5 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IL21: profile opened for community signal
+- 2026-07-11 — community_signal IL21 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IRF4: profile opened for community signal
+- 2026-07-11 — community_signal IRF4 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember MLKL: profile opened for community signal
+- 2026-07-11 — community_signal MLKL (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ZAP70: profile opened for community signal
+- 2026-07-11 — community_signal ZAP70 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember LRBA: profile opened for community signal
+- 2026-07-11 — community_signal LRBA (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember RASA2: profile opened for community signal
+- 2026-07-11 — community_signal RASA2 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IL2RB: profile opened for community signal
+- 2026-07-11 — community_signal IL2RB (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IL7R: profile opened for community signal
+- 2026-07-11 — community_signal IL7R (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal STAT6 (target): filed 3 posts (harvested 2026-07-11)
