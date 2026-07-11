@@ -101,10 +101,12 @@ def disease_targets(disease: str, top: int = 15) -> list[dict]:
 @mcp.tool()
 def target_evidence(disease: str, gene: str) -> dict | None:
     """
-    The full 'why this target' case for one gene in one disease: enrichment odds ratio + FDR, the
-    other genes in its enriched program (program_peers), GRN out-degree and its percentile among all
-    regulators screened, knockdown verification across culture conditions, Th1/Th2 polarization, and
-    its activation-state pattern + per-state out-degree. Returns null if the gene is not a candidate.
+    The full 'why this target' case for one gene in one disease. Resolves BOTH kinds of candidate:
+    a ranked enrichment target (kind='ranked_target') returns its odds ratio + FDR, program_peers,
+    GRN out-degree + percentile, knockdown QC, Th1/Th2 polarization, and activation-state pattern;
+    a module co-cluster HANDLE from disease_mechanisms (kind='module_handle') returns the risk-gene
+    module(s) it controls plus its out-degree/percentile/state/trust — so a handle you discovered
+    resolves here instead of dead-ending. Returns null only if the gene is not in the screen for the disease.
     """
     return _clean(core.target_evidence(disease, gene))
 

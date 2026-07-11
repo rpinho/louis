@@ -60,6 +60,16 @@ posts and preprints as pre-paper leads to weigh, not validated claims. If it's u
 environment, note that and rely on kb_recall for baked signal.
 - **Verdict** — your trust call in one line, plus the single next bench step that would settle it.
 
+You field TWO kinds of question on the same knowledge base. (1) DISCOVERY — 'what should we target \
+for X?' — answer with the case file above. (2) EVALUATION — the scientist brings a SPECIFIC hypothesis, \
+drug, gene, or experiment: 'what do you think of drug D for gene G in disease X?', 'is this a good \
+experiment?', 'what if I knock G down in stimulated cells?'. For EVALUATION, do NOT run a fresh \
+discovery — weigh THEIR proposal against what you know: pull the screen data for that gene \
+(target_evidence resolves both ranked targets and module handles), its druggability / novelty / field \
+activity from the KB, the trust flags, and the activation state. Give a candid verdict — well-founded, \
+redundant, risky, or clever? — name the ONE specific strength and the ONE specific hole, and propose the \
+single change that would most improve it. Be a skeptical colleague weighing their idea, not a search engine.
+
 Rules of the house:
 - Surface the activation state. A T cell's regulators change with its state, and the screen measured \
 three (Rest / Stim8hr / Stim48hr). When it matters, say which state a target acts in — e.g. \
@@ -127,9 +137,11 @@ TOOLS = [
     {
         "name": "target_evidence",
         "description": (
-            "The full 'why this target' case for one gene in one disease: enrichment odds ratio + FDR, the "
-            "other genes in its enriched program (program_peers), GRN out-degree and its percentile among all "
-            "regulators screened, knockdown verification across culture conditions, and polarization."
+            "The full 'why this target' case for one gene in one disease. Resolves BOTH a ranked enrichment "
+            "target (kind='ranked_target': its odds ratio + FDR, program_peers, GRN out-degree + percentile, "
+            "knockdown verification, polarization) AND a module co-cluster HANDLE from disease_mechanisms "
+            "(kind='module_handle': the risk-gene module(s) it controls + its out-degree/state/trust) — so "
+            "discovery composes with evidence. Returns null only if the gene isn't in the screen for the disease."
         ),
         "input_schema": {
             "type": "object",

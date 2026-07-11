@@ -346,6 +346,54 @@ def state_profile(gene: str) -> dict | None:
     }
 
 
+def _handle_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
+    """Evidence for a gene that is a module co-cluster HANDLE (from disease_mechanisms) rather
+    than a top-ranked enrichment target. Its disease link is the risk-gene MODULE(s) it
+    co-regulates — not its own program's enrichment — so target_evidence composes with the
+    discovery call. Returns None only if the gene is neither a handle here nor perturbed."""
+    mods = disease_mechanisms(disease, fdr=fdr, top_modules=100)
+    hits = [m for m in mods if any(h["gene"] == gene for h in m.get("candidate_handles", []))]
+    det = regulator_detail(gene)
+    if not hits and not det.get("perturbed"):
+        return None
+    entry = next((h for m in hits for h in m["candidate_handles"] if h["gene"] == gene), None)
+    controls = entry["controls_n_genes"] if entry else None
+    if controls is None:
+        grn = _grn_summary()
+        if gene in grn.index and pd.notna(grn.loc[gene, "controls_n_genes"]):
+            controls = int(grn.loc[gene, "controls_n_genes"])
+    dist = _grn_out_degrees()
+    percentile = float((dist < controls).mean() * 100) if controls is not None else None
+    conds = det.get("by_condition", {}) if det.get("perturbed") else {}
+    n_verified = sum(1 for c in conds.values() if c["kd_verified"])
+    sp = state_profile(gene)
+    return {
+        "disease": disease,
+        "gene": gene,
+        "kind": "module_handle",
+        "note": ("Module co-cluster HANDLE (surfaced by disease_mechanisms), not a top-ranked "
+                 "enrichment target — so it has no own-program enrichment odds ratio. Its disease "
+                 "link is the risk-gene MODULE(s) it co-regulates, listed below: a candidate upstream "
+                 "controller to test, NOT a proven gene-level edge."),
+        "handle_for_modules": [
+            {"module": m["module"], "fires_in_state": m["fires_in_state"],
+             "odds_ratio": m["odds_ratio"], "fdr": m["fdr"],
+             "disease_risk_genes": m["disease_risk_genes"]}
+            for m in hits],
+        "controls_n_genes": controls,
+        "percentile": percentile,
+        "n_regulators": int(len(dist)),
+        "median_out_degree": int(dist.median()),
+        "kd_verified": bool(entry["kd_verified"]) if entry else any(c["kd_verified"] for c in conds.values()),
+        "n_conditions": len(conds),
+        "n_conditions_verified": n_verified,
+        "state_pattern": sp["state_pattern"] if sp else None,
+        "state_summary": sp["summary"] if sp else None,
+        "by_state": sp["by_state"] if sp else None,
+        "peak_state": sp["peak_state"] if sp else None,
+    }
+
+
 def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
     """
     Assemble the full 'why this target' case for one gene in one disease.
@@ -357,7 +405,10 @@ def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
     """
     df = disease_targets(disease, fdr=fdr)
     if df.empty or gene not in set(df["gene"]):
-        return None
+        # Not a top-ranked enrichment target — but it may be a module co-cluster HANDLE
+        # (surfaced by disease_mechanisms). Resolve that so discover -> evidence composes,
+        # instead of a bare None that dead-ends the workflow.
+        return _handle_evidence(disease, gene, fdr=fdr)
     row = df[df["gene"] == gene].iloc[0]
     rank = int(df.index[df["gene"] == gene][0]) + 1
 
@@ -390,6 +441,7 @@ def target_evidence(disease: str, gene: str, fdr: float = 0.05) -> dict | None:
     return {
         "disease": disease,
         "gene": gene,
+        "kind": "ranked_target",
         "rank": rank,
         "confidence": row["confidence"],
         # disease link
