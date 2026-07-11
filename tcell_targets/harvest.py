@@ -303,12 +303,20 @@ def _bsky_filter(posts, per_top):
 
 
 def bluesky_terms():
-    """Every discovered lead as a Bluesky search term: genes -> target, pathways -> topic, diseases -> disease."""
+    """
+    Leads as Bluesky search terms, VALUE-ORDERED so the loop sweeps the best first:
+    druggable handles (by #diseases) -> cross-cutting markers -> pathways -> diseases -> obscure tail.
+    Gene searches carry a ' T cell' immune context (a bare symbol like ACTA2 pulls smooth-muscle chatter).
+    """
     handles, risk = collect_targets()
-    genes = sorted(set(handles) | set(risk))
-    return ([(g, g, "target") for g in genes]
+    h_sorted = sorted(handles, key=lambda g: (-len(handles[g]), g))
+    r_sorted = [g for g in sorted(risk, key=lambda g: (-len(risk[g]), g))
+                if len(risk[g]) >= 3 and g not in handles]
+    tail = [g for g in sorted(risk) if g not in handles and g not in set(r_sorted)]
+    return ([(f"{g} T cell", g, "target") for g in h_sorted + r_sorted]
             + [(t, t, "topic") for t in PATHWAYS]
-            + [(d, d, "disease") for d in core.list_diseases()])
+            + [(d, d, "disease") for d in core.list_diseases()]
+            + [(f"{g} T cell", g, "target") for g in tail])
 
 
 def harvest_bluesky(terms=None, per_top=5, pause=0.7, limit=None, verbose=True):
