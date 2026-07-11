@@ -348,3 +348,7 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — community_signal DUSP5 (target): filed 3 posts (harvested 2026-07-11)
 - 2026-07-11 — remember FUT8: profile opened for community signal
 - 2026-07-11 — community_signal FUT8 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember MYB: profile opened for community signal
+- 2026-07-11 — community_signal MYB (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember NR4A3: profile opened for community signal
+- 2026-07-11 — community_signal NR4A3 (target): filed 2 posts (harvested 2026-07-11)

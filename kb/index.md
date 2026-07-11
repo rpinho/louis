@@ -127,3 +127,5 @@ Target profiles (one row per gene). Read this first.
 - [BCL6](wiki/targets/BCL6.md)
 - [DUSP5](wiki/targets/DUSP5.md)
 - [FUT8](wiki/targets/FUT8.md)
+- [MYB](wiki/targets/MYB.md)
+- [NR4A3](wiki/targets/NR4A3.md)
