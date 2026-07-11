@@ -143,3 +143,6 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember FOXP3 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2018, #142): 'Peripheral CD4+CD25+Foxp3+ T Regulat
 - 2026-07-11 — remember FOXP3 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2017, #2712): pathogenic Foxp3+ Treg conversion in
 - 2026-07-11 — remember IL2RA (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2018, #2683): 'Selective Expansion and Targeting o
+- 2026-07-11 — remember CXCR4 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR Convergence 2022, #1723): 'CXCR4-targeted Functionally 
+- 2026-07-11 — remember IKZF1 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR Convergence 2020, #0851): 'Iberdomide Decreases B Cells
+- 2026-07-11 — remember IKZF1 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2013, #1637): 'IKZF1 Modulates PP2Ac Expression Th

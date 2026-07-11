@@ -53,3 +53,4 @@ Target profiles (one row per gene). Read this first.
 - [PTPN22](wiki/targets/PTPN22.md)
 - [FOXP3](wiki/targets/FOXP3.md)
 - [IL2RA](wiki/targets/IL2RA.md)
+- [IKZF1](wiki/targets/IKZF1.md)
