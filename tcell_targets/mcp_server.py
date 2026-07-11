@@ -21,33 +21,54 @@ from mcp.server.fastmcp import FastMCP
 from . import core
 from . import kb
 from . import community
-from .assistant import _clean  # JSON-safe coercion (import-safe: no anthropic at import)
+from .assistant import _clean, default_use_memory  # import-safe: no anthropic at import
+
+
+def _no_memory() -> bool:
+    """No-memory mode (env TCELL_NO_MEMORY truthy): the kb_* tools are inert and nothing reads kb/."""
+    return not default_use_memory()
+
+
+# In no-memory mode the memory tools short-circuit and won't touch kb/, so tell the host not
+# to lean on them: derive fresh from the live tools instead of recall-before-derive.
+_MEMORY_DISABLED = {"disabled": True, "note": "memory disabled (no-memory mode) — kb/ not consulted"}
+
+_INSTRUCTIONS_HEAD = (
+    "Tools for finding and vetting candidate CD4+ T-cell regulator targets for autoimmune "
+    "diseases, from a genome-scale CRISPRi Perturb-seq screen (Marson/Pritchard 2025). "
+    "Always lead with the TRUST verdict: a target's confidence flag comes from whether its "
+    "knockdown was verified on-target and whether the guide is clean — a high disease-"
+    "enrichment with an unconfirmed knockdown is a caution, not a recommendation. Also surface "
+    "the ACTIVATION STATE a target acts in (Rest/Stim8hr/Stim48hr): 'activation-induced' means "
+    "it does little in resting cells and switches on only when the T cell is stimulated. These "
+    "are hypotheses to prioritize bench work, not clinical claims. "
+    "For DISCOVERY (novel leads, not the obvious known target), use disease_mechanisms: it wires "
+    "druggable regulator handles to the disease's own risk-gene modules — recover the obvious "
+    "Th17 handles as a positive control, then surface understudied ones and assess their NOVELTY "
+    "yourself (your knowledge + web/PubMed). "
+    "LISTEN (bleeding-edge): community_signal pulls what immunologists are posting on X/Twitter "
+    "RIGHT NOW about a gene or disease — lab announcements, preprint drops, pipeline news that "
+    "isn't in the literature yet. This is signal the paper/database connectors can't see. It runs "
+    "live where X access exists (Claude Code/Desktop); "
+)
+_INSTRUCTIONS_MEMORY = (
+    "elsewhere read the baked signal via kb_recall. "
+    "MEMORY: this tool has a knowledge base — ALWAYS call kb_recall(entity) BEFORE re-deriving; "
+    "after deriving or verifying something new, call kb_remember to file it with provenance so "
+    "it is never re-derived, kb_remember_signal to preserve the community chatter, and kb_verdict "
+    "to record the scientist's judgment. The workflow is discover -> validate -> listen -> remember. "
+    "This is how it learns."
+)
+_INSTRUCTIONS_NOMEMORY = (
+    "elsewhere it simply returns a note (no baked signal in this mode). "
+    "NO-MEMORY MODE: the knowledge base is DISABLED for this instance — the kb_* tools are inert "
+    "(they read and write nothing) and there is no stored history. Do NOT rely on recall; derive "
+    "every answer fresh from the live tools (discover -> validate -> listen) and your own reasoning."
+)
 
 mcp = FastMCP(
     "tcell-target-explorer",
-    instructions=(
-        "Tools for finding and vetting candidate CD4+ T-cell regulator targets for autoimmune "
-        "diseases, from a genome-scale CRISPRi Perturb-seq screen (Marson/Pritchard 2025). "
-        "Always lead with the TRUST verdict: a target's confidence flag comes from whether its "
-        "knockdown was verified on-target and whether the guide is clean — a high disease-"
-        "enrichment with an unconfirmed knockdown is a caution, not a recommendation. Also surface "
-        "the ACTIVATION STATE a target acts in (Rest/Stim8hr/Stim48hr): 'activation-induced' means "
-        "it does little in resting cells and switches on only when the T cell is stimulated. These "
-        "are hypotheses to prioritize bench work, not clinical claims. "
-        "For DISCOVERY (novel leads, not the obvious known target), use disease_mechanisms: it wires "
-        "druggable regulator handles to the disease's own risk-gene modules — recover the obvious "
-        "Th17 handles as a positive control, then surface understudied ones and assess their NOVELTY "
-        "yourself (your knowledge + web/PubMed). "
-        "LISTEN (bleeding-edge): community_signal pulls what immunologists are posting on X/Twitter "
-        "RIGHT NOW about a gene or disease — lab announcements, preprint drops, pipeline news that "
-        "isn't in the literature yet. This is signal the paper/database connectors can't see. It runs "
-        "live where X access exists (Claude Code/Desktop); elsewhere read the baked signal via kb_recall. "
-        "MEMORY: this tool has a knowledge base — ALWAYS call kb_recall(entity) BEFORE re-deriving; "
-        "after deriving or verifying something new, call kb_remember to file it with provenance so "
-        "it is never re-derived, kb_remember_signal to preserve the community chatter, and kb_verdict "
-        "to record the scientist's judgment. The workflow is discover -> validate -> listen -> remember. "
-        "This is how it learns."
-    ),
+    instructions=_INSTRUCTIONS_HEAD + (_INSTRUCTIONS_NOMEMORY if _no_memory() else _INSTRUCTIONS_MEMORY),
 )
 
 _COLS = ["gene", "confidence", "disease_odds_ratio", "controls_n_genes",
@@ -156,6 +177,8 @@ def kb_remember_signal(entity: str, kind: str = "target") -> dict:
     so it is remembered across sessions and ships with the tool even where live X search can't run.
     Use after discovery/validation to capture what the field is saying right now.
     """
+    if _no_memory():
+        return dict(_MEMORY_DISABLED, entity=entity)
     sig = community.community_signal(entity, kind=kind, top=12)
     if not sig.get("posts"):
         return {"entity": entity, "filed": 0,
@@ -171,6 +194,8 @@ def kb_recall(entity: str) -> dict:
     before re-deriving. Returns the stored profile(s) with prior findings, novelty assessments, and
     scientist verdicts, or a note that it is not in the KB yet.
     """
+    if _no_memory():
+        return dict(_MEMORY_DISABLED, entity=entity)
     return kb.recall(entity)
 
 
@@ -184,6 +209,8 @@ def kb_search(term: str = "", kind: str = "", has_signal: bool = False,
     the KB already knows before deriving, or to browse accumulated leads (e.g. all targets the field
     is currently discussing). Targets with a verdict + signal rank first.
     """
+    if _no_memory():
+        return dict(_MEMORY_DISABLED, query=term)
     return kb.search(term=term, kind=kind or None, signal=has_signal or None,
                      verdict=has_verdict or None, content=content, limit=int(limit))
 
@@ -196,6 +223,8 @@ def kb_remember(gene: str, finding: str, source: str, disease: str = "") -> dict
     novelty/literature assessment, or a mechanism. Always pass a real `source` (e.g. a tool name,
     a PMID, 'Claude Science', or 'scientist').
     """
+    if _no_memory():
+        return dict(_MEMORY_DISABLED, gene=gene)
     return kb.remember(gene, finding, source, disease or None)
 
 
@@ -206,6 +235,8 @@ def kb_verdict(gene: str, disease: str, grade: str, rationale: str = "") -> dict
     (e.g. 'put a student on it', 'probably wrong, skip', 'already known'). This is what makes the
     KB learn from the human's judgment across sessions.
     """
+    if _no_memory():
+        return dict(_MEMORY_DISABLED, gene=gene)
     return kb.verdict(gene, disease, grade, rationale)
 
 

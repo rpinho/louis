@@ -12,3 +12,6 @@ dist/
 .secrets/
 kb/_bluesky_swept.txt
 kb/_reddit_swept.txt
+
+# Hackathon session recordings (Anthropic gated content) — local only
+transcripts/

@@ -20,14 +20,19 @@ If you don't have a personal one, create a free workspace at <https://slack.com/
 - **App-level token (Socket Mode):** app settings → **Basic Information** → *App-Level Tokens*
   → **Generate Token and Scopes** → add scope `connections:write` → copy the `xapp-…` token.
 - **Bot token:** **Install App** (left nav) → *Install to Workspace* → Allow → copy the
-  **Bot User OAuth Token** `xoxb-…`.
+  **Bot User OAuth Token** `xoxb-…` (also shown under *OAuth & Permissions*).
+
+Paste both into `.secrets/slack.env` (gitignored — a template is already there):
+```bash
+SLACK_BOT_TOKEN=xoxb-...
+SLACK_APP_TOKEN=xapp-...
+#ANTHROPIC_API_KEY=sk-ant-...          # optional: enables natural-language answers
+```
 
 ## 4. Run it
 ```bash
 pip install -e ".[slack]"              # or: pip install "tcell-target-explorer[slack]"
-export SLACK_BOT_TOKEN=xoxb-...
-export SLACK_APP_TOKEN=xapp-...
-export ANTHROPIC_API_KEY=sk-ant-...    # optional: enables natural-language answers
+set -a; . .secrets/slack.env; set +a   # load the tokens into the environment
 python -m tcell_targets.slack_app
 ```
 
