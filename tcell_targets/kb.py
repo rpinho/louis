@@ -131,7 +131,7 @@ def remember(gene: str, finding: str, source: str, disease: str | None = None) -
 
 
 def remember_signal(entity: str, posts: list[dict], query: str = "",
-                    harvested: str = "", kind: str = "target") -> dict:
+                    harvested: str = "", kind: str = "target", platform: str = "X/Twitter") -> dict:
     """
     File curated community (X/Twitter) chatter to an entity's profile under a dated
     'Community signal' block, with provenance (handle, date, link). Pre-paper signal —
@@ -150,7 +150,7 @@ def remember_signal(entity: str, posts: list[dict], query: str = "",
         else:
             remember(entity, "profile opened for community signal", "community_signal", None)
     when = harvested or _today()
-    lines = [f"\n## Community signal (X/Twitter) — harvested {when}\n",
+    lines = [f"\n## Community signal ({platform}) — harvested {when}\n",
              f"*Query: `{query}`. Recent field chatter — pre-paper leads, not validated claims.*\n"]
     for p in posts:
         flag = " ⭐" if p.get("high_signal") else ""

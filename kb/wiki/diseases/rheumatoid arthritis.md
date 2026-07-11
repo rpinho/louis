@@ -13,3 +13,9 @@
 - **@CivicConscious_** (𝐃𝐫. 𝐕𝐞𝐝𝐢𝐤𝐚 𝐕𝐚𝐭𝐬) · 2026-07-08 · ♥9: 🧬 CAR-T Cell Therapy: A New Hope for Autoimmune Diseases  Originally developed to treat blood cancers, CAR-T cell therapy is now emerging as a promising option for severe autoimmune diseases such as lupus (SLE), rheumatoid arthritis (RA), s — https://x.com/CivicConscious_/status/2074675536832745493
 - **@TantrumsBaba** (SURYAVANSHI 🌞) · 2026-07-07 · ♥0: Looking at Pope Francis's severe 2025 hospitalisation for double (bilateral) pneumonia through a rheumatological lens reveals how systemic inflammation, autoimmune mechanisms, and immunosuppressive therapies intersect to create a highly com — https://x.com/TantrumsBaba/status/2074560785687445580
 - **2026-07-11** (rheumatoid arthritis): PREPRINT via Bluesky (@biorxiv-immuno, not peer-reviewed): 'Rheumatoid Arthritis-associated IgG N-glycan agalactosylation diminishes neutrophilic inflammation.' — https://bsky.app/profile/biorxiv-immuno.bsky.social/post/3mq4eitjmdj2r · https://www.biorxiv.org/content/10.64898/2026.07.02.735866v1
+
+## Community signal (Bluesky) — harvested 2026-07-11
+
+*Query: `Bluesky searchPosts: rheumatoid arthritis`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@prepub-singlecell.bsky.social** ⭐ (#SingleCell preprints) · 2026-07-11 · ♥0: Hyperexpanded CD4⁺ T cell clones in rheumatoid arthritis show attenuated senescence and accumulate in afflicted joints #SingleCell 🧪🧬🖥️ https://www.medrxiv.org/content/10.64898/2026.07.09.26357637v1 — https://bsky.app/profile/prepub-singlecell.bsky.social/post/3mqdhml2o232r · https://www.medrxiv.org/content/10.64898/2026.07.09.26357637v1

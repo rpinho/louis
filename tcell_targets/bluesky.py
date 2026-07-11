@@ -16,7 +16,8 @@ import os
 import subprocess
 from urllib.parse import quote
 
-_APPVIEW = "https://public.api.bsky.app/xrpc"
+_APPVIEW = "https://public.api.bsky.app/xrpc"       # unauthenticated reads (searchActors, getAuthorFeed)
+_APPVIEW_AUTH = "https://api.bsky.app/xrpc"          # authenticated reads (searchPosts) — public host 403s the token
 _PDS = "https://bsky.social/xrpc"
 
 
@@ -91,6 +92,6 @@ def search_posts(query: str, limit: int = 25) -> list:
     jwt = _session()
     if not jwt:
         return []
-    d = _curl(f"{_APPVIEW}/app.bsky.feed.searchPosts?q={quote(query)}&limit={limit}",
+    d = _curl(f"{_APPVIEW_AUTH}/app.bsky.feed.searchPosts?q={quote(query)}&limit={limit}",
               headers=[f"Authorization: Bearer {jwt}"])
     return [_post_from({"post": p}) for p in d.get("posts", [])]

@@ -13,3 +13,10 @@
 - **@dogefather_Twit** (The Dogefather🌕) · 2026-07-07 · ♥0: additional information on this disease 🦠 down below   ⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️  What Is Autoimmune Gastritis (AIG/AAG)? It is a chronic autoimmune disease in which the immune system mistakenly attacks and destroys parietal cells in the li — https://x.com/dogefather_Twit/status/2074304546705408079
 - **@praveenramach16** (Dr. Praveen Ramachandra) · 2026-07-06 · ♥0: Massive week for Type 1 Diabetes cure research at ADA 2026 🧬💉  • Eledon's tegoprubart: all 12 islet transplant patients hit insulin independence—no toxic anti-rejection drugs needed • Sana's CRISPR "hypoimmune" islet cells: surviving 14mo w — https://x.com/praveenramach16/status/2074125171481542794
 - **2026-07-11** (type 1 diabetes): PREPRINT via Bluesky (@biorxiv-immuno): 'MDA5 and the integrated stress response control sex-specific type 1 diabetes onset in NOD mice.' — https://bsky.app/profile/biorxiv-immuno.bsky.social/post/3mq4b44jair27 · https://www.biorxiv.org/content/10.64898/2026.07.02.736190v1
+
+## Community signal (Bluesky) — harvested 2026-07-11
+
+*Query: `Bluesky searchPosts: type 1 diabetes`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@longtail-news.bsky.social** ⭐ (Longtail News) · 2026-07-10 · ♥0: Feed: "Medical Xpress - latest medical and health news stories" Published on Friday, July 10, 2026 — https://bsky.app/profile/longtail-news.bsky.social/post/3mqdbayzfok2m · https://medicalxpress.com/news/2026-07-human-explores-immune-cell-therapy.html
+- **@longtail-news.bsky.social** ⭐ (Longtail News) · 2026-07-10 · ♥0: Feed: "Science" By: SCIENMAG on Friday, July 10, 2026 — https://bsky.app/profile/longtail-news.bsky.social/post/3mqd533eqlt2b · https://scienmag.com/first-human-trial-explores-immune-engineered-cell-therapy-for-type-1-diabetes/

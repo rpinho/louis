@@ -54,3 +54,6 @@ Target profiles (one row per gene). Read this first.
 - [FOXP3](wiki/targets/FOXP3.md)
 - [IL2RA](wiki/targets/IL2RA.md)
 - [IKZF1](wiki/targets/IKZF1.md)
+- [CBLB](wiki/targets/CBLB.md)
+- [BACH2](wiki/targets/BACH2.md)
+- [CTLA4](wiki/targets/CTLA4.md)
