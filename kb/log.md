@@ -188,3 +188,57 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — community_signal multiple sclerosis (disease): filed 3 posts (harvested 2026-07-11)
 - 2026-07-11 — community_signal psoriasis (disease): filed 5 posts (harvested 2026-07-11)
 - 2026-07-11 — community_signal inflammatory bowel disease (disease): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ACTA2: profile opened for community signal
+- 2026-07-11 — community_signal ACTA2 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ACVR2A: profile opened for community signal
+- 2026-07-11 — community_signal ACVR2A (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ADA2: profile opened for community signal
+- 2026-07-11 — community_signal ADA2 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ADAM19: profile opened for community signal
+- 2026-07-11 — community_signal ADAM19 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ADAT2: profile opened for community signal
+- 2026-07-11 — community_signal ADAT2 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ADCY3: profile opened for community signal
+- 2026-07-11 — community_signal ADCY3 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ADGRE5: profile opened for community signal
+- 2026-07-11 — community_signal ADGRE5 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ADO: profile opened for community signal
+- 2026-07-11 — community_signal ADO (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AEBP2: profile opened for community signal
+- 2026-07-11 — community_signal AEBP2 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AFF1: profile opened for community signal
+- 2026-07-11 — community_signal AFF1 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AGO2: profile opened for community signal
+- 2026-07-11 — community_signal AGO2 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AGPAT2: profile opened for community signal
+- 2026-07-11 — community_signal AGPAT2 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AGPAT4: profile opened for community signal
+- 2026-07-11 — community_signal AGPAT4 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AKAP11: profile opened for community signal
+- 2026-07-11 — community_signal AKAP11 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ALPK1: profile opened for community signal
+- 2026-07-11 — community_signal ALPK1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AMD1: profile opened for community signal
+- 2026-07-11 — community_signal AMD1 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ANK3: profile opened for community signal
+- 2026-07-11 — community_signal ANK3 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ANXA1: profile opened for community signal
+- 2026-07-11 — community_signal ANXA1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ANXA11: profile opened for community signal
+- 2026-07-11 — community_signal ANXA11 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ANXA3: profile opened for community signal
+- 2026-07-11 — community_signal ANXA3 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember APBB1IP: profile opened for community signal
+- 2026-07-11 — community_signal APBB1IP (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember APPL1: profile opened for community signal
+- 2026-07-11 — community_signal APPL1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember AQP3: profile opened for community signal
+- 2026-07-11 — community_signal AQP3 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ARHGAP45: profile opened for community signal
+- 2026-07-11 — community_signal ARHGAP45 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ARHGEF3: profile opened for community signal
+- 2026-07-11 — community_signal ARHGEF3 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ARID5B: profile opened for community signal
+- 2026-07-11 — community_signal ARID5B (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ASXL1: profile opened for community signal
+- 2026-07-11 — community_signal ASXL1 (target): filed 4 posts (harvested 2026-07-11)

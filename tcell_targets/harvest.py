@@ -276,6 +276,71 @@ def harvest_drugs(drug_map=None, per_top=6, pause=2.0, verbose=True):
     return filed
 
 
+_BSKY_JUNK = {"rridrobot.bsky.social", "cbs6-richmond", "newsarea", "autismcapital-rtm", "scienceofpd"}
+
+
+def _bsky_filter(posts, per_top):
+    kept = []
+    for p in posts:
+        if p["handle"] in _BSKY_JUNK or len(p["text"]) < 40:
+            continue
+        u = {"name": p.get("author", ""), "username": p["handle"], "verified": False}
+        p["high_signal"] = community._signal_name(u)
+        if not p["high_signal"] and community._count(p["text"], community._NOISE_TERMS) > 0:
+            continue
+        if not (p["high_signal"] or community._count(p["text"], community._RESEARCH_TERMS) >= 2):
+            continue
+        p["_score"] = community._score(p["text"], u, {"like_count": p.get("likes", 0), "retweet_count": 0})
+        kept.append(p)
+    kept.sort(key=lambda x: -x["_score"])
+    seen, ded = set(), []
+    for p in kept:
+        k = "".join(p["text"].lower().split())[:80]
+        if k in seen:
+            continue
+        seen.add(k); ded.append(p)
+    return ded[:per_top]
+
+
+def bluesky_terms():
+    """Every discovered lead as a Bluesky search term: genes -> target, pathways -> topic, diseases -> disease."""
+    handles, risk = collect_targets()
+    genes = sorted(set(handles) | set(risk))
+    return ([(g, g, "target") for g in genes]
+            + [(t, t, "topic") for t in PATHWAYS]
+            + [(d, d, "disease") for d in core.list_diseases()])
+
+
+def harvest_bluesky(terms=None, per_top=5, pause=0.7, limit=None, verbose=True):
+    """Authenticated Bluesky keyword sweep of the leads -> filed with provenance. Idempotent per day."""
+    from . import bluesky
+    if not bluesky._session():
+        print("Bluesky: no auth — set BSKY_HANDLE/BSKY_APP_PASSWORD (source .secrets/bsky.env).")
+        return {}
+    terms = terms or bluesky_terms()
+    today = datetime.now().strftime("%Y-%m-%d")
+    paths = {"target": kb._target_path, "disease": kb._disease_path, "topic": kb._topic_path}
+    filed, done = {}, 0
+    for term, entity, kind in terms:
+        p = paths[kind](entity)
+        if p.exists() and f"Community signal (Bluesky) — harvested {today}" in p.read_text():
+            continue  # already swept today
+        posts = _bsky_filter(bluesky.search_posts(term, limit=25), per_top)
+        if posts:
+            kb.remember_signal(entity, posts, query=f"Bluesky searchPosts: {term}",
+                               kind=kind, platform="Bluesky", harvested=today)
+            filed[entity] = len(posts)
+            if verbose:
+                print(f"  {term:<28} -> {entity} ({kind}): {len(posts)}", flush=True)
+        done += 1
+        if limit and done >= limit:
+            break
+        time.sleep(pause)
+    kb.reindex()
+    print(f"Bluesky: filed {sum(filed.values())} posts across {len(filed)} leads (swept {done} terms).")
+    return filed
+
+
 def write_rollup(summary: dict, handles: dict, risk: dict):
     """Write a navigable index of genes that lit up this week -> kb/community_signal.md."""
     lines = ["# Community signal index",
@@ -297,6 +362,12 @@ def write_rollup(summary: dict, handles: dict, risk: dict):
 
 def main(argv=None):
     argv = list(sys.argv[1:] if argv is None else argv)
+
+    if "--bluesky" in argv:
+        lim = int(argv[argv.index("--limit") + 1]) if "--limit" in argv else None
+        print(f"Bluesky keyword sweep of the leads (limit={lim})…")
+        harvest_bluesky(limit=lim)
+        return
 
     if "--drugs" in argv:
         n = sum(len(v) for v in DRUG_MAP.values())
