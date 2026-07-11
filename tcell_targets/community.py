@@ -240,12 +240,25 @@ def _baked_posts_for_gene(gene: str) -> list:
     return _parse_baked_posts(path.read_text()) if path.exists() else []
 
 
+# Keep the baked fallback on-topic: a post must read as immunology / T-cell (or a disease/
+# method) context. Kills harvest noise ($TICKER chatter, politics, off-topic feeds) that rode
+# in on a gene-batched OR-query, so the disease view never shows a stock post as "signal".
+_IMMUNE_RE = re.compile(
+    r"\b(immun|autoimmun|T[ -]?cells?|CD4|CD8|Treg|FOXP3|Th1|Th2|Th17|Tfh|regulatory T|"
+    r"cytokine|lymphocyte|inflammat|tolerance|interleukin|IL-?\d|STAT\d|JAK\d?|checkpoint|"
+    r"antibod|B[ -]?cells?|dendritic|macrophage|antigen|MHC|TCR|CRISPR|single[- ]cell|scRNA|"
+    r"lupus|SLE|arthritis|colitis|Crohn|psoriasis|sclerosis|diabetes|asthma|eczema|celiac|"
+    r"thyroiditis|biorxiv|medrxiv|preprint)\b", re.I)
+
+
 def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
-    """Harvested posts from the KB when live X is unavailable. For a gene, its own filed
-    posts; for a disease, posts aggregated across its relevant target genes (deduped)."""
+    """Harvested posts from the KB when live X is unavailable, filtered to immune context.
+    For a gene, its own filed posts; for a disease, posts aggregated across its relevant
+    target genes (deduped). Research-vetted (⭐) posts rank first."""
     _rank = lambda p: (p.get("starred", False), p.get("date", ""), p.get("likes", 0))
+    _ok = lambda p: bool(_IMMUNE_RE.search(p.get("text", "")))
     if kind != "disease":
-        return sorted(_baked_posts_for_gene(entity), key=_rank, reverse=True)[:top]
+        return sorted((p for p in _baked_posts_for_gene(entity) if _ok(p)), key=_rank, reverse=True)[:top]
     from . import core
     genes = []
     try:
@@ -268,7 +281,7 @@ def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
             continue
         seen_g.add(g)
         for p in _baked_posts_for_gene(g):
-            if p["url"] in seen_u:
+            if p["url"] in seen_u or not _ok(p):
                 continue
             seen_u.add(p["url"])
             posts.append(dict(p, gene=g))
