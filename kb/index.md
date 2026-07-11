@@ -50,3 +50,6 @@ Target profiles (one row per gene). Read this first.
 - [MEN1](wiki/targets/MEN1.md)
 - [TYK2](wiki/targets/TYK2.md)
 - [IL23R](wiki/targets/IL23R.md)
+- [PTPN22](wiki/targets/PTPN22.md)
+- [FOXP3](wiki/targets/FOXP3.md)
+- [IL2RA](wiki/targets/IL2RA.md)

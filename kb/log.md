@@ -138,3 +138,8 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember GLS (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2020, #0968): 'Combined Inhibition of Autop
 - 2026-07-11 — remember CD28 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2024, #2254): 'Phase 1 Study of ZB004, a CT
 - 2026-07-11 — remember RIPK1 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2024, #1682): 'Early Development of Ocaduse
+- 2026-07-11 — remember PTPN22 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2016, #570): 'A Molecular Timeline for Preclinical
+- 2026-07-11 — remember PTPN22 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2014, #2843): 'SLE Patients Carrying a Disease-Ass
+- 2026-07-11 — remember FOXP3 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2018, #142): 'Peripheral CD4+CD25+Foxp3+ T Regulat
+- 2026-07-11 — remember FOXP3 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2017, #2712): pathogenic Foxp3+ Treg conversion in
+- 2026-07-11 — remember IL2RA (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2018, #2683): 'Selective Expansion and Targeting o
