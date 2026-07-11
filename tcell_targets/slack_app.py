@@ -47,11 +47,43 @@ def _to_mrkdwn(text: str) -> str:
     return text
 
 
+# Internal tool names → the plain-English EVIDENCE SOURCE a scientist recognizes.
+# The footer's job is to inspire confidence, so it must never expose raw function names.
+_SOURCE_LABELS = {
+    "disease_targets": "the CRISPRi Perturb-seq screen",
+    "target_evidence": "the CRISPRi Perturb-seq screen",
+    "regulator_detail": "the CRISPRi Perturb-seq screen",
+    "state_profile": "the screen's activation-state data",
+    "disease_mechanisms": "the disease's risk-gene modules",
+    "community_signal": "live community signal (X/Twitter)",
+    "kb_recall": "the shared lab knowledge base",
+    "kb_search": "the shared lab knowledge base",
+    "list_diseases": "",  # trivial lookup — not worth citing
+}
+
+
+def _source_label(tool_name: str) -> str:
+    """Plain-English evidence source for a tool (falls back to the name if unmapped)."""
+    return _SOURCE_LABELS.get(tool_name, tool_name)
+
+
 def _format_trace(trace: list) -> str:
-    if not trace:
+    """A confidence-inspiring provenance footer, in plain English — never raw tool names."""
+    seen, sources = set(), []
+    for name, _ in trace or []:
+        label = _source_label(name)
+        if label and label not in seen:
+            seen.add(label)
+            sources.append(label)
+    if not sources:
         return ""
-    steps = ", ".join(f"`{name}`" for name, _ in trace)
-    return f"_grounded in:_ {steps}"
+    if len(sources) == 1:
+        joined = sources[0]
+    elif len(sources) == 2:
+        joined = f"{sources[0]} and {sources[1]}"
+    else:
+        joined = ", ".join(sources[:-1]) + f", and {sources[-1]}"
+    return f"_Grounded in {joined}._"
 
 
 # ---- memory toggle (demo both modes from ONE running bot) --------------------
@@ -121,13 +153,14 @@ def _engine_summary(disease: str, use_memory: bool = True) -> str:
     return "\n".join(lines)
 
 
-def _answer(question: str, use_memory: bool = True) -> tuple[str, list]:
+def _answer(question: str, use_memory: bool = True, on_tool=None) -> tuple[str, list]:
     """NL answer via Claude if a key is set; else a deterministic engine summary.
-    use_memory=False skips all KB reads/writes (from-scratch, faster)."""
+    use_memory=False skips all KB reads/writes (from-scratch, faster).
+    on_tool(name) fires as each source is queried — used to stream live status."""
     if os.environ.get("ANTHROPIC_API_KEY"):
         try:
             from .assistant import answer
-            text, trace, _ = answer(question, use_memory=use_memory)
+            text, trace, _ = answer(question, use_memory=use_memory, on_tool=on_tool)
             return text, trace
         except Exception as e:  # fall back rather than fail the demo
             return _engine_summary(question, use_memory=use_memory) + f"\n\n_(NL layer error: {type(e).__name__})_", []
@@ -141,15 +174,34 @@ def _answer(question: str, use_memory: bool = True) -> tuple[str, list]:
 _ENGAGED_THREADS: set[str] = set()
 
 
-def _reply(raw_text: str, thread: str, say) -> bool:
-    """Parse mode, answer, post into the thread. False if there was nothing to answer."""
+def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
+    """Post an instant placeholder, stream Louis's progress as he queries each source,
+    then swap it in place for the finished dossier. False if there was nothing to answer."""
     text, use_memory = _parse_mode(raw_text)
     if not text:
         return False
-    answer, trace = _answer(text, use_memory=use_memory)
-    say(text=_MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer), thread_ts=thread)
+    ph = say(text="🔎 _Louis is on the case…_", thread_ts=thread)
+    ts = ph["ts"]
+
+    def _status(msg: str) -> None:
+        try:
+            client.chat_update(channel=channel, ts=ts, text=msg)
+        except Exception:
+            pass
+
+    def on_tool(name: str) -> None:
+        label = _source_label(name)
+        if label:
+            _status(f"🔎 _Louis is consulting {label}…_")
+
+    answer, trace = _answer(text, use_memory=use_memory, on_tool=on_tool)
+    body = _MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer)
     if trace:
-        say(text=_format_trace(trace), thread_ts=thread)
+        body += "\n\n" + _format_trace(trace)
+    try:
+        client.chat_update(channel=channel, ts=ts, text=body)
+    except Exception:
+        say(text=body, thread_ts=thread)  # fallback: fresh post if the in-place update fails
     return True
 
 
@@ -161,18 +213,18 @@ def build_app():
     app = App(token=os.environ["SLACK_BOT_TOKEN"])
 
     @app.event("app_mention")
-    def on_mention(event, say):
+    def on_mention(event, say, client):
         thread = event.get("thread_ts") or event.get("ts")
         _ENGAGED_THREADS.add(thread)                  # follow-ups here won't need a tag
         raw = re.sub(r"<@[^>]+>", "", event.get("text", "")).strip()
-        if not _reply(raw, thread, say):
+        if not _reply(raw, thread, say, client, event["channel"]):
             say(text="I'm *Louis*. Name a disease and I'll find + vet the T-cell targets — "
                      "e.g. *what should we hit for rheumatoid arthritis?*  "
                      "_(add `--nomem` to answer from scratch, no lab memory.)_",
                 thread_ts=thread)
 
     @app.event("message")
-    def on_message(event, say, context):
+    def on_message(event, say, client, context):
         """Untagged FOLLOW-UPS in a thread Louis is already in — so you don't re-tag him.
         Everything else in the channel is left alone (top-level messages, other threads)."""
         if event.get("subtype") or event.get("bot_id"):
@@ -183,17 +235,18 @@ def build_app():
         bot_id = context.get("bot_user_id")
         if bot_id and f"<@{bot_id}>" in event.get("text", ""):
             return                                    # tagged → on_mention handles it (no double reply)
-        _reply(re.sub(r"<@[^>]+>", "", event.get("text", "")).strip(), thread, say)
+        _reply(re.sub(r"<@[^>]+>", "", event.get("text", "")).strip(), thread, say, client, event["channel"])
 
     @app.command("/ask-target")
     def on_ask(ack, command, respond):
         ack()
         text, use_memory = _parse_mode(command.get("text", ""))
+        respond(text="🔎 _Louis is on the case…_", response_type="in_channel")
         answer, trace = _answer(text, use_memory=use_memory)
         blocks = _MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer)
         if trace:
             blocks += "\n\n" + _format_trace(trace)
-        respond(text=blocks, response_type="in_channel")  # public — the lab sees it
+        respond(text=blocks, response_type="in_channel", replace_original=True)  # swap the placeholder
 
     @app.command("/remember")
     def on_remember(ack, command, respond):

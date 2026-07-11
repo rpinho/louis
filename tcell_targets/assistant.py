@@ -270,7 +270,7 @@ def _dispatch(name: str, args: dict):
 
 
 def answer(question: str, history: list | None = None, api_key: str | None = None,
-           max_rounds: int = 6, use_memory: bool | None = None):
+           max_rounds: int = 6, use_memory: bool | None = None, on_tool=None):
     """
     Run the grounded tool-use loop and return (answer_text, tool_trace, messages).
 
@@ -301,6 +301,11 @@ def answer(question: str, history: list | None = None, api_key: str | None = Non
             for block in resp.content:
                 if block.type == "tool_use":
                     trace.append((block.name, block.input))
+                    if on_tool:                    # stream live "consulting X…" status
+                        try:
+                            on_tool(block.name)
+                        except Exception:
+                            pass
                     out = _dispatch(block.name, block.input)
                     results.append({
                         "type": "tool_result",
