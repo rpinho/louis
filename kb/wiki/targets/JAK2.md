@@ -24,3 +24,11 @@
 
 - **@UEGJournal** ⭐ (UEGJ) · 2026-07-06 · ♥35: 💊 #Upadacitinib shows durable effectiveness and reassuring safety in #CrohnsDisease  🔸~60% achieved steroid-free clinical remission through 1year 🔸Week 12 remission predicted sustained remission &amp; endoscopic improvement  📖 #OpenAccess 👉 — https://x.com/UEGJournal/status/2074161504274845710 · http://bit.ly/4ymcx5o
 - **@TheIMIDForum** ⭐ (Immune-Mediated Inflammatory Disease Forum) · 2026-07-06 · ♥0: In a real-world study of 1,096 JAK inhibitor treatment courses in RA, Etani et al. found that filgotinib was associated with a lower observed risk of herpes zoster compared with tofacitinib, baricitinib, and upadacitinib after adjustment fo — https://x.com/TheIMIDForum/status/2074101176224641458 · https://imidforum.com/publications/897/real-world-comparison-of-herpes-zoster-risk-among-five-janus-kinase-inhibitors-in-rheumatoid-arthritis-the-answer-cohort-study
+
+## Community signal (Bluesky) — harvested 2026-07-11
+
+*Query: `Bluesky searchPosts: JAK2 T cell`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@scinews.bsky.social** ⭐ (Science News) · 2025-09-09 · ♥7: Single-cell profiling reveals immunoregulation of artemisinin on CD8+GZMB+ T cells via JAK2-STAT3 in malaria-infected mice  Reference www.sciencedirect.com/science/arti... — https://bsky.app/profile/scinews.bsky.social/post/3lyf3iqbauc2k · https://www.sciencedirect.com/science/article/pii/S2666675825002838
+- **@cp-cellreports.bsky.social** ⭐ (Cell Reports) · 2026-03-29 · ♥1: AARS1-mediated lactylation of STAT1 drives immune evasion — https://bsky.app/profile/cp-cellreports.bsky.social/post/3miac4zmbrq2l · http://dlvr.it/TRmPkd
+- **@jamadermatology.com** (JAMA Dermatology) · 2025-11-26 · ♥4: JAK2 fusions in cutaneous T-cell lymphomas are present in both aggressive and indolent disease, including patients with early-stage mycosis fungoides and CD30-positive lymphoproliferative disorders.   ja.ma/4pRtfof — https://bsky.app/profile/jamadermatology.com/post/3m6kbob2cp327 · https://ja.ma/4pRtfof

@@ -306,3 +306,20 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — community_signal SATB1 (target): filed 5 posts (harvested 2026-07-11)
 - 2026-07-11 — remember STAT4: profile opened for community signal
 - 2026-07-11 — community_signal STAT4 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal IRF8 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember BCL2L11: profile opened for community signal
+- 2026-07-11 — community_signal BCL2L11 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember CD226: profile opened for community signal
+- 2026-07-11 — community_signal CD226 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember CD6: profile opened for community signal
+- 2026-07-11 — community_signal CD6 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember FADS2: profile opened for community signal
+- 2026-07-11 — community_signal FADS2 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember FOSL2: profile opened for community signal
+- 2026-07-11 — community_signal FOSL2 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember SH2B3: profile opened for community signal
+- 2026-07-11 — community_signal SH2B3 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal FAS (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IL2: profile opened for community signal
+- 2026-07-11 — community_signal IL2 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal JAK2 (target): filed 3 posts (harvested 2026-07-11)
