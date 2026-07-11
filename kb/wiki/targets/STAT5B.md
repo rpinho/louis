@@ -1,0 +1,17 @@
+# STAT5B
+
+*CD4+ T-cell regulator — target profile. Data facts, novelty, mechanism, and scientist verdicts, each with provenance.*
+
+## Findings
+
+- **2026-07-11**: profile opened for community signal  — *source: community_signal*
+
+## Community signal (Bluesky) — harvested 2026-07-11
+
+*Query: `Bluesky searchPosts: STAT5B T cell`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@biorxivpreprint.bsky.social** ⭐ (bioRxivpreprint) · 2025-10-26 · ♥1: A STAT5B-driven mouse model of hepatosplenic γδ T-cell lymphoma reveals therapeutic efficacy of JAK inhibition  https://www.biorxiv.org/content/10.1101/2025.10.24.684333v1 — https://bsky.app/profile/biorxivpreprint.bsky.social/post/3m43jfmq3cw2m · https://www.biorxiv.org/content/10.1101/2025.10.24.684333v1
+- **@biorxiv-cancer.bsky.social** ⭐ (bioRxiv Cancer Bio) · 2023-10-16 · ♥0: Small molecule STAT3/5 inhibitors exhibit therapeutic potential in acute myeloid leukemia and extra-nodal natural killer/T cell lymphoma  https://www.biorxiv.org/content/10.1101/2023.10.12.561697v1 — https://bsky.app/profile/biorxiv-cancer.bsky.social/post/3kbvosz7c2q2g · https://www.biorxiv.org/content/10.1101/2023.10.12.561697v1
+- **@labwaggoner.bsky.social** ⭐ (Waggoner Lab) · 2025-11-14 · ♥0: Preprint: HTLV-1 oncoprotein HBZ activates IRF7 but interferes with IRF7-IRF3 interaction to stymie IFN response, but IRF7 transcription of STAT5b promotes proliferation contributing to adult T-cell leukemia/lymphoma www.researchsquare.com/ — https://bsky.app/profile/labwaggoner.bsky.social/post/3m5kjuv7zic2d · https://www.researchsquare.com/article/rs-7587883/v1
+- **@ryanelliott.bsky.social** (Ryan Elliott) · 2025-01-03 · ♥3: 🩸Large Granular Lymphocytic Leukemia  Indolent clonal proliferation of mature cytotoxic T cells  - Neutropenia/anemia - a/w autoimmunity - CD8+ T cells w/ NK cell markers - intrasinusoidal bone marrow/spleen/liver path ~50% STAT3 / STAT5b m — https://bsky.app/profile/ryanelliott.bsky.social/post/3leswctbxo224
+- **@bernhardzdarsky.bsky.social** (B Z) · 2025-11-07 · ♥1: Exciting new preprint out: “A STAT5B-driven mouse model of hepatosplenic γδ T-cell lymphoma reveals therapeutic efficacy of JAK inhibition” #STAT5B #HSTCL #upadacitinib @biorxiv-cancer.bsky.social   www.biorxiv.org/content/10.1... — https://bsky.app/profile/bernhardzdarsky.bsky.social/post/3m4za7jstos2e · https://www.biorxiv.org/content/10.1101/2025.10.24.684333v1

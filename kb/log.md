@@ -273,3 +273,36 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember ID2: profile opened for community signal
 - 2026-07-11 — community_signal ID2 (target): filed 2 posts (harvested 2026-07-11)
 - 2026-07-11 — community_signal PTEN (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember SMAD3: profile opened for community signal
+- 2026-07-11 — community_signal SMAD3 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember GATA3: profile opened for community signal
+- 2026-07-11 — community_signal GATA3 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember KEAP1: profile opened for community signal
+- 2026-07-11 — community_signal KEAP1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember RBPJ: profile opened for community signal
+- 2026-07-11 — community_signal RBPJ (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal BHLHE40 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember FLI1: profile opened for community signal
+- 2026-07-11 — community_signal FLI1 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember FOXO1: profile opened for community signal
+- 2026-07-11 — community_signal FOXO1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal ICOS (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember KLF2: profile opened for community signal
+- 2026-07-11 — community_signal KLF2 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember PRELID1: profile opened for community signal
+- 2026-07-11 — community_signal PRELID1 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember STAT5B: profile opened for community signal
+- 2026-07-11 — community_signal STAT5B (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember TBX21: profile opened for community signal
+- 2026-07-11 — community_signal TBX21 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ETS1: profile opened for community signal
+- 2026-07-11 — community_signal ETS1 (target): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal TNFAIP3 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal CD28 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal IL2RA (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — remember IL10: profile opened for community signal
+- 2026-07-11 — community_signal IL10 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember SATB1: profile opened for community signal
+- 2026-07-11 — community_signal SATB1 (target): filed 5 posts (harvested 2026-07-11)
+- 2026-07-11 — remember STAT4: profile opened for community signal
+- 2026-07-11 — community_signal STAT4 (target): filed 3 posts (harvested 2026-07-11)
