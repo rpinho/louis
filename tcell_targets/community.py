@@ -249,6 +249,10 @@ _IMMUNE_RE = re.compile(
     r"antibod|B[ -]?cells?|dendritic|macrophage|antigen|MHC|TCR|CRISPR|single[- ]cell|scRNA|"
     r"lupus|SLE|arthritis|colitis|Crohn|psoriasis|sclerosis|diabetes|asthma|eczema|celiac|"
     r"thyroiditis|biorxiv|medrxiv|preprint)\b", re.I)
+# Hard veto: finance/market chatter (cashtags, options-desk phrasing) that can share a gene
+# page with a real hit but is never scientific signal — the $SPX/$TVRD bots.
+_NOISE_RE = re.compile(
+    r"\$[A-Z]{1,6}\b|\b(daily analysis|expected move|call wall|intraday|premarket|short interest)\b", re.I)
 
 
 def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
@@ -256,7 +260,7 @@ def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
     For a gene, its own filed posts; for a disease, posts aggregated across its relevant
     target genes (deduped). Research-vetted (⭐) posts rank first."""
     _rank = lambda p: (p.get("starred", False), p.get("date", ""), p.get("likes", 0))
-    _ok = lambda p: bool(_IMMUNE_RE.search(p.get("text", "")))
+    _ok = lambda p: bool(_IMMUNE_RE.search(p.get("text", ""))) and not _NOISE_RE.search(p.get("text", ""))
     if kind != "disease":
         return sorted((p for p in _baked_posts_for_gene(entity) if _ok(p)), key=_rank, reverse=True)[:top]
     from . import core
