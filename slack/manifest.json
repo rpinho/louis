@@ -1,18 +1,18 @@
 {
   "display_information": {
-    "name": "Target Explorer",
-    "description": "Trust-ranked CD4+ T-cell target leads for autoimmune disease, from a genome-scale CRISPRi Perturb-seq screen — with live community signal and a shared lab knowledge base.",
+    "name": "Louis",
+    "description": "Louis — your lab's T-cell target detective: trust-ranked leads, live community signal, and a shared knowledge base he remembers.",
     "background_color": "#141b2d"
   },
   "features": {
     "bot_user": {
-      "display_name": "target-explorer",
+      "display_name": "louis",
       "always_online": true
     },
     "slash_commands": [
       {
         "command": "/ask-target",
-        "description": "Trust-ranked T-cell target leads + what the field is saying this week",
+        "description": "Ask Louis: trust-ranked T-cell target leads + what the field is saying this week",
         "usage_hint": "rheumatoid arthritis",
         "should_escape": false
       },
