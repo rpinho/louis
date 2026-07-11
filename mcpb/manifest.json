@@ -29,6 +29,7 @@
     {"name": "list_diseases", "description": "List the autoimmune diseases with disease-enriched T-cell programs in the screen."},
     {"name": "community_signal", "description": "LISTEN: recent X/Twitter chatter (labs/journals first) about a gene or disease — the bleeding-edge, pre-paper signal the literature can't see."},
     {"name": "kb_recall", "description": "MEMORY: read what the knowledge base already knows about a gene or disease (incl. baked community signal) before re-deriving."},
+    {"name": "kb_search", "description": "MEMORY: fast lookup across the KB by name or attribute (has community signal / verdict), backed by an index."},
     {"name": "kb_remember", "description": "MEMORY: file a finding to a gene's profile with provenance so it is never re-derived."},
     {"name": "kb_remember_signal", "description": "MEMORY: harvest + file current community signal for a gene/disease so the pre-paper chatter is preserved."},
     {"name": "kb_verdict", "description": "MEMORY: record the scientist's verdict on a target (the reputation signal)."}
