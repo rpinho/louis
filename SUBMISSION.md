@@ -43,11 +43,11 @@ A Slack bot shares it all with the lab. Every claim traces to a source. Built wi
 - **[SCREEN]** Hand the leads to Claude Science: *"Validate these against Open Targets, ChEMBL, PubMed, GWAS Catalog, ClinicalTrials."* Show the ranked figure.
 - **[SAY]** "Claude Science pressure-tests them and ranks **DOT1L** #1 — no RA literature, but fresh 2026 CD4/Treg biology and a Phase-2 tool compound. It *catches* that the Open Targets scores are ontology-propagation artifacts, not real RA evidence. And the punchline: after querying every major database, it concludes the regulator→risk-gene edges **live only in your Perturb-seq**. The tool's whole reason to exist, confirmed by a system that went looking everywhere else."
 
-### Beat 4 — LISTEN (1:50–2:20) ← the bleeding edge
-- **[SCREEN]** *"Now listen — what's the field saying about these leads this week?"* `community_signal("rheumatoid arthritis")` / on the genes.
-- **[SAY]** "This is the layer even Claude Science can't reach — it reads *papers*; this reads the field *before* the paper. It takes our own discoveries and searches what immunologists are posting on X right now. Our data flagged DOT1L, a methyltransferase — and the same week, **@ACR_Journals** posts on **DNMT3A**, *another* methyltransferase in autoreactive CD4+ T cells, cutting RA joint inflammation. Independent, current, convergent — and it files that chatter into the KB with provenance."
+### Beat 4 — LISTEN: the phone-a-friend (1:50–2:30) ← the moat
+- **[SCREEN]** *"Now be my friend — what's the field actually saying about these leads?"* `community_signal` + `kb_recall(DOT1L)`.
+- **[SAY]** "Claude Science reads *published papers* — but its sandbox is a strict allowlist; it literally cannot reach Twitter or a conference website. That's our moat, and here's what lives there. Our data flagged **DOT1L**, a methyltransferase. The tool listens: **@ACR_Journals** is posting about **DNMT3A** — *another* methyltransferase in RA T cells — so it follows the link to the actual **Karolinska paper**, pulls a **bioRxiv preprint** on Treg methylation, and surfaces an **ACR conference abstract that independently links DNMT3A *and* DOT1L in one mechanism.** Five sources — data, social, paper, preprint, conference floor — converging on one thesis, and two of them Science *cannot see*. That's the friend who says: *yes, chase it — and here's who's presenting it.*"
 
-### Beat 5 — REMEMBER, and the trust chain (2:20–2:55)
+### Beat 5 — REMEMBER, and the trust chain (2:30–2:55)
 - **[SCREEN]** *"Remember the top lead."* Then `kb_recall(DOT1L)` — one profile: discovery + novelty + validation + community signal + verdict, each cited.
 - **[SAY]** "It files the whole chain to a shareable knowledge base — recall it and it's there, no re-derivation. And watch the trust go all the way down: Claude Science's *own* reviewer flagged one citation it couldn't confirm; an independent PubMed check confirmed the paper is real — but a *preprint*, a precision even the validator missed. Every claim traces to a source **and its confidence level**."
 
