@@ -134,6 +134,25 @@ def _answer(question: str, use_memory: bool = True) -> tuple[str, list]:
     return _engine_summary(question, use_memory=use_memory), []
 
 
+# ---- thread follow-through --------------------------------------------------
+# Threads Louis has spoken in — lets a scientist keep replying in the SAME thread
+# without re-@mentioning him. In-memory (resets on restart), which is fine: a demo
+# thread is short-lived and one @mention re-engages it instantly.
+_ENGAGED_THREADS: set[str] = set()
+
+
+def _reply(raw_text: str, thread: str, say) -> bool:
+    """Parse mode, answer, post into the thread. False if there was nothing to answer."""
+    text, use_memory = _parse_mode(raw_text)
+    if not text:
+        return False
+    answer, trace = _answer(text, use_memory=use_memory)
+    say(text=_MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer), thread_ts=thread)
+    if trace:
+        say(text=_format_trace(trace), thread_ts=thread)
+    return True
+
+
 # ---- app --------------------------------------------------------------------
 
 def build_app():
@@ -143,19 +162,28 @@ def build_app():
 
     @app.event("app_mention")
     def on_mention(event, say):
-        text = re.sub(r"<@[^>]+>", "", event.get("text", "")).strip()
         thread = event.get("thread_ts") or event.get("ts")
-        text, use_memory = _parse_mode(text)
-        if not text:
+        _ENGAGED_THREADS.add(thread)                  # follow-ups here won't need a tag
+        raw = re.sub(r"<@[^>]+>", "", event.get("text", "")).strip()
+        if not _reply(raw, thread, say):
             say(text="I'm *Louis*. Name a disease and I'll find + vet the T-cell targets — "
                      "e.g. *what should we hit for rheumatoid arthritis?*  "
                      "_(add `--nomem` to answer from scratch, no lab memory.)_",
                 thread_ts=thread)
-            return
-        answer, trace = _answer(text, use_memory=use_memory)
-        say(text=_MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer), thread_ts=thread)
-        if trace:
-            say(text=_format_trace(trace), thread_ts=thread)
+
+    @app.event("message")
+    def on_message(event, say, context):
+        """Untagged FOLLOW-UPS in a thread Louis is already in — so you don't re-tag him.
+        Everything else in the channel is left alone (top-level messages, other threads)."""
+        if event.get("subtype") or event.get("bot_id"):
+            return                                    # edits / joins / bot posts (incl. Louis's own)
+        thread = event.get("thread_ts")
+        if not thread or thread not in _ENGAGED_THREADS:
+            return                                    # only threads Louis has already spoken in
+        bot_id = context.get("bot_user_id")
+        if bot_id and f"<@{bot_id}>" in event.get("text", ""):
+            return                                    # tagged → on_mention handles it (no double reply)
+        _reply(re.sub(r"<@[^>]+>", "", event.get("text", "")).strip(), thread, say)
 
     @app.command("/ask-target")
     def on_ask(ack, command, respond):
