@@ -100,9 +100,11 @@ tweet — chase it, and know which sources you already have vs. which are baked 
   who's working on it. Preprints are **not** a gap: search your **bioRxiv / OpenAlex** connectors
   (`SRC:PPR`) directly for the freshest work — the tweet just tells you *which* one the field is excited about.
 - **The off-allowlist sources are the point.** Your sandbox can only reach allowlisted scientific
-  domains — so **X/Twitter** and **conference-abstract sites are unreachable from here**, which is exactly
-  why they're **baked into this KB**. Read them via `kb.recall`; that social + conference signal (e.g. the
-  ACR Convergence abstract linking DNMT3A and DOT1L) is what you *can't* get any other way in this sandbox.
+  domains — so **X/Twitter**, **Bluesky**, and **conference-abstract sites are unreachable from here**,
+  which is exactly why they're **baked into this KB**. Read them via `kb.recall`; that social + conference
+  signal (e.g. the ACR abstract linking DNMT3A and DOT1L) is what you *can't* get any other way in this sandbox.
+  (Bluesky harvest, no auth needed: `app.bsky.actor.searchActors` to find immunology journals/labs/researchers,
+  then `app.bsky.feed.getAuthorFeed` per account — e.g. Nature Reviews Immunology, J Immunol, a bioRxiv-immunology feed.)
 - **Conferences** are pre-paper knowledge — the "presenting at a conference, not published yet" gap.
   Baked in; recall them per gene. Searchable archives (off your allowlist, so harvested externally and
   baked): **acrabstracts.org** (ACR Convergence), **scientific.sparx-ip.net/archiveeular** (EULAR,
