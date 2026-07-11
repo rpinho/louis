@@ -176,7 +176,9 @@ _ENGAGED_THREADS: set[str] = set()
 
 def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
     """Post an instant placeholder, stream Louis's progress as he queries each source,
-    then swap it in place for the finished dossier. False if there was nothing to answer."""
+    then deliver the finished dossier as a FRESH message and clear the placeholder — so
+    the answer the lab keeps (and the camera sees) never carries an '(edited)' tag.
+    False if there was nothing to answer."""
     text, use_memory = _parse_mode(raw_text)
     if not text:
         return False
@@ -198,10 +200,12 @@ def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
     body = _MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer)
     if trace:
         body += "\n\n" + _format_trace(trace)
+    # Clear the transient status, then post the dossier fresh (no "(edited)" tag).
     try:
-        client.chat_update(channel=channel, ts=ts, text=body)
+        client.chat_delete(channel=channel, ts=ts)
     except Exception:
-        say(text=body, thread_ts=thread)  # fallback: fresh post if the in-place update fails
+        pass
+    say(text=body, thread_ts=thread)
     return True
 
 
@@ -241,12 +245,11 @@ def build_app():
     def on_ask(ack, command, respond):
         ack()
         text, use_memory = _parse_mode(command.get("text", ""))
-        respond(text="🔎 _Louis is on the case…_", response_type="in_channel")
         answer, trace = _answer(text, use_memory=use_memory)
         blocks = _MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer)
         if trace:
             blocks += "\n\n" + _format_trace(trace)
-        respond(text=blocks, response_type="in_channel", replace_original=True)  # swap the placeholder
+        respond(text=blocks, response_type="in_channel")  # public — the lab sees it
 
     @app.command("/remember")
     def on_remember(ack, command, respond):
