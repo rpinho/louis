@@ -11,3 +11,4 @@ build/
 dist/
 .secrets/
 kb/_bluesky_swept.txt
+kb/_reddit_swept.txt
