@@ -261,7 +261,8 @@ def _dispatch(name: str, args: dict):
             return _clean(core.disease_mechanisms(args["disease"], top_modules=int(args.get("top_modules", 8))))
         if name == "community_signal":
             return _clean(community.community_signal(
-                args["entity"], kind=args.get("kind", "target"), top=int(args.get("top", 8))))
+                args["entity"], kind=args.get("kind", "target"), top=int(args.get("top", 8)),
+                allow_baked=True))
         if name == "kb_recall":
             return _clean(kb.recall(args["entity"]))
         return {"error": f"unknown tool {name}"}
@@ -293,7 +294,7 @@ def answer(question: str, history: list | None = None, api_key: str | None = Non
 
     for _ in range(max_rounds):
         resp = client.messages.create(
-            model=MODEL, max_tokens=1500, system=system, tools=tools, messages=messages,
+            model=MODEL, max_tokens=4096, system=system, tools=tools, messages=messages,
         )
         if resp.stop_reason == "tool_use":
             messages.append({"role": "assistant", "content": resp.content})

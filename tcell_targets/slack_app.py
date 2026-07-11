@@ -139,7 +139,7 @@ def _engine_summary(disease: str, use_memory: bool = True) -> str:
                 handles.append(g)
     lines.append("*Druggable handles wired to the disease's own risk genes:* " +
                  ", ".join(f"`{g}`" for g in handles[:8]))
-    sig = community.community_signal(disease, kind="disease", top=3)
+    sig = community.community_signal(disease, kind="disease", top=3, allow_baked=True)
     posts = sig.get("posts", [])
     if posts:
         lines += ["", "*What the field is saying this week:*"]

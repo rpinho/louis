@@ -212,16 +212,96 @@ def _finalize(posts: list, top: int) -> list:
     return kept[:top]
 
 
+# --- baked-signal fallback: recall harvested posts when live X is down ------------
+# The 187 harvested posts live in each gene's wiki page under a "## Community signal"
+# block, one per line in the remember_signal() format. Parse them back so a live 503
+# degrades to REAL baked signal instead of a bare error.
+_BAKED_POST_RE = re.compile(
+    r"^- \*\*@(?P<handle>[^*]+?)\*\*(?P<flag>[^(]*)\((?P<author>[^)]*)\)\s*·\s*"
+    r"(?P<date>\d{4}-\d{2}-\d{2})\s*·\s*♥(?P<likes>\d+):\s*(?P<text>.*?)\s+—\s+"
+    r"(?P<url>https?://\S+)", re.MULTILINE)
+
+
+def _parse_baked_posts(md: str) -> list:
+    """'- **@handle** (author) · date · ♥likes: text — url' lines → post dicts.
+    A ⭐ before the author marks harvest-vetted high-signal posts (research feeds/preprints)."""
+    out = []
+    for m in _BAKED_POST_RE.finditer(md):
+        out.append({"handle": m.group("handle").strip(), "author": m.group("author").strip(),
+                    "date": m.group("date"), "likes": int(m.group("likes")),
+                    "starred": "⭐" in m.group("flag"),
+                    "text": m.group("text").strip(), "url": m.group("url").rstrip(" ·")})
+    return out
+
+
+def _baked_posts_for_gene(gene: str) -> list:
+    from . import kb
+    path = kb._target_path(gene)
+    return _parse_baked_posts(path.read_text()) if path.exists() else []
+
+
+def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
+    """Harvested posts from the KB when live X is unavailable. For a gene, its own filed
+    posts; for a disease, posts aggregated across its relevant target genes (deduped)."""
+    _rank = lambda p: (p.get("starred", False), p.get("date", ""), p.get("likes", 0))
+    if kind != "disease":
+        return sorted(_baked_posts_for_gene(entity), key=_rank, reverse=True)[:top]
+    from . import core
+    genes = []
+    try:
+        df = core.disease_targets(entity)
+        if not df.empty:
+            genes += list(df["gene"].head(40))
+    except Exception:
+        pass
+    try:
+        for mod in core.disease_mechanisms(entity, top_modules=8) or []:
+            for h in mod.get("candidate_handles", []):
+                g = h if isinstance(h, str) else h.get("gene", "")
+                if g:
+                    genes.append(g)
+    except Exception:
+        pass
+    seen_g, seen_u, posts = set(), set(), []
+    for g in genes:
+        if g in seen_g:
+            continue
+        seen_g.add(g)
+        for p in _baked_posts_for_gene(g):
+            if p["url"] in seen_u:
+                continue
+            seen_u.add(p["url"])
+            posts.append(dict(p, gene=g))
+    posts.sort(key=_rank, reverse=True)
+    return posts[:top]
+
+
 def community_signal(entity: str, kind: str = "target", max_results: int = 25,
-                     min_engagement: int = 0, top: int = 10) -> dict:
+                     min_engagement: int = 0, top: int = 10, allow_baked: bool = False) -> dict:
     """
     Recent X/Twitter chatter about a gene (`kind='target'`) or a disease
     (`kind='disease'`) in a T-cell/immunology context — curated, labs/journals first.
 
-    Live tier only: needs the `xurl` CLI + X API auth (present in Claude Code / Desktop,
-    absent in the Claude Science sandbox). When unavailable, returns a note pointing to
-    the baked signal in the KB (kb_recall). Never raises — always returns a dict.
+    Tries the live tier (`xurl` + X API auth). When live is unavailable / errors /
+    rate-limited AND allow_baked is set, degrades to the posts harvested into the KB —
+    so a live 503 yields real baked signal, not a bare error. Never raises.
+    allow_baked defaults False so the harvest itself only ever files fresh live results.
     """
+    live = _live_signal(entity, kind, max_results, min_engagement, top)
+    if live.get("posts") or not allow_baked:
+        return live
+    baked = _baked_signal(entity, kind, top=top)
+    if not baked:
+        return live
+    why = live.get("error") or live.get("note") or ("no xurl" if not live.get("available") else "no live results")
+    return {"entity": entity, "kind": kind, "available": True, "source": "baked",
+            "note": f"live X unavailable ({why}) — showing baked signal harvested into the KB",
+            "posts": baked}
+
+
+def _live_signal(entity: str, kind: str = "target", max_results: int = 25,
+                 min_engagement: int = 0, top: int = 10) -> dict:
+    """The live X/Twitter tier. Never raises — always returns a dict."""
     if not xurl_available():
         return {"entity": entity, "kind": kind, "available": False, "posts": [],
                 "note": ("Live X search needs the `xurl` CLI + X API auth — present in "
