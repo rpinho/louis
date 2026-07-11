@@ -29,6 +29,8 @@ Add the server to Claude, then just ask. It does four things — **discover, val
 
 **Remember** — the knowledge base files the whole chain with provenance *and confidence level*; `kb_recall(DOT1L)` returns discovery + novelty + validation + community signal + verdict in one shareable profile, so it's never re-derived.
 
+> **See it converge:** [a visual target dossier for DOT1L](docs/dot1l-dossier.html) — six sources ranked by confidence, and the two (X/Twitter + a conference abstract) that sit off Claude Science's allowlist.
+
 Underneath it all, the **trust flag** — the difference between a hit worth bench time and one that wastes it:
 > **You:** *For Crohn's, what should I target, and which can I trust?*
 >

@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOT1L — Target Dossier · T-Cell Target Explorer</title>
+<style>
+  :root{
+    --bg:#E9EDEE; --panel:#F7FAFB; --raise:#FFFFFF;
+    --ink:#12171C; --muted:#57646E; --faint:#8996A0;
+    --line:#D2DADE; --line-2:#C1CBD0;
+    --accent:#0C877A; --accent-ink:#0A6A60; --accent-wash:rgba(12,135,122,.09);
+    --shadow:0 1px 0 rgba(18,23,28,.04), 0 8px 30px -18px rgba(18,23,28,.28);
+    --mono:ui-monospace,"SF Mono","JetBrains Mono","Cascadia Code",Menlo,Consolas,monospace;
+    --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#080B0E; --panel:#11171D; --raise:#141C23;
+      --ink:#E6ECEF; --muted:#8B98A2; --faint:#63707A;
+      --line:#1E262D; --line-2:#2A343C;
+      --accent:#27CBB7; --accent-ink:#79E7D9; --accent-wash:rgba(39,203,183,.10);
+      --shadow:0 1px 0 rgba(0,0,0,.4), 0 14px 40px -22px rgba(0,0,0,.7);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#080B0E; --panel:#11171D; --raise:#141C23;
+    --ink:#E6ECEF; --muted:#8B98A2; --faint:#63707A;
+    --line:#1E262D; --line-2:#2A343C;
+    --accent:#27CBB7; --accent-ink:#79E7D9; --accent-wash:rgba(39,203,183,.10);
+    --shadow:0 1px 0 rgba(0,0,0,.4), 0 14px 40px -22px rgba(0,0,0,.7);
+  }
+  :root[data-theme="light"]{
+    --bg:#E9EDEE; --panel:#F7FAFB; --raise:#FFFFFF;
+    --ink:#12171C; --muted:#57646E; --faint:#8996A0;
+    --line:#D2DADE; --line-2:#C1CBD0;
+    --accent:#0C877A; --accent-ink:#0A6A60; --accent-wash:rgba(12,135,122,.09);
+    --shadow:0 1px 0 rgba(18,23,28,.04), 0 8px 30px -18px rgba(18,23,28,.28);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:900px;margin:0 auto;padding:clamp(20px,4vw,52px) clamp(16px,4vw,40px) 64px;}
+  .mono{font-family:var(--mono);}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);}
+  .rule{height:1px;background:var(--line);border:0;margin:0;}
+
+  /* header */
+  header.head{display:flex;flex-direction:column;gap:18px;}
+  .head-top{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;}
+  .kicker{display:flex;align-items:center;gap:10px;}
+  .kdot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-wash);}
+  .target-row{display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap;}
+  h1{font-family:var(--mono);font-weight:600;font-size:clamp(46px,10vw,84px);letter-spacing:-.02em;
+    margin:0;line-height:.92;}
+  .aka{color:var(--muted);font-size:14px;max-width:34ch;padding-bottom:8px;}
+  .verdict{margin-left:auto;display:flex;align-items:center;gap:12px;padding:10px 14px;
+    border:1px solid var(--line-2);border-radius:11px;background:var(--panel);box-shadow:var(--shadow);}
+  .grade{font-family:var(--mono);font-weight:600;font-size:26px;color:var(--accent);line-height:1;}
+  .verdict small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--muted);}
+  .lede{font-size:clamp(17px,2.4vw,21px);line-height:1.42;max-width:60ch;margin:2px 0 0;
+    text-wrap:balance;}
+  .lede b{color:var(--accent-ink);font-weight:600;}
+
+  /* section frame */
+  section{margin-top:40px;}
+  .sec-label{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+  .sec-label .n{font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .sec-label h2{font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin:0;color:var(--muted);
+    font-weight:600;font-family:var(--mono);}
+  .sec-label .fill{flex:1;height:1px;background:var(--line);}
+
+  /* convergence diagram */
+  .conv{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:8px;
+    box-shadow:var(--shadow);}
+  .conv svg{display:block;width:100%;height:auto;}
+  .n-label{font-family:var(--mono);font-size:12.5px;fill:var(--ink);}
+  .n-sub{font-family:var(--mono);font-size:10px;fill:var(--muted);letter-spacing:.02em;}
+  .n-box{fill:var(--raise);stroke:var(--line-2);}
+  .n-box.edge{stroke:var(--accent);}
+  .edge-line{stroke:var(--line-2);fill:none;}
+  .edge-line.solid{stroke-width:2;}
+  .edge-line.dash{stroke-width:1.6;stroke-dasharray:5 4;}
+  .edge-line.dot{stroke:var(--accent);stroke-width:1.8;stroke-dasharray:1.5 4.5;stroke-linecap:round;}
+  .hub{fill:var(--accent-wash);stroke:var(--accent);}
+  .hub-t{font-family:var(--mono);font-weight:600;fill:var(--accent-ink);}
+  .off-tag{font-family:var(--mono);font-size:9px;fill:var(--accent-ink);letter-spacing:.06em;}
+  .legend{display:flex;gap:20px;flex-wrap:wrap;padding:12px 14px 6px;font-family:var(--mono);
+    font-size:11px;color:var(--muted);}
+  .legend span{display:inline-flex;align-items:center;gap:7px;}
+  .lz{width:22px;height:0;border-top:2px solid var(--line-2);display:inline-block;}
+  .lz.dash{border-top-style:dashed;}
+  .lz.dot{border-top:2px dotted var(--accent);}
+
+  /* evidence */
+  .ev{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;box-shadow:var(--shadow);}
+  .ev-row{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:start;
+    padding:16px 18px;background:var(--panel);border-top:1px solid var(--line);}
+  .ev-row:first-child{border-top:0;}
+  .ev-src{font-family:var(--mono);font-size:12px;line-height:1.4;}
+  .ev-src .tier{color:var(--faint);font-size:10.5px;display:block;margin-top:3px;letter-spacing:.04em;}
+  .ev-claim{font-size:14.5px;line-height:1.45;}
+  .ev-claim .prov{display:block;margin-top:5px;font-family:var(--mono);font-size:11px;color:var(--muted);}
+  .chip{justify-self:end;font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;white-space:nowrap;padding:5px 9px;border-radius:999px;
+    border:1px solid var(--line-2);color:var(--muted);height:fit-content;}
+  .chip.edge{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-wash);}
+  .dots{letter-spacing:1px;}
+
+  /* moat */
+  .moat{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .moat-col{border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:var(--panel);
+    box-shadow:var(--shadow);}
+  .moat-col.edge{border-color:var(--accent);background:linear-gradient(180deg,var(--accent-wash),transparent 70%);}
+  .moat-col h3{margin:0 0 4px;font-size:14px;font-family:var(--mono);}
+  .moat-col.edge h3{color:var(--accent-ink);}
+  .moat-col p{margin:0 0 14px;font-size:12px;color:var(--muted);line-height:1.45;}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;}
+  .tag{font-family:var(--mono);font-size:11px;padding:4px 9px;border-radius:7px;border:1px solid var(--line-2);
+    color:var(--muted);}
+  .moat-col.edge .tag{border-color:var(--accent);color:var(--accent-ink);}
+
+  /* footer */
+  footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  .loop{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;color:var(--muted);
+    flex-wrap:wrap;}
+  .loop b{color:var(--accent-ink);font-weight:600;}
+  .loop .arw{color:var(--faint);}
+  .sig{font-family:var(--mono);font-size:11px;color:var(--faint);text-align:right;line-height:1.6;}
+
+  @media (max-width:620px){
+    .ev-row{grid-template-columns:1fr;gap:8px;}
+    .chip{justify-self:start;}
+    .moat{grid-template-columns:1fr;}
+    .verdict{margin-left:0;}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .conv svg .draw{stroke-dashoffset:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head">
+    <div class="head-top">
+      <span class="eyebrow kicker"><span class="kdot"></span>Target Dossier</span>
+      <span class="eyebrow">T-Cell Target Explorer · rheumatoid arthritis</span>
+    </div>
+    <hr class="rule">
+    <div class="target-row">
+      <h1>DOT1L</h1>
+      <span class="aka mono">DOT1-like histone H3K79 methyltransferase · GRN module 38 · fires in resting CD4⁺ T cells</span>
+      <span class="verdict"><span class="grade">A</span><span><small>Verdict</small><span class="mono" style="font-size:12px">take to bench</span></span></span>
+    </div>
+    <p class="lede">Six independent lines of evidence — data, validation, a paper, a preprint, a conference abstract, and the field's own chatter — converge on one thesis: <b>epigenetic (methyltransferase) control of autoreactive CD4⁺ T cells in RA.</b> Two of them sit off Claude Science's reach.</p>
+  </header>
+
+  <section>
+    <div class="sec-label"><span class="n">01</span><h2>The convergence</h2><span class="fill"></span></div>
+    <div class="conv">
+      <svg viewBox="0 0 820 470" role="img" aria-label="Six evidence sources converging on the DOT1L epigenetic thesis">
+        <!-- edges -->
+        <path class="edge-line solid" d="M400,92 L410,205"/>
+        <path class="edge-line solid" d="M628,150 L470,205"/>
+        <path class="edge-line solid" d="M628,320 L470,250"/>
+        <path class="edge-line dash" d="M400,388 L410,270"/>
+        <path class="edge-line dot"  d="M192,320 L370,255"/>
+        <path class="edge-line dot"  d="M192,150 L370,215"/>
+
+        <!-- hub -->
+        <rect class="hub" x="330" y="196" width="160" height="84" rx="14"/>
+        <text class="hub-t" x="410" y="228" text-anchor="middle" font-size="26">DOT1L</text>
+        <text class="n-sub" x="410" y="248" text-anchor="middle">× DNMT3A × TET2</text>
+        <text class="n-sub" x="410" y="264" text-anchor="middle">epigenetic · RA CD4⁺ T</text>
+
+        <!-- node: engine (top) -->
+        <rect class="n-box" x="300" y="44" width="200" height="48" rx="11"/>
+        <text class="n-label" x="400" y="66" text-anchor="middle">CRISPRi Perturb-seq</text>
+        <text class="n-sub"   x="400" y="82" text-anchor="middle">module 38 · IL21R/PTGER4 · KD clean</text>
+
+        <!-- node: claude science (right top) -->
+        <rect class="n-box" x="628" y="126" width="184" height="48" rx="11"/>
+        <text class="n-label" x="720" y="148" text-anchor="middle">Claude Science</text>
+        <text class="n-sub"   x="720" y="164" text-anchor="middle">#1 RA lead · pinometostat Ph2</text>
+
+        <!-- node: paper (right bottom) -->
+        <rect class="n-box" x="628" y="296" width="184" height="50" rx="11"/>
+        <text class="n-label" x="720" y="318" text-anchor="middle">Paper · A&amp;R ’26</text>
+        <text class="n-sub"   x="720" y="334" text-anchor="middle">Karolinska · DNMT3A/Tfh</text>
+
+        <!-- node: preprint (bottom) -->
+        <rect class="n-box" x="300" y="388" width="200" height="50" rx="11"/>
+        <text class="n-label" x="400" y="410" text-anchor="middle">Preprint · bioRxiv</text>
+        <text class="n-sub"   x="400" y="426" text-anchor="middle">Treg DNA-methylation ’26</text>
+
+        <!-- node: ACR (left bottom) OFF -->
+        <rect class="n-box edge" x="8" y="296" width="184" height="50" rx="11"/>
+        <text class="n-label" x="100" y="318" text-anchor="middle">ACR abstract #1589</text>
+        <text class="n-sub"   x="100" y="334" text-anchor="middle">DNMT3A ↔ DOT1L · AMPK</text>
+        <text class="off-tag" x="100" y="362" text-anchor="middle">⊘ off Science’s allowlist</text>
+
+        <!-- node: twitter (left top) OFF -->
+        <rect class="n-box edge" x="8" y="126" width="184" height="48" rx="11"/>
+        <text class="n-label" x="100" y="148" text-anchor="middle">X · @ACR_Journals</text>
+        <text class="n-sub"   x="100" y="164" text-anchor="middle">DNMT3A in RA CD4⁺ T</text>
+        <text class="off-tag" x="100" y="190" text-anchor="middle">⊘ off Science’s allowlist</text>
+      </svg>
+      <div class="legend">
+        <span><i class="lz"></i>peer-reviewed / data</span>
+        <span><i class="lz dash"></i>preprint</span>
+        <span><i class="lz dot"></i>off-allowlist · social &amp; conference</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label"><span class="n">02</span><h2>Evidence, by confidence</h2><span class="fill"></span></div>
+    <div class="ev">
+      <div class="ev-row">
+        <div class="ev-src">CRISPRi Perturb-seq<span class="tier">proprietary data</span></div>
+        <div class="ev-claim">Co-clusters with GRN module 38 (fires at rest, OR 2.9) carrying RA risk genes <span class="mono">IL21R · PTGER4 · SELL</span>; knockdown verified on-target, clean guide.
+          <span class="prov">Marson/Pritchard genome-scale screen, 2025 · the regulator→risk-gene edge is in no external database</span></div>
+        <span class="chip">data <span class="dots">●●●</span></span>
+      </div>
+      <div class="ev-row">
+        <div class="ev-src">Claude Science<span class="tier">multi-DB validation</span></div>
+        <div class="ev-claim">Ranked the <b>top RA lead</b>: 0 direct RA papers (novel), pinometostat in Phase 2 (druggable); caught the Open Targets score as an ontology artifact.
+          <span class="prov">Open Targets · ChEMBL · GWAS Catalog · ClinicalTrials · PubMed · OpenAlex</span></div>
+        <span class="chip">verified <span class="dots">●●●</span></span>
+      </div>
+      <div class="ev-row">
+        <div class="ev-src">Paper · A&amp;R 2026<span class="tier">peer-reviewed</span></div>
+        <div class="ev-claim">DNMT3A mutations in autoreactive CD4⁺ T follicular helper cells; reducing function attenuates RA joint inflammation.
+          <span class="prov">Shen … Wermeling (Karolinska) · Arthritis &amp; Rheumatology · DOI 10.1002/art.70267</span></div>
+        <span class="chip">paper <span class="dots">●●●</span></span>
+      </div>
+      <div class="ev-row">
+        <div class="ev-src">Preprint · bioRxiv<span class="tier">not peer-reviewed</span></div>
+        <div class="ev-claim">Maintenance DNA methylation is required for regulatory-T-cell transcriptional &amp; methylation signatures.
+          <span class="prov">Gurkan et al. · bioRxiv 2026-06-29 · 10.64898/2026.06.24.733005</span></div>
+        <span class="chip">preprint <span class="dots">●●○</span></span>
+      </div>
+      <div class="ev-row">
+        <div class="ev-src">ACR abstract #1589<span class="tier">conference floor</span></div>
+        <div class="ev-claim">“Epigenetic Regulation of DNMT3A by TFEB <b>and DOT1L</b> Through AMPK Signalling” — independently links our two hero leads in one mechanism.
+          <span class="prov">ACR Convergence 2023 · acrabstracts.org · not on Science’s allowlist</span></div>
+        <span class="chip edge">off-allowlist <span class="dots">●○○</span></span>
+      </div>
+      <div class="ev-row">
+        <div class="ev-src">X · @ACR_Journals<span class="tier">community signal</span></div>
+        <div class="ev-claim">The field posting, in real time, about DNMT3A methyltransferase activity in RA CD4⁺ T cells cutting joint inflammation.
+          <span class="prov">X/Twitter · harvested 2026-07 · not on Science’s allowlist</span></div>
+        <span class="chip edge">off-allowlist <span class="dots">●○○</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-label"><span class="n">03</span><h2>Why Science can’t do this alone</h2><span class="fill"></span></div>
+    <div class="moat">
+      <div class="moat-col">
+        <h3>On its allowlist</h3>
+        <p>Claude Science’s sandbox connects only to curated scientific domains. These it fetches live — so they aren’t our edge.</p>
+        <div class="tags"><span class="tag">PubMed</span><span class="tag">bioRxiv</span><span class="tag">medRxiv</span><span class="tag">OpenAlex</span><span class="tag">Crossref</span><span class="tag">ChEMBL</span><span class="tag">ClinicalTrials</span><span class="tag">Open Targets</span></div>
+      </div>
+      <div class="moat-col edge">
+        <h3>Off it — only we bake it in</h3>
+        <p>The sandbox literally cannot reach these. The tool harvests them and ships them inside the knowledge base.</p>
+        <div class="tags"><span class="tag">X / Twitter</span><span class="tag">ACR / EULAR abstracts</span><span class="tag">the Perturb-seq engine</span><span class="tag">the learning KB</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="loop"><b>discover</b><span class="arw">→</span><b>validate</b><span class="arw">→</span><b>listen</b><span class="arw">→</span><b>remember</b></div>
+    <div class="sig">T-Cell Target Explorer<br>an MCP + skill · built with Claude</div>
+  </footer>
+</div>
+</body>
+</html>

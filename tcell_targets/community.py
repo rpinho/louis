@@ -68,6 +68,9 @@ _NOISE_TERMS = ("leaky gut", "gut lining", "seed oil", "detox", "toxin", "vagus"
                 "senolytic", "natural anti-inflammator", "micronutrient", "carnivore",
                 "steak", "blueprint", "bryan johnson", "fluoride", "chemtrail", "raw milk")
 
+# Accounts that are never research signal (AI bots / generic reply accounts) — vetoed outright.
+_JUNK_HANDLES = {"grok", "askperplexity", "perplexity_ai", "chatgptbot", "grokinc"}
+
 
 def xurl_available() -> bool:
     """True when the `xurl` CLI (the X API access) can be found — the live tier."""
@@ -168,6 +171,10 @@ def _extract_posts(d: dict, min_engagement: int = 0) -> tuple[list, int]:
             continue
         txt = ((t.get("note_tweet") or {}).get("text") or t.get("text", "")).replace("\n", " ").strip()
         signal = _signal_name(u)
+        # HARD VETO: known-junk accounts (AI bots) never count, regardless of text.
+        if u.get("username", "").lower() in _JUNK_HANDLES:
+            vetoed += 1
+            continue
         # HARD VETO: wellness/pseudoscience terms drop the post outright — unless it's a research account.
         if not signal and _count(txt, _NOISE_TERMS) > 0:
             vetoed += 1
