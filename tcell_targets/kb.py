@@ -32,6 +32,26 @@ def _safe(name: str) -> str:
     return re.sub(r"\s+", " ", re.sub(r"[^A-Za-z0-9 ._-]", "", name)).strip()
 
 
+_DOI_RE = re.compile(r"(10\.\d{4,9}/[-._;()/:a-zA-Z0-9]+)")
+
+
+def _linkify(text: str) -> str:
+    """
+    Provenance must be AUDITABLE: make bare DOIs clickable (doi.org resolves any DOI), so a citation
+    the user reads is a link they can click and judge for themselves. Existing links are left alone.
+    """
+    def repl(m):
+        raw = m.group(1)
+        doi = raw.rstrip(".,;)")
+        trail = raw[len(doi):]
+        pre = text[max(0, m.start() - 9):m.start()]
+        if ("doi.org/" in pre or pre.endswith("/") or pre.endswith("](")
+                or pre.endswith("[")):  # already a link target, URL path, or link display text
+            return raw
+        return f"[{doi}](https://doi.org/{doi}){trail}"
+    return _DOI_RE.sub(repl, text)
+
+
 def _target_path(gene: str) -> Path:
     return KB_DIR / "wiki" / "targets" / f"{_safe(gene)}.md"
 
@@ -100,7 +120,7 @@ def remember(gene: str, finding: str, source: str, disease: str | None = None) -
             f"# {gene}\n\n*CD4+ T-cell regulator — target profile. Data facts, novelty, "
             f"mechanism, and scientist verdicts, each with provenance.*\n\n## Findings\n\n")
     tag = f" ({disease})" if disease else ""
-    line = f"- **{_today()}**{tag}: {finding.strip()}  — *source: {source.strip()}*\n"
+    line = f"- **{_today()}**{tag}: {_linkify(finding.strip())}  — *source: {_linkify(source.strip())}*\n"
     with path.open("a") as f:
         f.write(line)
     _append_log(f"remember {gene}{tag}: {finding[:80]}")
