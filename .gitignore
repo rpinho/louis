@@ -18,3 +18,6 @@ transcripts/
 
 # Downloaded artifacts staging (Claude Science exports, etc.) — local only
 _inbox/
+
+# Derived SQLite retrieval index (regenerated from the markdown KB) — local only
+kb/index.sqlite
