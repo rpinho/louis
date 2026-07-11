@@ -352,3 +352,19 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — community_signal MYB (target): filed 5 posts (harvested 2026-07-11)
 - 2026-07-11 — remember NR4A3: profile opened for community signal
 - 2026-07-11 — community_signal NR4A3 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — remember DOT1L (rheumatoid arthritis): Rest / module 38 (wired to PTGER4, IL21R). Druggable: pinometostat, a selective 
+- 2026-07-11 — verdict DOT1L [rheumatoid arthritis]: A
+- 2026-07-11 — remember GLS (rheumatoid arthritis): Stim8hr / module 100 (TRAF1, FYN, PTPN22). Druggable: telaglenastat/CB-839, a gl
+- 2026-07-11 — verdict GLS [rheumatoid arthritis]: B+
+- 2026-07-11 — remember MEN1 (rheumatoid arthritis): Rest / module 38 - the SAME resting module as DOT1L (IL21R/PTGER4). Best chemica
+- 2026-07-11 — verdict MEN1 [rheumatoid arthritis]: B
+- 2026-07-11 — remember AHR (rheumatoid arthritis): Stim48hr / module 54 (CTLA4, PRKCB). Druggable: tapinarof (approved). Literature
+- 2026-07-11 — verdict AHR [rheumatoid arthritis]: C
+- 2026-07-11 — remember AMD1 (rheumatoid arthritis): Stim8hr / module 100. Druggable: sardomozide (Ph2, dormant program). A polyamine
+- 2026-07-11 — verdict AMD1 [rheumatoid arthritis]: C
+- 2026-07-11 — remember GLI1 (rheumatoid arthritis): Stim48hr / module 54. Druggable only upstream: glasdegib/vismodegib are approved
+- 2026-07-11 — verdict GLI1 [rheumatoid arthritis]: C
+- 2026-07-11 — remember KDM8 (rheumatoid arthritis): Stim8hr / module 94. No clinical compound; weak tractability; no CD4 anchor - ge
+- 2026-07-11 — verdict KDM8 [rheumatoid arthritis]: C
+- 2026-07-11 — remember RIPK1 (rheumatoid arthritis): Stim48hr / module 54. Druggable: GSK2982772, a RIPK1 inhibitor (Ph2). 1 complete
+- 2026-07-11 — verdict RIPK1 [rheumatoid arthritis]: D

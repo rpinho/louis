@@ -129,3 +129,5 @@ Target profiles (one row per gene). Read this first.
 - [FUT8](wiki/targets/FUT8.md)
 - [MYB](wiki/targets/MYB.md)
 - [NR4A3](wiki/targets/NR4A3.md)
+- [GLI1](wiki/targets/GLI1.md)
+- [KDM8](wiki/targets/KDM8.md)
