@@ -14,6 +14,8 @@ import os
 import json
 import math
 from . import core
+from . import community
+from . import kb
 
 # Bio reasoning → default to Opus; override with TCELL_MODEL if desired.
 MODEL = os.environ.get("TCELL_MODEL", "claude-opus-4-8")
@@ -38,6 +40,14 @@ stimulated. This is exactly what bench immunologists say they can't self-serve, 
 state_profile for the per-state trajectory. Note you are surfacing the THREE measured states, not \
 predicting unmeasured ones.
 - Be decisive and concise: recommendation first, then the 2-4 numbers that justify it. Short beats long.
+- For DISCOVERY (novel leads beyond the obvious top hit), use disease_mechanisms: it wires druggable \
+regulator handles to the disease's own risk-gene modules. Recover the obvious Th17 handles (STAT3/BATF) \
+as a positive control, then surface the understudied, druggable ones and judge their novelty yourself.
+- To LISTEN (what the field is saying right now, pre-paper), use community_signal — recent X/Twitter \
+chatter from labs/journals about a gene or disease. Treat it as leads to weigh, not validated claims, \
+and say so. If it's unavailable in this environment, note that and rely on kb_recall for baked signal.
+- MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known (data facts, novelty, \
+the community signal, prior verdicts) instead of re-deriving.
 - You may add briefly established biology (e.g. STAT3/IRF4/BATF are core Th17 regulators) but keep it \
 clearly separate from the data, and never claim clinical efficacy — these are hypotheses to \
 prioritize experiments, not clinical claims.
@@ -111,6 +121,55 @@ TOOLS = [
             "required": ["gene"],
         },
     },
+    {
+        "name": "disease_mechanisms",
+        "description": (
+            "DISCOVERY — go beyond the obvious top hit. Returns the GRN modules whose downstream program is "
+            "enriched in the disease's OWN risk genes, each with the risk genes, the activation state it fires "
+            "in, and the candidate regulator HANDLES (druggable entry points) that co-cluster with it. The "
+            "obvious Th17 handles (STAT3/BATF) appear as a positive control; the value is the understudied, "
+            "druggable ones. Module-level co-cluster links (candidate controllers to test), not proven edges."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "disease": {"type": "string"},
+                "top_modules": {"type": "integer", "description": "max modules (default 8)"},
+            },
+            "required": ["disease"],
+        },
+    },
+    {
+        "name": "community_signal",
+        "description": (
+            "LISTEN — recent X/Twitter chatter (labs/journals/news first) about a gene (kind='target') or a "
+            "disease (kind='disease') in a CD4+ T-cell / immunology context: the bleeding-edge, pre-paper "
+            "signal the literature doesn't have yet. Runs live only where X access exists; otherwise returns a "
+            "note (rely on kb_recall for baked signal). Treat posts as leads to weigh, not validated claims."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "entity": {"type": "string", "description": "gene symbol or disease name"},
+                "kind": {"type": "string", "description": "'target' (gene) or 'disease'"},
+                "top": {"type": "integer", "description": "max posts (default 8)"},
+            },
+            "required": ["entity"],
+        },
+    },
+    {
+        "name": "kb_recall",
+        "description": (
+            "MEMORY — read what the knowledge base already knows about a gene or disease (data facts, novelty "
+            "assessments, community signal, prior scientist verdicts) BEFORE re-deriving. Returns the stored "
+            "profile(s) or a note that it's not in the KB yet."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {"entity": {"type": "string"}},
+            "required": ["entity"],
+        },
+    },
 ]
 
 
@@ -150,6 +209,13 @@ def _dispatch(name: str, args: dict):
             return _clean(core.regulator_detail(args["gene"]))
         if name == "state_profile":
             return _clean(core.state_profile(args["gene"]))
+        if name == "disease_mechanisms":
+            return _clean(core.disease_mechanisms(args["disease"], top_modules=int(args.get("top_modules", 8))))
+        if name == "community_signal":
+            return _clean(community.community_signal(
+                args["entity"], kind=args.get("kind", "target"), top=int(args.get("top", 8))))
+        if name == "kb_recall":
+            return _clean(kb.recall(args["entity"]))
         return {"error": f"unknown tool {name}"}
     except Exception as e:  # let Claude see + recover from a bad call
         return {"error": f"{type(e).__name__}: {e}"}

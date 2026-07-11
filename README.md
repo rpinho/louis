@@ -16,7 +16,7 @@ So don't make one. **Meet them where they already are: inside Claude.**
 
 ## What it does
 
-Add the server to Claude, then just ask. It does three things — **discover, validate, remember** — grounded in the screen and trust-verdict first.
+Add the server to Claude, then just ask. It does four things — **discover, validate, listen, remember** — grounded in the screen and trust-verdict first.
 
 **Discover** — not the obvious target, the novel one:
 > **You:** *For rheumatoid arthritis, skip the obvious targets — find understudied, druggable handles wired to the disease's own risk genes.*
@@ -25,7 +25,9 @@ Add the server to Claude, then just ask. It does three things — **discover, va
 
 **Validate** — hand the leads to Claude Science's scientific web (Open Targets, ChEMBL, PubMed, GWAS Catalog). In our run it ranked **DOT1L** the top novel + druggable RA lead, *caught* that the Open Targets scores were ontology-propagation artifacts (not real RA evidence), and independently confirmed the regulator→risk-gene links live only in the Perturb-seq.
 
-**Remember** — the knowledge base files the whole chain with provenance *and confidence level*; `kb_recall(DOT1L)` returns discovery + novelty + validation + verdict in one shareable profile, so it's never re-derived.
+**Listen** — take the engine's own discoveries (every handle + risk gene) and search **X/Twitter** for each, in an immune context: what labs, journals, and news desks are saying *this week*, before it's a paper. Wellness noise is vetoed; gene symbols self-filter (nobody but immunologists tweets "PTPN22"). Our data flagged **DOT1L**, a methyltransferase, for RA — and the listen layer independently surfaced **@ACR_Journals** the same week on **DNMT3A**, *another* methyltransferase in autoreactive CD4+ T cells reducing RA joint inflammation. Convergent, current, and invisible to the paper connectors. This runs live where X access exists, and is **baked into the KB** so it ships everywhere.
+
+**Remember** — the knowledge base files the whole chain with provenance *and confidence level*; `kb_recall(DOT1L)` returns discovery + novelty + validation + community signal + verdict in one shareable profile, so it's never re-derived.
 
 Underneath it all, the **trust flag** — the difference between a hit worth bench time and one that wastes it:
 > **You:** *For Crohn's, what should I target, and which can I trust?*
@@ -40,7 +42,8 @@ The tools (all grounded, no LLM guessing):
 | `disease_targets` | ranked candidates + OR, GRN influence, **trust flag**, activation state, Th1/Th2 |
 | `target_evidence` | the full "why this target" case for one gene |
 | `regulator_detail` · `state_profile` | per-condition GRN + CRISPRi QC · activation-state trajectory |
-| `kb_recall` · `kb_remember` · `kb_verdict` | the **knowledge base** — recall before deriving, file findings with provenance, record verdicts |
+| `community_signal` | **listen** — recent X/Twitter chatter (labs/journals first) about a gene or disease, pre-paper |
+| `kb_recall` · `kb_remember` · `kb_remember_signal` · `kb_verdict` | the **knowledge base** — recall before deriving, file findings + community signal with provenance, record verdicts |
 | `list_diseases` | the 17 autoimmune diseases in the screen |
 
 ## Quick start
@@ -82,6 +85,7 @@ Four things, none of which a literature search can give you — because they liv
 - **Trust flag.** From the screen's own QC — was the CRISPRi **knockdown verified on-target**, and is the guide **off-target**? This is what stops you spending months on a hit that only *looks* good (see IPMK above).
 - **Activation state.** A T cell's regulators shift with its state; the screen measured three (Rest / Stim8hr / Stim48hr) and ~87% of hub regulators change ≥2× across them. The server surfaces which state a target acts in — the state-dependence a bench immunologist otherwise needs a whole experiment to read. (The **three measured states**, not modeling unmeasured ones.)
 - **A learning knowledge base.** `kb_recall / kb_remember / kb_verdict` maintain a git-tracked markdown KB (a target profile is a reputation record: data facts + literature novelty + validation + the scientist's verdict, each with provenance). Recall before deriving; file findings back so nothing is re-derived; hand the whole thing to a student.
+- **The field's live pulse.** `community_signal` turns the engine's own discoveries into search terms and listens to what immunologists post *this week* on X — pre-paper lab announcements, preprint drops, pipeline news the literature connectors can't see yet. Curated (labs/journals first, wellness noise vetoed) and baked into the KB, so every lead carries not just what the *data* says but what the *field* is saying right now.
 
 ## Optional: local visual browser
 
@@ -92,6 +96,14 @@ pip install -e ".[app]" && streamlit run app.py   # → http://localhost:8501
 ```
 
 ![The optional Streamlit browser — Crohn's → STAT3 with the evidence panel and activation-state layer](docs/screenshot.png)
+
+## Optional: share it with your lab on Slack
+
+A **Slack bot** (Socket Mode — no hosting, no public URL) puts the same engine where a lab already talks. `@target-explorer what should we hit for RA?` or `/ask-target rheumatoid arthritis` returns trust-ranked leads + the community signal **in a public channel** (knowledge is shared, not siloed in DMs), and `/remember` files findings to the **shared** KB so the whole team's questions compound into one memory. Setup (~3 min) and the paste-to-create app manifest are in [`slack/SETUP.md`](slack/SETUP.md).
+
+```bash
+pip install -e ".[slack]" && python -m tcell_targets.slack_app
+```
 
 ## Data
 

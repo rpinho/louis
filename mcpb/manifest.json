@@ -1,0 +1,44 @@
+{
+  "manifest_version": "0.3",
+  "name": "tcell-target-explorer",
+  "display_name": "T-Cell Target Explorer",
+  "version": "0.3.0",
+  "description": "Discover, validate, listen, and remember novel CD4+ T-cell drug targets for autoimmune diseases from a genome-scale CRISPRi Perturb-seq screen (Marson/Pritchard 2025). Wires druggable regulator handles to a disease's own risk-gene modules, trust-gated by knockdown QC and activation state, adds live X/Twitter community signal for each lead, and keeps a learning knowledge base.",
+  "author": {
+    "name": "Ricardo Pinho"
+  },
+  "license": "MIT",
+  "keywords": ["immunology", "t-cell", "perturb-seq", "drug-target", "autoimmune", "crispr", "grn"],
+  "server": {
+    "type": "python",
+    "entry_point": "server/main.py",
+    "mcp_config": {
+      "command": "python3",
+      "args": ["${__dirname}/server/main.py"],
+      "env": {
+        "PYTHONPATH": "${__dirname}/server/lib:${__dirname}/server"
+      }
+    }
+  },
+  "tools": [
+    {"name": "disease_mechanisms", "description": "DISCOVERY: druggable regulator handles wired to a disease's own risk-gene modules, per activation state — novel, testable leads."},
+    {"name": "disease_targets", "description": "Ranked candidate targets for a disease: enrichment odds ratio, GRN influence, trust flag, activation state, Th1/Th2."},
+    {"name": "target_evidence", "description": "The full 'why this target' case for one gene in one disease, with program peers and per-state trajectory."},
+    {"name": "regulator_detail", "description": "Per-condition GRN out-degree and CRISPRi QC (knockdown verified, off-target) for one regulator."},
+    {"name": "state_profile", "description": "How a regulator's GRN influence shifts across T-cell activation states (Rest/Stim8hr/Stim48hr)."},
+    {"name": "list_diseases", "description": "List the autoimmune diseases with disease-enriched T-cell programs in the screen."},
+    {"name": "community_signal", "description": "LISTEN: recent X/Twitter chatter (labs/journals first) about a gene or disease — the bleeding-edge, pre-paper signal the literature can't see."},
+    {"name": "kb_recall", "description": "MEMORY: read what the knowledge base already knows about a gene or disease (incl. baked community signal) before re-deriving."},
+    {"name": "kb_remember", "description": "MEMORY: file a finding to a gene's profile with provenance so it is never re-derived."},
+    {"name": "kb_remember_signal", "description": "MEMORY: harvest + file current community signal for a gene/disease so the pre-paper chatter is preserved."},
+    {"name": "kb_verdict", "description": "MEMORY: record the scientist's verdict on a target (the reputation signal)."}
+  ],
+  "tools_generated": false,
+  "compatibility": {
+    "claude_desktop": ">=0.10.0",
+    "platforms": ["darwin"],
+    "runtimes": {
+      "python": ">=3.10"
+    }
+  }
+}

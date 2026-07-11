@@ -12,11 +12,15 @@ lab, and it keeps what's known, what's novel, and the scientist's verdicts. This
 the agent stops re-deriving the same thing every session.
 """
 from __future__ import annotations
+import json
+import os
 import re
 from datetime import date
 from pathlib import Path
 
-KB_DIR = Path(__file__).resolve().parent.parent / "kb"
+# Default: the repo's kb/. Override with TCELL_KB_DIR so a packaged bundle can write
+# to a user-writable dir (an installed .mcpb dir may be read-only).
+KB_DIR = Path(os.environ.get("TCELL_KB_DIR") or (Path(__file__).resolve().parent.parent / "kb"))
 
 
 def _today() -> str:
@@ -36,8 +40,12 @@ def _disease_path(disease: str) -> Path:
     return KB_DIR / "wiki" / "diseases" / f"{_safe(disease)}.md"
 
 
+def _topic_path(topic: str) -> Path:
+    return KB_DIR / "wiki" / "topics" / f"{_safe(topic)}.md"
+
+
 def _ensure() -> None:
-    for p in ("wiki/targets", "wiki/diseases", "wiki/modules", "raw"):
+    for p in ("wiki/targets", "wiki/diseases", "wiki/topics", "wiki/modules", "raw"):
         (KB_DIR / p).mkdir(parents=True, exist_ok=True)
     for f, header in (("index.md", "# KB index\n\nTarget profiles (one row per gene). Read this first.\n\n"),
                       ("log.md", "# Log\n\nAppend-only record of derivations, findings, and verdicts.\n\n"),
@@ -68,7 +76,9 @@ def recall(entity: str) -> dict:
     """
     _ensure()
     hits = {}
-    for kind, path in (("target_profile", _target_path(entity)), ("disease_profile", _disease_path(entity))):
+    for kind, path in (("target_profile", _target_path(entity)),
+                       ("disease_profile", _disease_path(entity)),
+                       ("topic_profile", _topic_path(entity))):
         if path.exists():
             hits[kind] = path.read_text()
     if not hits:
@@ -99,6 +109,43 @@ def remember(gene: str, finding: str, source: str, disease: str | None = None) -
             "created_profile": created, "recorded": line.strip()}
 
 
+def remember_signal(entity: str, posts: list[dict], query: str = "",
+                    harvested: str = "", kind: str = "target") -> dict:
+    """
+    File curated community (X/Twitter) chatter to an entity's profile under a dated
+    'Community signal' block, with provenance (handle, date, link). Pre-paper signal —
+    the field's current chatter, remembered so it ships even where live search can't run.
+    `kind`: 'target' (a gene profile) or 'disease' (a disease profile).
+    """
+    _ensure()
+    path = {"disease": _disease_path, "topic": _topic_path}.get(kind, _target_path)(entity)
+    if not path.exists():
+        if kind == "disease":
+            path.write_text(f"# {entity}\n\n*Autoimmune disease profile — enriched T-cell programs, "
+                            f"candidate targets, and community signal, each with provenance.*\n\n")
+        elif kind == "topic":
+            path.write_text(f"# {entity}\n\n*Immune pathway / mechanism — community signal, "
+                            f"with provenance.*\n\n")
+        else:
+            remember(entity, "profile opened for community signal", "community_signal", None)
+    when = harvested or _today()
+    lines = [f"\n## Community signal (X/Twitter) — harvested {when}\n",
+             f"*Query: `{query}`. Recent field chatter — pre-paper leads, not validated claims.*\n"]
+    for p in posts:
+        flag = " ⭐" if p.get("high_signal") else ""
+        metric = f"♥{p.get('likes', 0)}"
+        lines.append(f"- **@{p.get('handle', '?')}**{flag} ({p.get('author', '?')}) · "
+                     f"{p.get('date', '?')} · {metric}: {p.get('text', '')[:240]} "
+                     f"— [link]({p.get('url', '')})")
+    with path.open("a") as f:
+        f.write("\n".join(lines) + "\n")
+    if kind == "target":
+        _touch_index(entity)
+    _append_log(f"community_signal {entity} ({kind}): filed {len(posts)} posts (harvested {when})")
+    return {"entity": entity, "kind": kind, "profile": str(path.relative_to(KB_DIR.parent)),
+            "filed": len(posts), "harvested": when}
+
+
 def verdict(gene: str, disease: str, grade: str, rationale: str = "") -> dict:
     """
     Record the scientist's phone-a-friend verdict on a target — the reputation signal that
@@ -113,3 +160,82 @@ def verdict(gene: str, disease: str, grade: str, rationale: str = "") -> dict:
         f.write(line)
     _append_log(f"verdict {gene} [{disease}]: {grade}")
     return {"gene": gene, "disease": disease, "grade": grade, "recorded": line.strip()}
+
+
+# ── Fast retrieval index ──────────────────────────────────────────────────────
+# recall() is already O(1) (a direct path lookup + file read). This index makes
+# querying ACROSS the KB fast too — find profiles by name/attribute without reading
+# every file. It's a *derived* artifact: the markdown stays the human-readable,
+# git-diffable, shareable source of truth, and the index is cheaply rebuilt from it.
+# At real scale (thousands of profiles + full-text search), swap this JSON index for
+# SQLite FTS5 — same principle: markdown canonical, DB a rebuildable derived index.
+
+def _index_path() -> Path:
+    return KB_DIR / "_index.json"
+
+
+def reindex() -> dict:
+    """Scan the KB and (re)write kb/_index.json — a fast lookup of every profile + its attributes."""
+    _ensure()
+    entities = {}
+    for kind, sub in (("target", "wiki/targets"), ("disease", "wiki/diseases"),
+                      ("topic", "wiki/topics")):
+        d = KB_DIR / sub
+        if not d.exists():
+            continue
+        for f in sorted(d.glob("*.md")):
+            txt = f.read_text()
+            entities[f.stem] = {
+                "kind": kind,
+                "path": str(f.relative_to(KB_DIR)),
+                "signal": "## Community signal" in txt,          # has baked community chatter
+                "verdict": "**VERDICT" in txt,                    # has a scientist verdict
+                "findings": txt.count("\n- **"),                  # rough richness (dated entries)
+                "bytes": len(txt),
+            }
+    index = {"built": _today(), "n": len(entities), "entities": entities,
+             "with_signal": sorted(k for k, v in entities.items() if v["signal"]),
+             "with_verdict": sorted(k for k, v in entities.items() if v["verdict"])}
+    _index_path().write_text(json.dumps(index, separators=(",", ":")))
+    return index
+
+
+def load_index(rebuild: bool = False) -> dict:
+    """Return the KB index, building it if missing/unreadable (or when rebuild=True)."""
+    p = _index_path()
+    if rebuild or not p.exists():
+        return reindex()
+    try:
+        return json.loads(p.read_text())
+    except Exception:
+        return reindex()
+
+
+def search(term: str = "", kind: str | None = None, signal: bool | None = None,
+           verdict: bool | None = None, content: bool = False, limit: int = 50) -> dict:
+    """
+    Fast query across the KB via the index. Matches entity names (and, with content=True, the
+    profile text). Optionally filter by kind ('target'/'disease'), whether it carries community
+    signal, or whether it has a verdict. Targets-with-signal-and-verdict sort first.
+    """
+    idx = load_index()
+    term_l = term.lower().strip()
+    hits = []
+    for name, meta in idx.get("entities", {}).items():
+        if kind and meta["kind"] != kind:
+            continue
+        if signal is not None and meta["signal"] != signal:
+            continue
+        if verdict is not None and meta["verdict"] != verdict:
+            continue
+        match = (not term_l) or (term_l in name.lower())
+        if not match and content and term_l:
+            try:
+                match = term_l in (KB_DIR / meta["path"]).read_text().lower()
+            except OSError:
+                match = False
+        if match:
+            hits.append({"entity": name, **meta})
+    hits.sort(key=lambda h: (h["kind"] != "target", not h["verdict"], not h["signal"],
+                             -h["findings"], h["entity"]))
+    return {"query": term, "n_total": len(hits), "results": hits[:limit]}

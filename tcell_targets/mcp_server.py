@@ -20,6 +20,7 @@ from __future__ import annotations
 from mcp.server.fastmcp import FastMCP
 from . import core
 from . import kb
+from . import community
 from .assistant import _clean  # JSON-safe coercion (import-safe: no anthropic at import)
 
 mcp = FastMCP(
@@ -37,9 +38,15 @@ mcp = FastMCP(
         "druggable regulator handles to the disease's own risk-gene modules — recover the obvious "
         "Th17 handles as a positive control, then surface understudied ones and assess their NOVELTY "
         "yourself (your knowledge + web/PubMed). "
+        "LISTEN (bleeding-edge): community_signal pulls what immunologists are posting on X/Twitter "
+        "RIGHT NOW about a gene or disease — lab announcements, preprint drops, pipeline news that "
+        "isn't in the literature yet. This is signal the paper/database connectors can't see. It runs "
+        "live where X access exists (Claude Code/Desktop); elsewhere read the baked signal via kb_recall. "
         "MEMORY: this tool has a knowledge base — ALWAYS call kb_recall(entity) BEFORE re-deriving; "
         "after deriving or verifying something new, call kb_remember to file it with provenance so "
-        "it is never re-derived, and kb_verdict to record the scientist's judgment. This is how it learns."
+        "it is never re-derived, kb_remember_signal to preserve the community chatter, and kb_verdict "
+        "to record the scientist's judgment. The workflow is discover -> validate -> listen -> remember. "
+        "This is how it learns."
     ),
 )
 
@@ -124,6 +131,40 @@ def disease_mechanisms(disease: str, top_modules: int = 8) -> list[dict]:
 
 
 @mcp.tool()
+def community_signal(entity: str, kind: str = "target", top: int = 10, min_engagement: int = 0) -> dict:
+    """
+    LISTEN — the bleeding-edge, pre-paper layer. Recent X/Twitter chatter about a target gene
+    (kind='target') or a disease (kind='disease') in a CD4+ T-cell / immunology context: lab
+    announcements, preprint drops, conference posts, therapy-pipeline news — the signal that is
+    NOT in the literature yet, and that the paper/database connectors can't see.
+
+    Returns curated recent posts (labs / journals / news desks surfaced first) with handle, date,
+    engagement, text, and link. `min_engagement` filters out low-signal posts. Runs live only where
+    X access exists (Claude Code/Desktop); in the Claude Science sandbox it returns a note — read
+    the baked signal via kb_recall there. Treat posts as leads to verify, not validated claims;
+    after reviewing, persist the notable ones with kb_remember_signal.
+    """
+    return _clean(community.community_signal(entity, kind=kind, top=int(top),
+                                             min_engagement=int(min_engagement)))
+
+
+@mcp.tool()
+def kb_remember_signal(entity: str, kind: str = "target") -> dict:
+    """
+    MEMORY — harvest current community signal for a gene/disease AND file it to the KB profile in
+    one step (fetch + remember). Preserves the pre-paper chatter with provenance (handle, date, link)
+    so it is remembered across sessions and ships with the tool even where live X search can't run.
+    Use after discovery/validation to capture what the field is saying right now.
+    """
+    sig = community.community_signal(entity, kind=kind, top=12)
+    if not sig.get("posts"):
+        return {"entity": entity, "filed": 0,
+                "note": sig.get("note") or sig.get("error") or "no community posts found"}
+    return kb.remember_signal(entity, sig["posts"], query=sig.get("query", ""),
+                              harvested=sig.get("harvested", ""), kind=kind)
+
+
+@mcp.tool()
 def kb_recall(entity: str) -> dict:
     """
     Read what the knowledge base already knows about a target gene or a disease — CALL THIS FIRST,
@@ -131,6 +172,20 @@ def kb_recall(entity: str) -> dict:
     scientist verdicts, or a note that it is not in the KB yet.
     """
     return kb.recall(entity)
+
+
+@mcp.tool()
+def kb_search(term: str = "", kind: str = "", has_signal: bool = False,
+              has_verdict: bool = False, content: bool = False, limit: int = 25) -> dict:
+    """
+    MEMORY/SEARCH — fast lookup ACROSS the knowledge base, backed by an index (not a full scan).
+    Find target/disease profiles by name (or, with content=True, by any text inside them), and filter
+    to those with community signal (has_signal) or a recorded verdict (has_verdict). Use to see what
+    the KB already knows before deriving, or to browse accumulated leads (e.g. all targets the field
+    is currently discussing). Targets with a verdict + signal rank first.
+    """
+    return kb.search(term=term, kind=kind or None, signal=has_signal or None,
+                     verdict=has_verdict or None, content=content, limit=int(limit))
 
 
 @mcp.tool()
@@ -155,7 +210,17 @@ def kb_verdict(gene: str, disease: str, grade: str, rationale: str = "") -> dict
 
 
 def main() -> None:
-    mcp.run()
+    """stdio by default (Claude Code/Desktop). Set TCELL_MCP_TRANSPORT=http to serve over
+    streamable-HTTP instead — for hosts that connect by URL (e.g. Claude Science's Remote URL,
+    whose sandbox blocks executing a local command)."""
+    import os
+    transport = os.environ.get("TCELL_MCP_TRANSPORT", "stdio").lower()
+    if transport in ("http", "streamable-http", "sse"):
+        mcp.settings.host = os.environ.get("TCELL_MCP_HOST", "127.0.0.1")
+        mcp.settings.port = int(os.environ.get("TCELL_MCP_PORT", "8766"))
+        mcp.run(transport="sse" if transport == "sse" else "streamable-http")
+    else:
+        mcp.run()
 
 
 if __name__ == "__main__":

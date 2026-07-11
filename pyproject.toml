@@ -13,9 +13,12 @@ dependencies = [
 [project.optional-dependencies]
 # Local Streamlit visual browser + its in-app Claude Q&A (needs ANTHROPIC_API_KEY).
 app = ["streamlit>=1.50", "altair>=5.0", "anthropic>=0.40"]
+# Slack bot surface (Socket Mode — no hosting). NL answers also want anthropic.
+slack = ["slack-bolt>=1.18", "anthropic>=0.40"]
 
 [project.scripts]
 tcell-targets-mcp = "tcell_targets.mcp_server:main"
+tcell-targets-slack = "tcell_targets.slack_app:main"
 
 [build-system]
 requires = ["setuptools>=68"]

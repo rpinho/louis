@@ -15,3 +15,104 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-10 — verdict AHR [rheumatoid arthritis]: deprioritize - druggable but not novel
 - 2026-07-10 — verdict RIPK1 [rheumatoid arthritis]: skip - already clinically tested in RA
 - 2026-07-10 — remember DOT1L (rheumatoid arthritis): VERIFIED (independent PubMed check, prompted by Claude Science's reviewer flaggi
+- 2026-07-10 — community_signal rheumatoid arthritis (disease): filed 6 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal Crohn's disease (disease): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal type 1 diabetes (disease): filed 5 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal rheumatoid arthritis (disease): filed 5 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal Crohn's disease (disease): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal type 1 diabetes (disease): filed 5 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal AHR (target): filed 5 posts (harvested 2026-07-10)
+- 2026-07-10 — remember STAT3: profile opened for community signal
+- 2026-07-10 — community_signal STAT3 (target): filed 6 posts (harvested 2026-07-10)
+- 2026-07-10 — remember ATM: profile opened for community signal
+- 2026-07-10 — community_signal ATM (target): filed 5 posts (harvested 2026-07-10)
+- 2026-07-10 — remember DAP: profile opened for community signal
+- 2026-07-10 — community_signal DAP (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember IL4R: profile opened for community signal
+- 2026-07-10 — community_signal IL4R (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember STAT6: profile opened for community signal
+- 2026-07-10 — community_signal STAT6 (target): filed 3 posts (harvested 2026-07-10)
+- 2026-07-10 — remember UBC: profile opened for community signal
+- 2026-07-10 — community_signal UBC (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember PTEN: profile opened for community signal
+- 2026-07-10 — community_signal PTEN (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember PTPN1: profile opened for community signal
+- 2026-07-10 — community_signal PTPN1 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember BHLHE40: profile opened for community signal
+- 2026-07-10 — community_signal BHLHE40 (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CREBBP: profile opened for community signal
+- 2026-07-10 — community_signal CREBBP (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember ICOS: profile opened for community signal
+- 2026-07-10 — community_signal ICOS (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember TET2: profile opened for community signal
+- 2026-07-10 — community_signal TET2 (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember TNFAIP3: profile opened for community signal
+- 2026-07-10 — community_signal TNFAIP3 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CD28: profile opened for community signal
+- 2026-07-10 — community_signal CD28 (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember IRF8: profile opened for community signal
+- 2026-07-10 — community_signal IRF8 (target): filed 3 posts (harvested 2026-07-10)
+- 2026-07-10 — remember FAS: profile opened for community signal
+- 2026-07-10 — community_signal FAS (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember JAK2: profile opened for community signal
+- 2026-07-10 — community_signal JAK2 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CD44: profile opened for community signal
+- 2026-07-10 — community_signal CD44 (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember IL13: profile opened for community signal
+- 2026-07-10 — community_signal IL13 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember LEF1: profile opened for community signal
+- 2026-07-10 — community_signal LEF1 (target): filed 3 posts (harvested 2026-07-10)
+- 2026-07-10 — remember SOCS1: profile opened for community signal
+- 2026-07-10 — community_signal SOCS1 (target): filed 3 posts (harvested 2026-07-10)
+- 2026-07-10 — remember BATF3: profile opened for community signal
+- 2026-07-10 — community_signal BATF3 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CCR2: profile opened for community signal
+- 2026-07-10 — community_signal CCR2 (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CD69: profile opened for community signal
+- 2026-07-10 — community_signal CD69 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CD83: profile opened for community signal
+- 2026-07-10 — community_signal CD83 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CIITA: profile opened for community signal
+- 2026-07-10 — community_signal CIITA (target): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CXCR4: profile opened for community signal
+- 2026-07-10 — community_signal CXCR4 (target): filed 6 posts (harvested 2026-07-10)
+- 2026-07-10 — remember SELL: profile opened for community signal
+- 2026-07-10 — community_signal SELL (target): filed 6 posts (harvested 2026-07-10)
+- 2026-07-10 — remember STAT1: profile opened for community signal
+- 2026-07-10 — community_signal STAT1 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember LGALS9: profile opened for community signal
+- 2026-07-10 — community_signal LGALS9 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember ITK: profile opened for community signal
+- 2026-07-10 — community_signal ITK (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember NAMPT: profile opened for community signal
+- 2026-07-10 — community_signal NAMPT (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CCR7: profile opened for community signal
+- 2026-07-10 — community_signal CCR7 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CARD11: profile opened for community signal
+- 2026-07-10 — community_signal CARD11 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember STING1: profile opened for community signal
+- 2026-07-10 — community_signal STING1 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CD47: profile opened for community signal
+- 2026-07-10 — community_signal CD47 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CCR5: profile opened for community signal
+- 2026-07-10 — community_signal CCR5 (target): filed 6 posts (harvested 2026-07-10)
+- 2026-07-10 — remember CCND1: profile opened for community signal
+- 2026-07-10 — community_signal CCND1 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember IRF1: profile opened for community signal
+- 2026-07-10 — community_signal IRF1 (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember UST: profile opened for community signal
+- 2026-07-10 — community_signal UST (target): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — remember DNMT3A: profile opened for community signal
+- 2026-07-10 — community_signal DNMT3A (target): filed 4 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal Th17 (topic): filed 8 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal Treg (topic): filed 8 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal T follicular helper (topic): filed 2 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal JAK-STAT (topic): filed 7 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal IL-23 (topic): filed 3 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal IL-17 (topic): filed 8 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal interferon signaling (topic): filed 4 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal TCR signaling (topic): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal immune checkpoint (topic): filed 8 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal T cell exhaustion (topic): filed 3 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal immunometabolism (topic): filed 1 posts (harvested 2026-07-10)
+- 2026-07-10 — community_signal cytokine signaling (topic): filed 4 posts (harvested 2026-07-10)

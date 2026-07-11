@@ -1,0 +1,46 @@
+{
+  "display_information": {
+    "name": "Target Explorer",
+    "description": "Trust-ranked CD4+ T-cell target leads for autoimmune disease, from a genome-scale CRISPRi Perturb-seq screen — with live community signal and a shared lab knowledge base.",
+    "background_color": "#141b2d"
+  },
+  "features": {
+    "bot_user": {
+      "display_name": "target-explorer",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/ask-target",
+        "description": "Trust-ranked T-cell target leads + what the field is saying this week",
+        "usage_hint": "rheumatoid arthritis",
+        "should_escape": false
+      },
+      {
+        "command": "/remember",
+        "description": "File a finding to the shared lab knowledge base",
+        "usage_hint": "DOT1L | RA lead, methyltransferase, pinometostat Ph2",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "app_mentions:read",
+        "chat:write",
+        "commands"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "bot_events": [
+        "app_mention"
+      ]
+    },
+    "socket_mode_enabled": true,
+    "org_deploy_enabled": false,
+    "token_rotation_enabled": false
+  }
+}
