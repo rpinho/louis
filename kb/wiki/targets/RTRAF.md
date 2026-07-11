@@ -1,0 +1,7 @@
+# RTRAF
+
+*CD4+ T-cell regulator — target profile. Data facts, novelty, mechanism, and scientist verdicts, each with provenance.*
+
+## Findings
+
+- **2026-07-11** (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. No approved or clinical-stage compound. RTRAF (C14orf166/hCLE/CGI-99) is an RNA-binding scaffold in the tRNA-ligase (RTCB) complex and an mRNA transport factor — no ligandable small-molecule matter; only research antibodies/recombinant protein exist (Boster, ProSpec).  Novelty: Genuine whitespace. Zero PubMed hits for RTRAF in type 1 diabetes and none in a CD4+/T-cell context. Known biology is non-immune: influenza-polymerase interaction (viral replication) and a prognostic marker in cervical cancer. Whitespace, but for a housekeeping RNA factor.  Field activity (who else is on this): None found — no labs, preprints, or trials on RTRAF in T1D or autoimmunity.  Assessment: Novel/whitespace but untractable (RNA-binding scaffold, no obvious ligandable pocket) with no CD4-specific mechanism beyond the screen co-cluster — low priority pending phenotype confirmation.  [cited: NCBI Gene 51637; GeneCards RTRAF; MGI:1915295; Human Protein Atlas ENSG00000087302; T1D/T-cell: none found]  — *source: Automated literature scan (parallel research agent - web/PubMed/ClinicalTrials/ChEMBL), 2026-07-11 - pre-verification LEAD to weigh, NOT manually confirmed*

@@ -368,3 +368,88 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — verdict KDM8 [rheumatoid arthritis]: C
 - 2026-07-11 — remember RIPK1 (rheumatoid arthritis): Stim48hr / module 54. Druggable: GSK2982772, a RIPK1 inhibitor (Ph2). 1 complete
 - 2026-07-11 — verdict RIPK1 [rheumatoid arthritis]: D
+- 2026-07-11 — remember DMRTA2 (atopic eczema): Druggability: none found — DMRTA2 (DMRT5) is a bare DMRT-family zinc-finger tran
+- 2026-07-11 — remember RBM33 (atopic eczema): Druggability: none found for RBM33 itself, but it sits in the druggable-adjacent
+- 2026-07-11 — remember PGS1 (atopic eczema): Druggability: none found — PGS1 (phosphatidylglycerophosphate synthase 1) is a h
+- 2026-07-11 — verdict HDAC7 [psoriasis]: B
+- 2026-07-11 — verdict GATA3 [psoriasis]: C
+- 2026-07-11 — remember SBNO1 (psoriasis): profile opened for a verdict
+- 2026-07-11 — verdict SBNO1 [psoriasis]: C
+- 2026-07-11 — remember TPD52 (psoriasis): profile opened for a verdict
+- 2026-07-11 — verdict TPD52 [psoriasis]: D
+- 2026-07-11 — remember PAN3 (psoriasis): profile opened for a verdict
+- 2026-07-11 — verdict PAN3 [psoriasis]: D
+- 2026-07-11 — remember TM2D1 (psoriasis): profile opened for a verdict
+- 2026-07-11 — verdict TM2D1 [psoriasis]: D
+- 2026-07-11 — remember CREB1 (ulcerative colitis): UC validation. Druggability: preclinical tool compounds only — 666-15 (selective
+- 2026-07-11 — remember IPO9 (ulcerative colitis): UC validation. Druggability: none found — no small-molecule inhibitor exists (im
+- 2026-07-11 — remember KEAP1 (ulcerative colitis): UC validation. Druggability: clinically validated pathway — dimethyl fumarate (a
+- 2026-07-11 — remember BPTF (ulcerative colitis): UC validation. Druggability: druggable epigenetic bromodomain, tool compounds on
+- 2026-07-11 — remember AMD1 (ulcerative colitis): UC validation. Druggability: sardomozide/SAM486A (AdoMetDC/AMD1 inhibitor) reach
+- 2026-07-11 — remember GLS (ulcerative colitis): UC validation. Druggability: telaglenastat/CB-839 — first-in-class selective ora
+- 2026-07-11 — verdict BPTF [ulcerative colitis]: B
+- 2026-07-11 — verdict GLS [ulcerative colitis]: B
+- 2026-07-11 — verdict KEAP1 [ulcerative colitis]: B
+- 2026-07-11 — verdict CREB1 [ulcerative colitis]: C
+- 2026-07-11 — verdict AMD1 [ulcerative colitis]: C
+- 2026-07-11 — verdict IPO9 [ulcerative colitis]: C
+- 2026-07-11 — remember RBPJ (asthma): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Indirect but real. RBP
+- 2026-07-11 — remember IPMK (asthma): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Druggable enzyme class
+- 2026-07-11 — remember STAT6 (asthma): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Highly druggable and c
+- 2026-07-11 — remember IL4R (asthma): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Maximally druggable — 
+- 2026-07-11 — remember PTEN (asthma): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: Poor and problematic. 
+- 2026-07-11 — remember DMRTA2 (asthma): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. DMRTA2 (a.
+- 2026-07-11 — remember BPTF (celiac disease): [AUTOMATED LIT-SCAN - grade A, UNVERIFIED]  Druggability: No approved/clinical d
+- 2026-07-11 — remember IPMK (celiac disease): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: No dedicated clinical-
+- 2026-07-11 — remember GLS (celiac disease): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Best clinically de-ris
+- 2026-07-11 — remember AMD1 (celiac disease): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Clinical-stage compoun
+- 2026-07-11 — remember FITM2 (celiac disease): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. FIT2 is a 
+- 2026-07-11 — remember LRBA (celiac disease): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. LRBA is a 
+- 2026-07-11 — remember PPCS (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: No human-selective dru
+- 2026-07-11 — remember IL2RB (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Yes — well-drugged. Re
+- 2026-07-11 — remember IPO9 (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found for IPO9 sp
+- 2026-07-11 — remember RTRAF (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. No approve
+- 2026-07-11 — remember TXNL4B (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. No approve
+- 2026-07-11 — remember NAF1 (type 1 diabetes mellitus): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. No approve
+- 2026-07-11 — remember HDAC7 (psoriasis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Yes at class level (no
+- 2026-07-11 — remember GATA3 (psoriasis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Yes, clinical-stage. S
+- 2026-07-11 — remember SBNO1 (psoriasis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. Strawberry
+- 2026-07-11 — remember TPD52 (psoriasis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found as an inhib
+- 2026-07-11 — remember PAN3 (psoriasis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. PAN3 is th
+- 2026-07-11 — remember TM2D1 (psoriasis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. TM2 domain
+- 2026-07-11 — remember RBPJ (atopic eczema): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: No approved or clinica
+- 2026-07-11 — remember STAT6 (atopic eczema): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Highly druggable, clin
+- 2026-07-11 — remember PGS1 (atopic eczema): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. PGS1 (phos
+- 2026-07-11 — remember RBM33 (atopic eczema): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found for RBM33 i
+- 2026-07-11 — remember IL4R (atopic eczema): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: Already an APPROVED dr
+- 2026-07-11 — remember DMRTA2 (atopic eczema): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. DMRTA2 (DM
+- 2026-07-11 — remember CREB1 (ankylosing spondylitis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Tool-compound stage on
+- 2026-07-11 — remember IPO9 (ankylosing spondylitis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: No selective inhibitor
+- 2026-07-11 — remember KEAP1 (ankylosing spondylitis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Excellent — this node 
+- 2026-07-11 — remember UBE2V2 (ankylosing spondylitis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: No approved or clinica
+- 2026-07-11 — remember TM2D1 (ankylosing spondylitis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: No drug and no ligand 
+- 2026-07-11 — remember LBH (ankylosing spondylitis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: No drug or ligand. LBH
+- 2026-07-11 — remember IPMK (Hashimoto's thyroiditis): [AUTOMATED LIT-SCAN - grade A, UNVERIFIED]  Druggability: Chemically tractable E
+- 2026-07-11 — remember KLF2 (Hashimoto's thyroiditis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: No direct KLF2 binder 
+- 2026-07-11 — remember BHLHE40 (Hashimoto's thyroiditis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. bHLH trans
+- 2026-07-11 — remember STAT5B (Hashimoto's thyroiditis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Pathway is highly drug
+- 2026-07-11 — remember EGR2 (Hashimoto's thyroiditis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. Zinc-finge
+- 2026-07-11 — remember CNOT4 (Hashimoto's thyroiditis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. RING-type 
+- 2026-07-11 — remember DOT1L (multiple sclerosis): [AUTOMATED LIT-SCAN - grade A, UNVERIFIED]  Druggability: Pinometostat (EPZ-5676
+- 2026-07-11 — remember MEN1 (multiple sclerosis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Best-in-class. Two FDA
+- 2026-07-11 — remember HDAC7 (multiple sclerosis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: No approved or selecti
+- 2026-07-11 — remember DNAJC24 (multiple sclerosis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found. No inhibit
+- 2026-07-11 — remember ARRDC4 (multiple sclerosis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found. No inhibit
+- 2026-07-11 — remember ZDHHC12 (multiple sclerosis): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None found (selective/
+- 2026-07-11 — remember INSR (Crohn's disease): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Clinical-stage (oncolo
+- 2026-07-11 — remember IL2RB (Crohn's disease): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Strong / clinical-stag
+- 2026-07-11 — remember IL21 (Crohn's disease): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Highly druggable. NNC0
+- 2026-07-11 — remember ZMYM2 (Crohn's disease): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: No direct ZMYM2 drug f
+- 2026-07-11 — remember RHOF (Crohn's disease): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Poor / none found. Rho
+- 2026-07-11 — remember RAD50 (Crohn's disease): [AUTOMATED LIT-SCAN - grade D, UNVERIFIED]  Druggability: None clinical. Only th
+- 2026-07-11 — remember BPTF (ulcerative colitis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Druggable epigenetic b
+- 2026-07-11 — remember GLS (ulcerative colitis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Clinical-stage: telagl
+- 2026-07-11 — remember KEAP1 (ulcerative colitis): [AUTOMATED LIT-SCAN - grade B, UNVERIFIED]  Druggability: Best-de-risked — clini
+- 2026-07-11 — remember CREB1 (ulcerative colitis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Preclinical tool compo
+- 2026-07-11 — remember AMD1 (ulcerative colitis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: Druggable family but d
+- 2026-07-11 — remember IPO9 (ulcerative colitis): [AUTOMATED LIT-SCAN - grade C, UNVERIFIED]  Druggability: None found — no small-
