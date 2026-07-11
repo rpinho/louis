@@ -37,18 +37,19 @@ _DOI_RE = re.compile(r"(10\.\d{4,9}/[-._;()/:a-zA-Z0-9]+)")
 
 def _linkify(text: str) -> str:
     """
-    Provenance must be AUDITABLE: make bare DOIs clickable (doi.org resolves any DOI), so a citation
-    the user reads is a link they can click and judge for themselves. Existing links are left alone.
+    Provenance must be AUDITABLE: turn a bare DOI into a full, VISIBLE https://doi.org URL — not a
+    markdown link (whose display text hides the URL and, in some file-preview panes, resolves the
+    click as a local path). A raw URL is clickable in GitHub / chat / Slack and copy-pasteable
+    everywhere, so an auditor always sees exactly where a citation points.
     """
     def repl(m):
         raw = m.group(1)
         doi = raw.rstrip(".,;)")
         trail = raw[len(doi):]
         pre = text[max(0, m.start() - 9):m.start()]
-        if ("doi.org/" in pre or pre.endswith("/") or pre.endswith("](")
-                or pre.endswith("[")):  # already a link target, URL path, or link display text
+        if "doi.org/" in pre or pre.endswith("/"):   # already inside a URL
             return raw
-        return f"[{doi}](https://doi.org/{doi}){trail}"
+        return f"https://doi.org/{doi}{trail}"
     return _DOI_RE.sub(repl, text)
 
 
@@ -156,9 +157,9 @@ def remember_signal(entity: str, posts: list[dict], query: str = "",
         metric = f"♥{p.get('likes', 0)}"
         line = (f"- **@{p.get('handle', '?')}**{flag} ({p.get('author', '?')}) · "
                 f"{p.get('date', '?')} · {metric}: {p.get('text', '')[:240]} "
-                f"— [tweet]({p.get('url', '')})")
+                f"— {p.get('url', '')}")                          # raw, visible, copy-pasteable URL
         for lk in p.get("links", [])[:3]:      # expanded URLs the post points to (paper/lab/video)
-            line += f" · [↗]({lk})"
+            line += f" · {lk}"
         lines.append(line)
     with path.open("a") as f:
         f.write("\n".join(lines) + "\n")
