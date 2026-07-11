@@ -76,15 +76,23 @@ def author_feed(handle: str, limit: int = 40) -> list:
     return [_post_from(it) for it in feed]
 
 
-def _session() -> str | None:
-    """Authenticate for keyword search, if BSKY_HANDLE + BSKY_APP_PASSWORD are set."""
+_JWT_CACHE = None
+
+
+def _session(force: bool = False) -> str | None:
+    """Authenticate ONCE per process and cache the token — createSession is rate-limited, so we must
+    NOT re-login on every search (that was a bug that rate-limited the auth endpoint)."""
+    global _JWT_CACHE
+    if _JWT_CACHE and not force:
+        return _JWT_CACHE
     handle, pw = os.environ.get("BSKY_HANDLE"), os.environ.get("BSKY_APP_PASSWORD")
     if not (handle and pw):
         return None
     d = _curl(f"{_PDS}/com.atproto.server.createSession", method="POST",
               headers=["Content-Type: application/json"],
               data=json.dumps({"identifier": handle, "password": pw}))
-    return d.get("accessJwt")
+    _JWT_CACHE = d.get("accessJwt")
+    return _JWT_CACHE
 
 
 def search_posts(query: str, limit: int = 25) -> list:
