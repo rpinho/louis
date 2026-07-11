@@ -148,3 +148,5 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember IKZF1 (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR/ARHP 2013, #1637): 'IKZF1 Modulates PP2Ac Expression Th
 - 2026-07-11 — remember CCR5 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2022, #1729): 'SLAMF4+ CCR5+ Effector Memor
 - 2026-07-11 — remember CCR5 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2017, #2231): 'MCC22, a Novel Compound That Target
+- 2026-07-11 — community_signal systemic lupus erythematosus (disease): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal asthma (disease): filed 7 posts (harvested 2026-07-11)
