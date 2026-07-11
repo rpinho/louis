@@ -15,3 +15,6 @@ kb/_reddit_swept.txt
 
 # Hackathon session recordings (Anthropic gated content) — local only
 transcripts/
+
+# Downloaded artifacts staging (Claude Science exports, etc.) — local only
+_inbox/
