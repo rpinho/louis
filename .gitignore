@@ -10,3 +10,4 @@ __pycache__/
 build/
 dist/
 .secrets/
+kb/_bluesky_swept.txt

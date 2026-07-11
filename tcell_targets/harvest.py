@@ -328,11 +328,21 @@ def harvest_bluesky(terms=None, per_top=5, pause=0.7, limit=None, verbose=True):
     terms = terms or bluesky_terms()
     today = datetime.now().strftime("%Y-%m-%d")
     paths = {"target": kb._target_path, "disease": kb._disease_path, "topic": kb._topic_path}
+    # Swept-ledger: record EVERY attempted lead (even 0-yield) so the tail isn't re-swept forever
+    # (a baked profile is the marker for hits; this covers the misses). Resets daily.
+    ledger_file = kb.KB_DIR / "_bluesky_swept.txt"
+    ledger = set()
+    if ledger_file.exists():
+        rows = ledger_file.read_text().splitlines()
+        if rows and rows[0] == today:
+            ledger = set(rows[1:])
     filed, done = {}, 0
     for term, entity, kind in terms:
+        if entity in ledger:
+            continue
         p = paths[kind](entity)
         if p.exists() and f"Community signal (Bluesky) — harvested {today}" in p.read_text():
-            continue  # already swept today
+            ledger.add(entity); continue          # already baked -> mark done
         posts = _bsky_filter(bluesky.search_posts(term, limit=25), per_top)
         if posts:
             kb.remember_signal(entity, posts, query=f"Bluesky searchPosts: {term}",
@@ -340,10 +350,12 @@ def harvest_bluesky(terms=None, per_top=5, pause=0.7, limit=None, verbose=True):
             filed[entity] = len(posts)
             if verbose:
                 print(f"  {term:<28} -> {entity} ({kind}): {len(posts)}", flush=True)
+        ledger.add(entity)                          # mark attempted (hit OR miss)
         done += 1
         if limit and done >= limit:
             break
         time.sleep(pause)
+    ledger_file.write_text(today + "\n" + "\n".join(sorted(ledger)))
     kb.reindex()
     print(f"Bluesky: filed {sum(filed.values())} posts across {len(filed)} leads (swept {done} terms).")
     return filed
