@@ -411,9 +411,12 @@ def reddit_terms():
 def harvest_reddit(terms=None, per_top=5, pause=0.8, limit=None, verbose=True):
     """Reddit research-subreddit sweep of the leads -> filed with provenance. Idempotent per day."""
     from . import reddit
-    if not reddit._token():
-        print("Reddit: no auth — set REDDIT_CLIENT_ID/REDDIT_CLIENT_SECRET (source .secrets/reddit.env).")
+    if not reddit.curl_available():
+        print("Reddit: curl unavailable — cannot reach the API.")
         return {}
+    mode = "OAuth" if reddit._token() else "public .json (no app; set REDDIT_CLIENT_ID/SECRET to upgrade)"
+    if verbose:
+        print(f"Reddit: auth mode = {mode}", flush=True)
     terms = terms or reddit_terms()
     today = datetime.now().strftime("%Y-%m-%d")
     paths = {"target": kb._target_path, "disease": kb._disease_path, "topic": kb._topic_path}

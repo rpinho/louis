@@ -25,6 +25,7 @@ from urllib.parse import quote
 
 _TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
 _OAUTH = "https://oauth.reddit.com"
+_PUBLIC = "https://www.reddit.com"      # unauthenticated .json search — works with no app, just rate-limited harder
 
 
 def _ua() -> str:
@@ -113,13 +114,14 @@ RESEARCH_SUBS = [
 
 
 def search_subreddit(subreddit: str, query: str, limit: int = 25, period: str = "year") -> list:
-    """Search within one subreddit (restrict_sr) — recent, relevance-ranked."""
+    """Search within one subreddit (restrict_sr), relevance-ranked. Uses OAuth if creds are set
+    (higher/steadier rate limit); otherwise falls back to the public `.json` endpoint (no app needed)."""
+    q = (f"search?q={quote(query)}&restrict_sr=1&sort=relevance&t={period}&limit={limit}")
     tok = _token()
-    if not tok:
-        return []
-    url = (f"{_OAUTH}/r/{quote(subreddit)}/search?q={quote(query)}&restrict_sr=1"
-           f"&sort=relevance&t={period}&limit={limit}")
-    d = _curl(url, headers=[f"Authorization: bearer {tok}"])
+    if tok:
+        d = _curl(f"{_OAUTH}/r/{quote(subreddit)}/{q}", headers=[f"Authorization: bearer {tok}"])
+    else:
+        d = _curl(f"{_PUBLIC}/r/{quote(subreddit)}/{q.replace('search?', 'search.json?')}")
     return [_post_from(c) for c in d.get("data", {}).get("children", [])]
 
 
@@ -130,10 +132,12 @@ def search_research(query: str, limit: int = 25, period: str = "all", subs=None)
 
 
 def search_all(query: str, limit: int = 25, period: str = "year") -> list:
-    """Search across all of Reddit — needs the same token."""
+    """Search across all of Reddit. OAuth if creds are set, else the public `.json` fallback."""
     tok = _token()
-    if not tok:
-        return []
-    url = f"{_OAUTH}/search?q={quote(query)}&sort=relevance&t={period}&limit={limit}"
-    d = _curl(url, headers=[f"Authorization: bearer {tok}"])
+    if tok:
+        url = f"{_OAUTH}/search?q={quote(query)}&sort=relevance&t={period}&limit={limit}"
+        d = _curl(url, headers=[f"Authorization: bearer {tok}"])
+    else:
+        url = f"{_PUBLIC}/search.json?q={quote(query)}&sort=relevance&t={period}&limit={limit}"
+        d = _curl(url)
     return [_post_from(c) for c in d.get("data", {}).get("children", [])]
