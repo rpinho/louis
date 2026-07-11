@@ -1,0 +1,16 @@
+# psoriasis
+
+*Autoimmune disease profile — enriched T-cell programs, candidate targets, and community signal, each with provenance.*
+
+
+## Community signal (X/Twitter) — harvested 2026-07-11
+
+*Query: `psoriasis (Treg OR FOXP3 OR Th17 OR "CD4 T" OR "single cell" OR scRNA OR CRISPR OR preprint OR GWAS OR "transcription factor" OR cytokine OR checkpoint) lang:en -is:retweet`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@andrewcaravello** (Andrew Caravello, DO) · 2026-07-07 · ♥1: Thank you, Ben. You called it relevant to autoimmunity, so here is exactly how.  𝗢𝗻𝗲 𝗜𝗻𝘀𝘁𝗿𝘂𝗰𝘁𝗼𝗿, 𝗠𝗮𝗻𝘆 𝗥𝗼𝗼𝗺𝘀  Bryan has framed his diagnosis as three linked problems, iron that would not stick, an autoimmune thyroid he has managed for decade — [tweet](https://x.com/andrewcaravello/status/2074311979141935302)
+- **@AllergyEaaci** (Allergy EAACI) · 2026-07-08 · ♥5: The #skin, as the body's largest immune organ, functions as a critical #barrier between host tissues and the external environment. #Disruption of this interface - whether by environmental pollutants, pathogens, or physical damage - triggers — [tweet](https://x.com/AllergyEaaci/status/2074883180260155776)
+- **@AllergyEaaci** (Allergy EAACI) · 2026-07-10 · ♥4: Allergy provides the readers with 26 free and open access articles in the July issue! Check out the articles and download freely with one click on the doi link.  1. Godsell, J.D. and Trubiano, J.A. (2026), Adrenaline, Anaphylaxis, and Exper — [tweet](https://x.com/AllergyEaaci/status/2075503786383102144) · [↗](http://doi.org/10.1111/all.70354) · [↗](http://doi.org/10.1111/all.70324) · [↗](http://doi.org/10.1111/all.70133)
+- **@ScienceCrisp** ⭐ (CRISP_SCIENCE) · 2026-07-09 · ♥1: NEWS "Surprising drug targets for psoriasis emerge from comprehensive CRISPR study of human skin cells" Biohub. 2026-07-08. https://t.co/VKEZRvRvS5 Topical zileuton, an ALOX5 inhibitor, and cligosiban, an OXTR antagonist, suppress imiquimod — [tweet](https://x.com/ScienceCrisp/status/2075364936054952114) · [↗](https://biohub.org/news/psoriasis-drug-targets-crispr-screen/)
+- **@ScienceCrisp** ⭐ (CRISP_SCIENCE) · 2026-07-09 · ♥0: “AI-guided CRISPR screening reveals therapeutic targets in psoriasis.” Zhao C, Shih M [..] Kelley SO, Abdrabou AM [+12]. Nat Commun. 2026-07-06. https://t.co/ruVc3cIcCn  ... Genome-wide #CRISPR-Cas9 KO screen in primary human epidermal kera — [tweet](https://x.com/ScienceCrisp/status/2075365220600692801) · [↗](https://doi.org/10.1038/s41467-026-75249-5)
+- **@mdphdintraining** ⭐ (Sinibaldo R. Romero Arocha) · 2026-07-05 · ♥0: I’m excited to share that I’ll be presenting a poster at the 2026 @GrappaO Annual Meeting &amp; Trainee Symposium in Lisbon, Portugal.  My poster focuses on immune remodeling in psoriasis, using single-cell and multimomic approaches to stud — [tweet](https://x.com/mdphdintraining/status/2073883709384658970)
+- **@DermTimesNow** (Dermatology Times) · 2026-07-09 · ♥3: 📚 New research suggests #psoriasis is more immunologically diverse than previously thought. A newly identified dual Th17/Type 2 inflammatory endotype may help explain why some patients respond differently to biologics.  https://t.co/Ziu9SMO — [tweet](https://x.com/DermTimesNow/status/2075294958815252737) · [↗](https://hubs.li/Q04p1hcM0)

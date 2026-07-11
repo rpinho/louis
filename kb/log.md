@@ -150,3 +150,11 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember CCR5 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2017, #2231): 'MCC22, a Novel Compound That Target
 - 2026-07-11 — community_signal systemic lupus erythematosus (disease): filed 1 posts (harvested 2026-07-11)
 - 2026-07-11 — community_signal asthma (disease): filed 7 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal Hashimoto's thyroiditis (disease): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal age-related macular degeneration (disease): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal autoimmune disease (disease): filed 4 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal celiac disease (disease): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal chronic kidney disease (disease): filed 1 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal inflammatory bowel disease (disease): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal psoriasis (disease): filed 7 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal ulcerative colitis (disease): filed 1 posts (harvested 2026-07-11)
