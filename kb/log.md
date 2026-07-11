@@ -130,3 +130,11 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember DOT1L (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2023, #1589, acrabstracts.org — pre-paper, 
 - 2026-07-11 — remember DNMT3A (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2023, #1589, acrabstracts.org — pre-paper, 
 - 2026-07-11 — remember TET2 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2023, #2451, acrabstracts.org — pre-paper):
+- 2026-07-11 — remember STAT3 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2024, #1845): 'Treg Expansion and IL-6 Indu
+- 2026-07-11 — remember STAT3 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2015, #1936): 'STAT3-Regulated Gene Expression in 
+- 2026-07-11 — remember AHR (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR/ARHP 2016, #1907): 'T-Bet Regulates AhR-Mediated Th-17 
+- 2026-07-11 — remember AHR (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2025, #0800): 'Microbiota-Derived Indole Pr
+- 2026-07-11 — remember AHR (systemic lupus erythematosus): CONFERENCE ABSTRACT (ACR Convergence 2023, #1580): 'CXCL13+ T Cell Differentiati
+- 2026-07-11 — remember GLS (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2020, #0968): 'Combined Inhibition of Autop
+- 2026-07-11 — remember CD28 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2024, #2254): 'Phase 1 Study of ZB004, a CT
+- 2026-07-11 — remember RIPK1 (rheumatoid arthritis): CONFERENCE ABSTRACT (ACR Convergence 2024, #1682): 'Early Development of Ocaduse

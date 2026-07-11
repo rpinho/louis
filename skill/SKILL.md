@@ -93,19 +93,22 @@ is actively discussing. Treat posts as leads to weigh, not validated claims.
 fresh chatter where X access exists (Claude Code / Desktop). In this sandbox there is no X access,
 so read the **baked** signal from the KB via `kb.recall`.
 
-**Follow the pointers, and reach the PRE-PAPER sources (this is the whole product — be the
-"phone-a-friend" that knows what isn't published yet).** For each lead, don't stop at the tweet —
-chase it and pull the pre-paper record the published-literature connectors lag on:
-- **Follow the links** in the community posts (each post carries expanded URLs). Papers → pull the
-  abstract; labs → who's working on it; videos/long-forms → the content. Use your connectors /
-  web fetch; **Europe PMC** (open) resolves most DOIs, including **bioRxiv/medRxiv preprints**.
-- **Preprints** — search Europe PMC with `SRC:PPR` (or OpenAlex) for the gene + a T-cell/autoimmune
-  context: the freshest bioRxiv/medRxiv work, often weeks ahead of PubMed.
-- **Conferences** — the exact gap ("presenting at a conference, not published yet"). Rheumatology
-  abstracts are searchable at **acrabstracts.org** (ACR Convergence) and EULAR's *Annals* supplement;
-  immunology at AAI/FOCIS/Keystone. Conference abstracts are pre-paper knowledge.
-Record what you find with `kb.remember`, and **always label its confidence** — peer-reviewed paper vs.
-preprint vs. conference abstract (a preprint/abstract is a lead, not an established result).
+**Be the "phone-a-friend" that knows what isn't in a database yet.** For each lead, don't stop at the
+tweet — chase it, and know which sources you already have vs. which are baked in because you can't reach them:
+- **Follow the links** in the community posts (each carries expanded URLs). Papers → pull the abstract
+  with **your own connectors** (PubMed, bioRxiv, OpenAlex, Crossref — all on your allowlist); labs →
+  who's working on it. Preprints are **not** a gap: search your **bioRxiv / OpenAlex** connectors
+  (`SRC:PPR`) directly for the freshest work — the tweet just tells you *which* one the field is excited about.
+- **The off-allowlist sources are the point.** Your sandbox can only reach allowlisted scientific
+  domains — so **X/Twitter** and **conference-abstract sites are unreachable from here**, which is exactly
+  why they're **baked into this KB**. Read them via `kb.recall`; that social + conference signal (e.g. the
+  ACR Convergence abstract linking DNMT3A and DOT1L) is what you *can't* get any other way in this sandbox.
+- **Conferences** are pre-paper knowledge — the "presenting at a conference, not published yet" gap.
+  Baked in; recall them per gene. Searchable archives (off your allowlist, so harvested externally and
+  baked): **acrabstracts.org** (ACR Convergence), **scientific.sparx-ip.net/archiveeular** (EULAR,
+  2001+), and AAI/FOCIS/Keystone for immunology.
+Record anything new with `kb.remember`, and **always label its confidence** — peer-reviewed paper vs.
+preprint vs. conference abstract vs. a tweet (a preprint/abstract/post is a lead, not an established result).
 
 ## 4 — REMEMBER (so nothing is re-derived, and it's shareable)
 
