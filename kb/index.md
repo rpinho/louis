@@ -97,3 +97,4 @@ Target profiles (one row per gene). Read this first.
 - [RASA2](wiki/targets/RASA2.md)
 - [IL2RB](wiki/targets/IL2RB.md)
 - [IL7R](wiki/targets/IL7R.md)
+- [ID2](wiki/targets/ID2.md)

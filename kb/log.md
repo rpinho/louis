@@ -270,3 +270,6 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — remember IL7R: profile opened for community signal
 - 2026-07-11 — community_signal IL7R (target): filed 1 posts (harvested 2026-07-11)
 - 2026-07-11 — community_signal STAT6 (target): filed 3 posts (harvested 2026-07-11)
+- 2026-07-11 — remember ID2: profile opened for community signal
+- 2026-07-11 — community_signal ID2 (target): filed 2 posts (harvested 2026-07-11)
+- 2026-07-11 — community_signal PTEN (target): filed 5 posts (harvested 2026-07-11)
