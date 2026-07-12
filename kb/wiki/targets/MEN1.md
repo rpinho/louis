@@ -10,6 +10,11 @@
 - **2026-07-10** (rheumatoid arthritis): Human genetics (GWAS Catalog): 10 total assoc, 0 immune, 0 RA  — *source: Claude Science validation (Open Targets, ChEMBL, GWAS Catalog, PubMed, ClinicalTrials.gov), 2026-07-11*
 - **2026-07-10** (rheumatoid arthritis): RA/CD4 novelty: 4 RA papers, 0 RA+T-cell — genuinely novel in RA; but menin's 56 'T-cell' papers are AML-context, CD4 biology unestablished. Already pursued for RA? No RA/autoimmune trials.  — *source: Claude Science validation (Open Targets, ChEMBL, GWAS Catalog, PubMed, ClinicalTrials.gov), 2026-07-11*
 - **VERDICT 2026-07-10** (rheumatoid arthritis): **B** — Outstanding druggability (approved-class inhibitor) + RA whitespace, but CD4/RA mechanism is speculative — no established menin→CD4 differentiation edge. Interesting parallel to DOT1L (both resting-module epigenetic handles wired to IL21R/PTGER4). Worth a knockdown test, lower mechanistic prior than DOT1L.
+- **2026-07-11** (multiple sclerosis): Co-clusters with MS GWAS module 38 (Rest): risk genes CD6, PTGER4, ETS1, CD28, SATB1. Medium-trust handle — KD verified but off-target guide risk. Module-level association only.  — *source: tcell-target-explorer Perturb-seq engine*
+- **2026-07-11** (multiple sclerosis): Highly druggable: approved selective menin inhibitor revumenib (2024, leukemia) + ziftomenib (Ph1/2). No Open Targets MS association (0 rows).  — *source: ChEMBL + Open Targets Platform*
+- **2026-07-11** (multiple sclerosis): Novel for MS but biology thin: ~1 PubMed MS/T-cell hit. Speculative module hypothesis.  — *source: PubMed*
+- **2026-07-11** (multiple sclerosis): No MS clinical trials.  — *source: ClinicalTrials.gov*
+- **VERDICT 2026-07-11** (multiple sclerosis): **C** — Highly druggable — approved selective inhibitor (revumenib, 2024) — and genuinely novel for MS, but evidence is thin: Medium-trust KD (off-target guide risk), ~no MS/T-cell biology, no OT MS association. Speculative module hypothesis.
 
 ## Community signal (X/Twitter) — harvested 2026-07-11
 

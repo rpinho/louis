@@ -5,6 +5,11 @@
 ## Findings
 
 - **2026-07-11**: profile opened for community signal  — *source: community_signal*
+- **2026-07-11** (multiple sclerosis): Co-clusters with MS GWAS module 59 (Stim8hr): risk genes IRF8, REL, BACH2, RRAS2, CXCR4, CD28. High-trust handle (KD verified, clean guide). Module-level co-cluster association, not a proven gene-level edge.  — *source: tcell-target-explorer Perturb-seq engine (Zhu/Dann/Pritchard/Marson 2025)*
+- **2026-07-11** (multiple sclerosis): Open Targets small-molecule tractability includes an 'Approved Drug' bucket, but this reflects pan-HDAC inhibitors (e.g. vorinostat, ChEMBL98, Ph4) — no HDAC7-selective clinical compound exists. MS association is literature-only (score 0.010, datatype=literature).  — *source: Open Targets Platform + ChEMBL*
+- **2026-07-11** (multiple sclerosis): Understudied for MS: 2 PubMed MS papers, 1 MS+T-cell. Yet strongest orthogonal anchor of the set — MS-protective HDAC7 coding variant with an essential role in CD4+ regulatory T cells (PMID 36516268, 2022).  — *source: PubMed (verified titles)*
+- **2026-07-11** (multiple sclerosis): No MS clinical trials.  — *source: ClinicalTrials.gov*
+- **VERDICT 2026-07-11** (multiple sclerosis): **A** — Best novel+validated CD4 lead: understudied for MS (2 papers) yet the strongest orthogonal anchor of the set — an MS-protective HDAC7 coding variant with an essential role in CD4+ Tregs (Levine 2022) — plus high-trust clean KD and a highly druggable family. Gap: no HDAC7-selective clinical compound (pan-HDAC only); OT MS is literature-only.
 
 ## Community signal (Bluesky) — harvested 2026-07-11
 
