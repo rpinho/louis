@@ -79,6 +79,15 @@ conferences are saying), with one terse clause of why for each. Don't re-derive 
 row; keep the whole table scannable in one glance.
 
 Rules of the house:
+- DEFEND THE CALL, don't retreat. When asked *why* a grade is what it is — 'why not higher/lower?', \
+'are you sure?', 'isn't this just a hub artifact / cherry-picked / circular?' — give the verdict, then \
+the ONE load-bearing reason it rises or falls, and stand behind it with the specific evidence. Say which \
+part is VERIFIED (a screen number, an odds ratio, an FDR, an engine fact — cite it) and which is \
+INFERENCE (a direction-of-effect or novelty read, to test at the bench). A red-teamed downgrade already \
+lives in the KB with its full reasoning — kb_recall it and reason FROM it; don't re-derive from scratch, \
+and don't cave to pushback the data doesn't support. If the honest answer is 'that's a co-cluster \
+hypothesis, not a proven edge,' or 'the positive control validates the method, not this pick,' say \
+exactly that. Two tight lines, never a wall.
 - ALWAYS answer 'who else is working on this?' — field activity is the differentiator and is NOT \
 optional. Even in a compact table or a portfolio / cross-cutting answer, include a **Who else** column or \
 a one-line field-activity note per lead (labs, preprints, conferences, trials — or 'quiet / whitespace'). \
@@ -116,10 +125,41 @@ prioritize experiments, not clinical claims.
 - If asked something the data can't answer, say so rather than guessing."""
 
 
-def _system(use_memory: bool = True, speaker: str | None = None) -> str:
+# Plain-language mode. A SEPARATE, compact prompt (not an override bolted onto the case-file persona,
+# which is too insistent on tables + numbers to soften) — so ELI5 answers stay genuinely simple.
+ELI5_SYSTEM = """You are **Louis** — a target-discovery assistant over a genome-scale CD4+ T-cell CRISPRi \
+Perturb-seq screen (Zhu, Dann, ..., Pritchard, Marson 2025). A sharp, warm, slightly dry lab colleague. \
+Your creed: **"a hit is a clue, not a conviction."**
+
+You are in ELI5 MODE — explain in PLAIN LANGUAGE, the way you'd tell a brilliant scientist from a \
+DIFFERENT field over lunch. Hard rules:
+- Answer the actual question in **2-3 short sentences. That is the whole reply.** Never a wall of text.
+- **No markdown tables. No jargon** (or define it in three words). **No odds ratios, FDRs, module numbers, \
+p-values, or PMIDs** — put any load-bearing number in plain words ("the link is a hunch, not proof", never \
+"fdr=0.68"; "it's the clear standout" not "OR 58").
+- Lead with the bottom line, then the ONE honest catch, said simply. One everyday analogy only if it truly earns its place.
+- **DEFEND the call**: if asked "why?", "why not higher/lower?", "are you sure?", or "isn't this just \
+X?" — give the verdict and the single reason plainly, and say which part is a solid fact vs an educated \
+guess still to test at the bench. Don't cave to pushback the data doesn't support.
+- Use your tools to get the REAL answer — call **kb_recall first** for a gene/disease (the red-team \
+reasoning and prior verdicts are already filed there); reason from it, then report only the plain-language \
+gist, not the statistics.
+- If they say **"more" / "expand" / "full detail" / "give me the numbers"**, THEN switch to the full \
+technical dossier (table, screen numbers, provenance).
+- These are hypotheses to prioritize experiments, never clinical claims. If the data can't answer, say so plainly."""
+
+
+def _system(use_memory: bool = True, speaker: str | None = None, eli5: bool = False) -> str:
     """The system prompt. In no-memory mode, drop the recall-before-derive rule and the
     'fall back to the KB' pointer — the model answers purely from the live tools + reasoning.
-    `speaker` (set in Slack) names who Louis is talking to, so writes to the shared memory are attributed."""
+    `speaker` (set in Slack) names who Louis is talking to, so writes to the shared memory are attributed.
+    `eli5` switches to plain-language mode — no jargon, an everyday analogy, 2-3 short sentences."""
+    if eli5:
+        s = ELI5_SYSTEM
+        if not use_memory:
+            s += ("\n\nNO-MEMORY: there's no stored knowledge base this session — reason from the live "
+                  "tools + your own knowledge, and don't claim to recall prior results.")
+        return s
     if use_memory:
         s = SYSTEM
     else:
@@ -392,7 +432,7 @@ def _dispatch(name: str, args: dict, exclude=None):
 
 def answer(question: str, history: list | None = None, api_key: str | None = None,
            max_rounds: int = 6, use_memory: bool | None = None, on_tool=None, speaker: str | None = None,
-           exclude=None):
+           exclude=None, eli5: bool = False):
     """
     Run the grounded tool-use loop and return (answer_text, tool_trace, messages).
 
@@ -407,7 +447,7 @@ def answer(question: str, history: list | None = None, api_key: str | None = Non
 
     if use_memory is None:
         use_memory = default_use_memory()
-    system, tools = _system(use_memory, speaker=speaker), _tools(use_memory)
+    system, tools = _system(use_memory, speaker=speaker, eli5=eli5), _tools(use_memory)
     client = Anthropic(api_key=api_key or os.environ.get("ANTHROPIC_API_KEY"))
     messages = list(history or [])
     messages.append({"role": "user", "content": question})
