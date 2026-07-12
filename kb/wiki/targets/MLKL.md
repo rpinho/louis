@@ -5,6 +5,12 @@
 ## Findings
 
 - **2026-07-11**: profile opened for community signal  — *source: community_signal*
+- **2026-07-11** (Crohn's disease): Co-clusters in module 78 (fires in Rest, module OR=4.7, FDR=1.2e-04) with IBD/Crohn's GWAS risk genes; network out-degree 79. MODULE-LEVEL CO-CLUSTER ASSOCIATION — candidate upstream controller to test, NOT a proven gene-level edge.  — *source: Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq (tcell-target-explorer disease_mechanisms)*
+- **2026-07-11** (Crohn's disease): Open Targets Crohn's: indirect(ontology-propagated) overall=0.874 vs DIRECT-only=0.006 (IBD direct=0.122). Gap = propagation from related diseases; direct score is the honest disease link.  — *source: Open Targets Platform GraphQL (enableIndirect true vs false)*
+- **2026-07-11** (Crohn's disease): Tractability (SM buckets): ['Structure with Ligand', 'High-Quality Ligand', 'Druggable Family']. Clinical compound: no clinical compound targeting this protein.  — *source: Open Targets tractability + ChEMBL get_mechanism/compound_search*
+- **2026-07-11** (Crohn's disease): Handle is NOT itself a GWAS risk gene for IBD/Crohn's — association is via co-clustered module risk genes only. Module risk genes with real IBD/Crohn GWAS signal: ['PTPN22', 'IKZF1', 'PRKCB', 'CYLD', 'NCOR2'].  — *source: GWAS Catalog (gwas_associations_for_gene / gwas_get_variant)*
+- **2026-07-11** (Crohn's disease): PubMed novelty: 2694 total abstracts; 77 with IBD/Crohn/colitis; 4 with IBD + T-cell.  — *source: PubMed search_articles (Title/Abstract counts)*
+- **VERDICT 2026-07-11** (Crohn's disease): **D** — Terminal necroptosis executioner — mechanistically downstream of and redundant with the already-pursued RIPK1 axis. Pseudokinase = poor small-molecule tractability (no clinical compound exists). Direct Crohn's evidence collapses to 0.006. Novel as a *named* IBD target but the drugging path is the weakest of the five.
 
 ## Community signal (Bluesky) — harvested 2026-07-11
 
