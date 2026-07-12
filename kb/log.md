@@ -603,3 +603,4 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — remember DOCK2 (psoriasis): RED-TEAM STRESS-TEST (Claude Science on re-uploaded skill, 2026-07-12; re-derive
 - 2026-07-12 — verdict STAT3 [pan-autoimmune (positive control)]: SURVIVES (with 2 repairs)
 - 2026-07-12 — verdict DOCK2 [psoriasis]: B-
+- 2026-07-12 — remember STAT3 (pan-autoimmune (positive control)): CORRECTION (artifact cross-check of calibration_probe scorecard+figure, 2026-07-
