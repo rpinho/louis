@@ -588,3 +588,9 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — remember PPM1D (atopic eczema): ECZEMA Th2 validation (Claude Science) answers both cross-disease questions: (Q1
 - 2026-07-12 — remember DOT1L (rheumatoid arthritis): RED-TEAM CRACK (Claude Science 2026-07-12, engine-verified): the DOT1L->RA link 
 - 2026-07-12 — verdict DOT1L [rheumatoid arthritis]: C
+- 2026-07-12 — remember STAT3 (pan-autoimmune (positive control)): POSITIVE-CONTROL VALIDATION (engine-verified, red-team run #2): the ONLY statist
+- 2026-07-12 — remember HDAC7 (multiple sclerosis): RED-TEAM (engine-verified, run #2): HDAC7's module-59 REGULATOR enrichment is NO
+- 2026-07-12 — remember PPM1D (asthma): RED-TEAM (engine-verified, run #2): PPM1D's asthma/eczema module-88 link is a CR
+- 2026-07-12 — remember DOCK2 (type 1 diabetes mellitus): RED-TEAM (engine-verified, run #2): DOCK2's psoriasis(mod54)/T1D(mod27) links ar
+- 2026-07-12 — verdict HDAC7 [multiple sclerosis]: B-
+- 2026-07-12 — verdict STAT3 [pan-autoimmune (positive control)]: HOLDS
