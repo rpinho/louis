@@ -10,21 +10,21 @@ Numbers are produced live (`python -m louis.core` re-checks the discovery
 
 **Louis** is an **MCP server + Slack bot** that turns a genome-scale CD4⁺ T-cell CRISPRi
 Perturb-seq screen (Zhu, Dann, …, Pritchard, Marson 2025) into a discovery, validation, and
-memory assistant that lives *inside Claude* — no separate app, no API key. Named for Pasteur
-("a hit is a clue, not a conviction"), Louis does five things:
+memory assistant that lives *inside Claude* — no separate app, no API key. Named for Pasteur,
+Louis does five things:
 **DISCOVER** — it wires understudied, druggable regulator "handles" to a disease's own GWAS
 risk-gene modules, gated by CRISPRi knockdown QC (the **trust flag**) and tagged by activation
-state; **VALIDATE** — it hands each lead to Claude Science's scientific web (Open Targets, ChEMBL,
+state (a **blind positive control**: the same ranking re-derives the known Th17 masters
+STAT3/BATF/IRF4 as its top-3); **VALIDATE** — it hands each lead to Claude Science's scientific web (Open Targets, ChEMBL,
 PubMed, GWAS Catalog, ClinicalTrials) to grade novelty and druggability; **LISTEN** — it reads
 what immunologists are posting on **X, Bluesky, and conference floors** *this week*, before it's a
 paper; **REMEMBER** — it files the whole chain, with provenance *and confidence level*, to a shared
 knowledge base the **whole lab writes to** (a labmate corrects Louis in Slack and he files it,
 attributed); **SYNTHESIZE** — it recurs handles across diseases to separate a single mechanism from
-shared disease-wiring. For rheumatoid arthritis it surfaces **DOT1L** — novel,
-druggable (pinometostat), with a regulator→risk-gene link in **no external database** — and the
-listen layer corroborates it with same-week preprint + conference signal that Claude Science
-structurally *cannot* reach. Every claim traces to a source. Built with Claude, living inside it,
-and shared with the whole lab.
+shared disease-wiring. For RA it surfaces **DOT1L** — novel, druggable (pinometostat), its
+regulator→risk-gene link in **no external database** — corroborated by same-week preprint +
+conference signal Claude Science structurally *cannot* reach. Every claim traces to a source —
+built with Claude, shared with the whole lab.
 
 ---
 
@@ -137,12 +137,17 @@ drift, not a clean grade × novelty point; the two-axis map refuses to flatten t
   tool-using agent it's **open-ended** — add a tool (~20 lines) or point Claude at your lab's own MCP
   server (ELN / LIMS / your screens) and Louis reasons over your whole stack; the shared-memory writes
   were added exactly that way.
-- **Depth (20%)** — a real GRN + CRISPRi-QC trust layer, an activation-state axis, and a
-  module→risk-gene discovery engine on the authors' tables; a community-signal engine that self-filters
-  by gene symbol and vetoes wellness noise; a knowledge base in a mature PKM shape (routing, provenance,
-  recall-before-derive, dimensional `kb_query`, cross-disease synthesis, and a grade × novelty opportunity
-  map that prioritizes the whole portfolio at a glance). Honest resolution stated throughout: module-level
-  co-cluster hypotheses to *test*, not proven gene-level edges.
+- **Depth (20%)** — a **blind positive control** grounds the method: told only a disease's GWAS risk
+  genes and no known targets, the *same* unsupervised ranking re-derives the textbook Th17 master triad
+  **STAT3 / BATF / IRF4** as its top-3 for the core inflammatory diseases (STAT3 #1 in 6 diseases;
+  one-command repro, `scripts/positive_control.py`) — it recovers the known before it proposes the novel,
+  which is what earns trust in DOT1L. On top of that: a real GRN + CRISPRi-QC trust layer, an
+  activation-state axis, and a module→risk-gene discovery engine on the authors' tables; a community-signal
+  engine that self-filters by gene symbol and vetoes wellness noise; a knowledge base in a mature PKM shape
+  (routing, provenance, recall-before-derive, dimensional `kb_query`, cross-disease synthesis, and a
+  grade × novelty opportunity map that prioritizes the whole portfolio at a glance). Honest resolution
+  stated throughout: module-level co-cluster hypotheses to *test*, not proven gene-level edges; the
+  positive control is a recovery sanity check, not a held-out predictive AUROC.
 
 ---
 

@@ -12,6 +12,8 @@ An **MCP server**: no separate app, no API key, no metered credits. You talk to 
 
 *Built for the Built with Claude: Life Sciences hackathon (Builder track).*
 
+> **✓ Blind positive control.** Told only a disease's GWAS risk genes — *no* known targets — Louis re-derives the textbook **Th17 master-regulator triad STAT3 · BATF · IRF4** as its top-3 blind candidates for the core inflammatory diseases (the validated Th17 network core, Ciofani et al., *Cell* 2012), with **STAT3 #1 in 6 diseases** — *before* it ever proposes a novel handle. It recovers what's known before it proposes what's novel; that's what earns trust in a pick like DOT1L. Reproduce in one command: `python scripts/positive_control.py` ([details](#what-it-found--validated-across-9-diseases)).
+
 ---
 
 ## The problem (a real one)
@@ -121,6 +123,18 @@ Four things, none of which a literature search can give you — because they liv
 ## What it found — validated across 9 diseases
 
 Louis's own skill was run *inside Claude Science* across **nine autoimmune diseases** — RA, SLE, Crohn's, MS, UC, psoriasis, type-1 diabetes, asthma, atopic eczema — each candidate pressure-tested against Open Targets / ChEMBL / GWAS Catalog / PubMed / ClinicalTrials, graded A–D, and written back to the KB. What came out:
+
+**First — the sanity check.** Before trusting a single *novel* pick, does the engine recover what's already *known*? Told only each disease's GWAS risk-gene modules and **no known targets**, Louis's blind top-3 for the core inflammatory diseases is the textbook **Th17 master-regulator triad — STAT3 · BATF · IRF4** (the validated Th17 network core, Ciofani et al., *Cell* 2012), with STAT3 ranked #1 in 6 diseases:
+
+| Disease | Louis's blind top-3 (no known targets given) | |
+|---|---|---|
+| Crohn's · IBD · atopic eczema | **STAT3 · BATF · IRF4** | ✓ the exact Th17 triad |
+| Multiple sclerosis | **STAT3 · BATF** · EGR2 | STAT3 #1 |
+| Psoriasis | **STAT3 · IRF4** · IPMK | STAT3 #1 |
+
+The **same unsupervised ranking** that re-derives these known masters is the one that surfaces the novel handles — so recovering the known is what earns trust in the novel. Reproduce every number in one command: `python scripts/positive_control.py`. *(Honest boundary: this is a recovery sanity check, not a held-out predictive AUROC; RA / SLE / UC surface EGR2 — a bona-fide tolerance regulator — at #1, so the control reads cleanest in the Th17-cytokine diseases.)*
+
+**Then — the novel leads** the same engine surfaces, mapped by grade × novelty:
 
 <p align="center">
   <img src="docs/figures/opportunity_map.png" width="94%" alt="The opportunity map — candidate grade vs novelty. The green top-left corner (DOT1L, HDAC7, PPM1D, RASA2, HIF1A) holds the novel, well-founded targets; IL21R/STAT3/ZAP70/AHR sit right as validated-but-crowded; DOCK2 is understudied whitespace.">
