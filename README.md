@@ -54,36 +54,59 @@ The tools (all grounded, no LLM guessing):
 | `kb_recall` · `kb_remember` · `kb_remember_signal` · `kb_verdict` | the **knowledge base** — recall before deriving, file findings + community signal with provenance, record verdicts |
 | `list_diseases` | the 17 autoimmune diseases in the screen |
 
-## Quick start
+## Install — three ways to use Louis
+
+Louis runs three ways off one shared engine + knowledge base. Pick what fits:
+
+| Surface | Best for | Setup |
+|---|---|---|
+| **MCP server** | Louis inside **Claude Code / Claude Desktop** | §A below (~2 min) |
+| **Skill** | Louis inside **Claude Science / Claude** (composes with its scientific-web connectors) | §B below → [`skill/INSTALL.md`](skill/INSTALL.md) |
+| **Slack bot** | Louis shared with a **whole lab** in a channel | §C below → [`slack/SETUP.md`](slack/SETUP.md) |
+
+First get the code + data (all three build from this):
 
 ```bash
 git clone https://github.com/rpinho/louis && cd louis
 python3 -m venv .venv && source .venv/bin/activate
-pip install -e .                      # core engine + MCP server
+pip install -e .                      # core engine + MCP server + CLIs
 python scripts/download_data.py       # small public tables (~34 MB), MIT
+python -m louis.core                  # sanity check — asserts the Crohn's→STAT3 demo invariant
 ```
 
-**Claude Code** — the repo ships a `.mcp.json`, so just open the project and approve the `louis` server (or `claude mcp add louis -- .venv/bin/louis-mcp`). Then ask your question.
+### A) MCP server — Claude Code / Claude Desktop
 
-**Claude Desktop** — add to `claude_desktop_config.json` (the editable install makes the command location-independent):
+**Claude Code** — the repo ships a `.mcp.json`, so open the project and approve the `louis` server (or `claude mcp add louis -- .venv/bin/louis-mcp`). Then ask.
+
+**Claude Desktop** — either **one-click**: `python scripts/build_mcpb.py` → open the resulting `dist/louis.mcpb` in Claude Desktop; **or** add to `claude_desktop_config.json` (the editable install makes the path stable):
 
 ```json
-{
-  "mcpServers": {
-    "louis": {
-      "command": "/ABSOLUTE/PATH/louis/.venv/bin/louis-mcp"
-    }
-  }
-}
+{ "mcpServers": { "louis": { "command": "/ABSOLUTE/PATH/louis/.venv/bin/louis-mcp" } } }
 ```
 
-Restart Claude, and ask: *"Using louis, what should I target for rheumatoid arthritis, and which are verified?"*
+Restart Claude, then ask: *"Using louis, what should I target for rheumatoid arthritis, and which are verified?"*
 
-Sanity-check the engine + server without Claude:
+### B) Skill — Claude Science / Claude
+
+Package Louis (engine + dataset + validated KB) into one self-contained skill that runs *inside* Claude's own compute and composes with its scientific-web connectors:
 
 ```bash
-python -m louis.core     # prints top targets, asserts the Crohn's→STAT3 demo invariant
+python scripts/build_skill.py         # -> dist/louis-skill.zip  (self-contained, <200 files)
 ```
+
+Then in Claude (**Science**, **Desktop**, or **claude.ai**) → **Skills** → **Create / Upload a skill** → choose `dist/louis-skill.zip`. It reads `name: louis` from `SKILL.md` and is ready — ask *"Using my Louis skill, what should I target for asthma?"* Full walkthrough + gotchas (file-count cap, the fresh-create tip): **[`skill/INSTALL.md`](skill/INSTALL.md)**.
+
+### C) Slack bot — share it with a lab
+
+Put Louis where a lab already talks. Socket Mode — no hosting, no public URL:
+
+```bash
+pip install -e ".[slack]"             # adds slack-bolt
+# create the app + set SLACK_BOT_TOKEN / SLACK_APP_TOKEN — see slack/SETUP.md
+louis-slack                            # starts the bot
+```
+
+`@louis what should we hit for RA?` in a public channel returns trust-ranked leads + community signal; `/remember` files to the shared KB. Full setup (~3 min) + the paste-to-create app manifest: **[`slack/SETUP.md`](slack/SETUP.md)**.
 
 ## What makes it more than a lookup
 
@@ -124,14 +147,6 @@ pip install -e ".[app]" && streamlit run app.py   # → http://localhost:8501
 ```
 
 ![The optional Streamlit browser — Crohn's → STAT3 with the evidence panel and activation-state layer](docs/screenshot.png)
-
-## Optional: share it with your lab on Slack
-
-A **Slack bot** (Socket Mode — no hosting, no public URL) puts the same engine where a lab already talks. `@target-explorer what should we hit for RA?` or `/ask-target rheumatoid arthritis` returns trust-ranked leads + the community signal **in a public channel** (knowledge is shared, not siloed in DMs), and `/remember` files findings to the **shared** KB so the whole team's questions compound into one memory. Setup (~3 min) and the paste-to-create app manifest are in [`slack/SETUP.md`](slack/SETUP.md).
-
-```bash
-pip install -e ".[slack]" && python -m louis.slack_app
-```
 
 ## Data
 

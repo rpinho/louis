@@ -2,7 +2,7 @@
 Louis — the Louis Slack bot (the "share it with your lab" surface).
 
 Louis is the assistant persona (named for Louis Pasteur: nothing trusted until verified).
-Meet scientists where they already work. @mention the bot or use /ask-target in a
+Meet scientists where they already work. @mention the bot or use /ask-louis in a
 PUBLIC channel and it answers with trust-ranked, activation-state-aware target leads
 + the live community signal — reusing the SAME engine + Claude brain as the MCP tools
 — and lets the lab grow one SHARED knowledge base (/remember), so everyone's questions
@@ -126,11 +126,11 @@ def _engine_summary(disease: str, use_memory: bool = True) -> str:
     disease = disease.strip()
     if not disease or disease.lower() in ("help", "diseases", "list"):
         ds = ", ".join(core.list_diseases())
-        return f"*Diseases I cover:*\n{ds}\n\nTry: `/ask-target rheumatoid arthritis`"
+        return f"*Diseases I cover:*\n{ds}\n\nTry: `/ask-louis rheumatoid arthritis`"
     mods = core.disease_mechanisms(disease, top_modules=4)
     if not mods:
         return (f"No disease-enriched T-cell program for *{disease}*. "
-                f"`/ask-target list` shows the ones I cover.")
+                f"`/ask-louis list` shows the ones I cover.")
     lines = [f"*{disease}* — top mechanistic leads (discover → listen):", ""]
     handles: list[str] = []
     for m in mods:
@@ -250,7 +250,6 @@ def build_app():
             return                                    # tagged → on_mention handles it (no double reply)
         _reply(re.sub(r"<@[^>]+>", "", event.get("text", "")).strip(), thread, say, client, event["channel"])
 
-    @app.command("/ask-target")
     def on_ask(ack, command, respond):
         ack()
         text, use_memory = _parse_mode(command.get("text", ""))
@@ -262,6 +261,8 @@ def build_app():
             respond(text=md[:400], blocks=[{"type": "markdown", "text": md}], response_type="in_channel")
         except Exception:
             respond(text=_to_mrkdwn(md), response_type="in_channel")
+    app.command("/ask-louis")(on_ask)
+    app.command("/ask-target")(on_ask)   # legacy alias — pre-rebrand installs registered /ask-target
 
     @app.command("/remember")
     def on_remember(ack, command, respond):

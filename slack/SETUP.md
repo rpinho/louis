@@ -1,6 +1,6 @@
 # Slack bot setup (~3 minutes)
 
-Meet your lab where they work: `@target-explorer` (or `/ask-target`) in a **public**
+Meet your lab where they work: `@louis` (or `/ask-louis`) in a **public**
 channel returns trust-ranked T-cell target leads + the live community signal, from the
 same engine as the MCP tools. `/remember` files a finding to the **shared** knowledge
 base so the whole lab's questions compound into one memory.
@@ -37,9 +37,9 @@ python -m louis.slack_app
 ```
 
 ## 5. Use it
-In Slack, invite the bot to a public channel: `/invite @target-explorer`, then:
-- `@target-explorer what should we hit for rheumatoid arthritis?`
-- `/ask-target type 1 diabetes`
+In Slack, invite the bot to a public channel: `/invite @louis`, then:
+- `@louis what should we hit for rheumatoid arthritis?`
+- `/ask-louis type 1 diabetes`
 - `/remember DOT1L | RA lead, methyltransferase, pinometostat in Ph2`
 
 Without `ANTHROPIC_API_KEY` the bot still works — it returns a deterministic engine

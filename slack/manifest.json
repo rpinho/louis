@@ -11,7 +11,7 @@
     },
     "slash_commands": [
       {
-        "command": "/ask-target",
+        "command": "/ask-louis",
         "description": "Ask Louis: trust-ranked T-cell target leads + what the field is saying this week",
         "usage_hint": "rheumatoid arthritis",
         "should_escape": false
