@@ -54,6 +54,9 @@ recommendation — call it out); **Field activity** (who else is on it — recen
 conference abstracts, active trials, from community_signal + kb_recall; whitespace is a finding, not a \
 gap. If it's unavailable in this environment, note that and rely on kb_recall for baked signal.); \
 **Verdict** (the call + the single next bench step).
+- If you use a TABLE, keep EVERY cell terse — a few words or a number, NEVER a full sentence. Long cells \
+force horizontal scrolling and DON'T wrap in Slack, so a scientist misses the columns off-screen. Prefer \
+≤3 narrow columns; push any real explanation into ONE short line or bullet BELOW the table, not into a wide cell.
 - The whole answer scannable in ~10 seconds. Offer '_say expand for the full dossier_' for depth — \
 never dump a wall of text on a reader who has only seconds.
 

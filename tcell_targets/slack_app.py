@@ -154,25 +154,28 @@ def _engine_summary(disease: str, use_memory: bool = True) -> str:
     return "\n".join(lines)
 
 
-def _answer(question: str, use_memory: bool = True, on_tool=None) -> tuple[str, list]:
+def _answer(question: str, use_memory: bool = True, on_tool=None, history=None) -> tuple[str, list, list]:
     """NL answer via Claude if a key is set; else a deterministic engine summary.
     use_memory=False skips all KB reads/writes (from-scratch, faster).
-    on_tool(name) fires as each source is queried — used to stream live status."""
+    on_tool(name) fires as each source is queried — used to stream live status.
+    history is the running per-thread conversation (so follow-ups like 'expand' keep context);
+    returns the updated message list to store back."""
     if os.environ.get("ANTHROPIC_API_KEY"):
         try:
             from .assistant import answer
-            text, trace, _ = answer(question, use_memory=use_memory, on_tool=on_tool)
-            return text, trace
+            text, trace, messages = answer(question, history=history, use_memory=use_memory, on_tool=on_tool)
+            return text, trace, messages
         except Exception as e:  # fall back rather than fail the demo
-            return _engine_summary(question, use_memory=use_memory) + f"\n\n_(NL layer error: {type(e).__name__})_", []
-    return _engine_summary(question, use_memory=use_memory), []
+            return (_engine_summary(question, use_memory=use_memory) + f"\n\n_(NL layer error: {type(e).__name__})_",
+                    [], history or [])
+    return _engine_summary(question, use_memory=use_memory), [], history or []
 
 
 # ---- thread follow-through --------------------------------------------------
-# Threads Louis has spoken in — lets a scientist keep replying in the SAME thread
-# without re-@mentioning him. In-memory (resets on restart), which is fine: a demo
-# thread is short-lived and one @mention re-engages it instantly.
-_ENGAGED_THREADS: set[str] = set()
+# thread_ts -> running assistant conversation. Presence means Louis has spoken in this thread,
+# so a scientist can keep replying WITHOUT re-@mentioning him AND follow-ups like 'expand' /
+# 'what about CBLB?' / 'why?' keep full context. In-memory; resets on restart (fine for a demo).
+_THREAD_HISTORY: dict = {}
 
 
 def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
@@ -197,7 +200,9 @@ def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
         if label:
             _status(f"🔎 _Louis is consulting {label}…_")
 
-    answer, trace = _answer(text, use_memory=use_memory, on_tool=on_tool)
+    answer, trace, messages = _answer(text, use_memory=use_memory, on_tool=on_tool,
+                                      history=_THREAD_HISTORY.get(thread) or None)
+    _THREAD_HISTORY[thread] = messages                   # carry the conversation for follow-ups
     md = _MODE_HEADER[use_memory] + "\n\n" + answer      # RAW GFM — tables render in a markdown block
     if trace:
         md += "\n\n" + _format_trace(trace)
@@ -223,7 +228,7 @@ def build_app():
     @app.event("app_mention")
     def on_mention(event, say, client):
         thread = event.get("thread_ts") or event.get("ts")
-        _ENGAGED_THREADS.add(thread)                  # follow-ups here won't need a tag
+        _THREAD_HISTORY.setdefault(thread, [])        # engage the thread; follow-ups won't need a tag
         raw = re.sub(r"<@[^>]+>", "", event.get("text", "")).strip()
         if not _reply(raw, thread, say, client, event["channel"]):
             say(text="I'm *Louis*. Name a disease and I'll find + vet the T-cell targets — "
@@ -238,7 +243,7 @@ def build_app():
         if event.get("subtype") or event.get("bot_id"):
             return                                    # edits / joins / bot posts (incl. Louis's own)
         thread = event.get("thread_ts")
-        if not thread or thread not in _ENGAGED_THREADS:
+        if not thread or thread not in _THREAD_HISTORY:
             return                                    # only threads Louis has already spoken in
         bot_id = context.get("bot_user_id")
         if bot_id and f"<@{bot_id}>" in event.get("text", ""):
@@ -249,7 +254,7 @@ def build_app():
     def on_ask(ack, command, respond):
         ack()
         text, use_memory = _parse_mode(command.get("text", ""))
-        answer, trace = _answer(text, use_memory=use_memory)
+        answer, trace, _ = _answer(text, use_memory=use_memory)
         md = _MODE_HEADER[use_memory] + "\n\n" + answer
         if trace:
             md += "\n\n" + _format_trace(trace)
