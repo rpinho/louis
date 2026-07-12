@@ -115,7 +115,7 @@ Four things, none of which a literature search can give you — because they liv
 - **Mechanistic discovery.** The screen's gene-regulatory clusters carry *both* their regulators and their downstream genes, so `disease_mechanisms` wires a druggable **handle** to the disease's own risk-gene **module**, in a specific state — "perturb DOT1L to move the RA IL21R/PTGER4 program in resting cells." That's a testable hypothesis, and the edge exists in no external database. (Module-level co-cluster — a candidate controller to *test*, not a proven gene-level edge; those need the full `.h5ad`.)
 - **Trust flag.** From the screen's own QC — was the CRISPRi **knockdown verified on-target**, and is the guide **off-target**? This is what stops you spending months on a hit that only *looks* good (see IPMK above).
 - **Activation state.** A T cell's regulators shift with its state; the screen measured three (Rest / Stim8hr / Stim48hr) and ~87% of hub regulators change ≥2× across them. The server surfaces which state a target acts in — the state-dependence a bench immunologist otherwise needs a whole experiment to read. (The **three measured states**, not modeling unmeasured ones.)
-- **A learning knowledge base.** `kb_recall / kb_remember / kb_verdict` maintain a git-tracked markdown KB (a target profile is a reputation record: data facts + literature novelty + validation + the scientist's verdict, each with provenance). Recall before deriving; file findings back so nothing is re-derived; hand the whole thing to a student.
+- **A shared, learning knowledge base.** `kb_recall / kb_remember / kb_verdict` maintain a git-tracked markdown KB (a target profile is a reputation record: data facts + novelty + validation + the scientist's verdict, each with provenance). Recall before deriving; file findings back so nothing is re-derived. And it's **two-way and shared**: a labmate can correct Louis in Slack — *"we tested it, the edge didn't hold"* — and he files it **attributed to them**, for the whole lab. Provenance-scoped flags (`--nolab`, `--exclude <tier>`, `--nomem`) dial exactly which knowledge he draws on. Hand the whole thing to a student.
 - **The off-allowlist layer — social + conference.** `community_signal` turns the engine's own discoveries into search terms and reads what immunologists are *saying* about each lead — on **X** and on the **conference floor** (ACR/EULAR abstracts). This is the one layer Claude Science structurally can't reach: its sandbox is a strict domain **allowlist** (PubMed, bioRxiv, ChEMBL, Open Targets are on it — Twitter and conference-abstract sites are **not**). So the papers and preprints it already has; what it's missing is what the field is saying *around* them — before, beyond, and sometimes instead of publication. Curated (labs/journals first, wellness vetoed) and baked into the KB, so it ships even inside that sandbox.
 
 ## What it found — validated across 9 diseases
@@ -137,6 +137,29 @@ And it designs the bench experiment. Ask Louis to *test* a lead and it returns a
 <p align="center">
   <img src="docs/figures/hdac7_experiment_schematic.png" width="80%" alt="HDAC7 UC experiment: two-arm design + cheap-gate-first go/no-go">
 </p>
+
+## Extending Louis — connect your lab's stack
+
+Louis is a lab *assistant*, not a closed tool. Because he's an **MCP server + a tool-using agent**, teaching him a new capability is teaching him a new *tool* — the same way he already composes with Claude Science's Open Targets / ChEMBL / GWAS connectors. Two paths:
+
+**1. Compose via MCP — zero code.** Point Claude at any MCP server your lab runs — an ELN, a LIMS, an inventory or results DB — and it reasons over that data *and* Louis's screen in one conversation. The validation layer already works exactly this way (Louis's discovery + Claude Science's scientific-web connectors).
+
+**2. Add a tool to Louis — ~20 lines.** Give him a new endpoint with one entry in `TOOLS` (`louis/assistant.py`) and a case in `_dispatch`. That's literally how the shared-memory writes were added — the whole pattern:
+
+```python
+# louis/assistant.py — 1) declare the tool
+{
+  "name": "lab_inventory",
+  "description": "Check whether a reagent/antibody is in the lab's stock.",
+  "input_schema": {"type": "object", "properties": {"item": {"type": "string"}}, "required": ["item"]},
+},
+# 2) dispatch it — your endpoint; key in .secrets/, like the Slack/Anthropic ones
+if name == "lab_inventory":
+    return _clean(requests.get(f"{LAB_API}/stock", params={"q": args["item"]},
+                               headers={"Authorization": os.environ["LAB_API_KEY"]}).json())
+```
+
+Now *"is our anti-DOT1L antibody in stock, and is it still worth ordering?"* composes the lab's inventory with the screen data, the KB, and the field signal — one assistant over your whole lab stack.
 
 ## Optional: local visual browser
 

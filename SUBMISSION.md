@@ -17,9 +17,10 @@ risk-gene modules, gated by CRISPRi knockdown QC (the **trust flag**) and tagged
 state; **VALIDATE** — it hands each lead to Claude Science's scientific web (Open Targets, ChEMBL,
 PubMed, GWAS Catalog, ClinicalTrials) to grade novelty and druggability; **LISTEN** — it reads
 what immunologists are posting on **X, Bluesky, and conference floors** *this week*, before it's a
-paper; **REMEMBER** — it files the whole chain, with provenance *and confidence level*, to a
-shareable knowledge base; **SYNTHESIZE** — it recurs handles across diseases to separate a single
-mechanism from shared disease-wiring. For rheumatoid arthritis it surfaces **DOT1L** — novel,
+paper; **REMEMBER** — it files the whole chain, with provenance *and confidence level*, to a shared
+knowledge base the **whole lab writes to** (a labmate corrects Louis in Slack and he files it,
+attributed); **SYNTHESIZE** — it recurs handles across diseases to separate a single mechanism from
+shared disease-wiring. For rheumatoid arthritis it surfaces **DOT1L** — novel,
 druggable (pinometostat), with a regulator→risk-gene link in **no external database** — and the
 listen layer corroborates it with same-week preprint + conference signal that Claude Science
 structurally *cannot* reach. Every claim traces to a source. Built with Claude, living inside it,
@@ -89,14 +90,18 @@ Separating edge from noise *is* the product.
   answer; with memory on, the whole compounded case. Every claim traces to a source **and its
   confidence level**."
 
-### Beat 6 — share it with the lab (2:55–3:20)
-- **[SCREEN]** Slack, public channel: the trust-ranked leads + community signal appear; `/remember`
-  files to the **shared** KB.
-- **[SAY]** "Because knowledge has to be shared, it meets a lab where they already talk — Slack,
-  public channels only, every question compounding into one memory. Discover, validate, listen,
-  remember, synthesize — inside Claude, no API key, no bioinformatician. It produces a novel,
-  druggable, testable lead a bench scientist would actually chase: DOT1L, not textbook STAT3.
-  That's Louis — built with Claude, living inside it, shared with your whole lab."
+### Beat 6 — the lab makes Louis smarter (2:55–3:25) ← the closer
+- **[SCREEN]** Slack, public channel. A labmate replies to Louis: *"@louis we tested DOT1L — the
+  module edge didn't hold, that verdict's too strong."* Louis: *"✍️ Filed to DOT1L — downgraded,
+  attributed to @jordan."* Ask again → the answer now carries the lab's result. Then flip `--nolab`
+  → the answer *before* the lab weighed in.
+- **[SAY]** "And he doesn't just answer — he *learns from the lab*. A bench result, a 'that's weaker
+  than you think', a 'John's already on that' — anyone can correct Louis in the channel and he files
+  it to the shared memory, **with their name on it**. `--nolab` shows what he knew before the lab
+  weighed in; the difference *is* the lab's own compounding knowledge. Discover, validate, listen,
+  remember, synthesize — and now learn, together. That's Louis: a very smart lab assistant that never
+  forgets and gets smarter every time the lab talks to it. Built with Claude — a French name, like
+  Louis — living inside it, and shared with your whole lab."
 
 ---
 
@@ -115,7 +120,10 @@ Separating edge from noise *is* the product.
   *composes with Claude Science's* connectors for validation; and its **listen** layer adds a data
   source even Science lacks — the field's pre-paper chatter on X/Bluesky/conference floors. The
   knowledge base was itself deepened by **recursion**: Louis's own skill run *inside* Claude Science
-  across nine diseases, its findings ingested back with provenance.
+  across nine diseases, its findings ingested back with provenance. And because it's an MCP + a
+  tool-using agent it's **open-ended** — add a tool (~20 lines) or point Claude at your lab's own MCP
+  server (ELN / LIMS / your screens) and Louis reasons over your whole stack; the shared-memory writes
+  were added exactly that way.
 - **Depth (20%)** — a real GRN + CRISPRi-QC trust layer, an activation-state axis, and a
   module→risk-gene discovery engine on the authors' tables; a community-signal engine that self-filters
   by gene symbol and vetoes wellness noise; a knowledge base in a mature PKM shape (routing, provenance,
