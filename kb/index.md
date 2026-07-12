@@ -192,3 +192,7 @@ Target profiles (one row per gene). Read this first.
 - [RRAS2](wiki/targets/RRAS2.md)
 - [SAMHD1](wiki/targets/SAMHD1.md)
 - [SLAMF1](wiki/targets/SLAMF1.md)
+- [IL21R](wiki/targets/IL21R.md)
+- [HIF1A](wiki/targets/HIF1A.md)
+- [PPM1D](wiki/targets/PPM1D.md)
+- [RHEB](wiki/targets/RHEB.md)
