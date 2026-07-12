@@ -599,3 +599,7 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — remember HDAC7 (ulcerative colitis): RED-TEAM STRESS-TEST (Claude Science on the re-uploaded skill, 2026-07-12; re-de
 - 2026-07-12 — verdict PPM1D [asthma]: C+
 - 2026-07-12 — verdict HDAC7 [ulcerative colitis]: B
+- 2026-07-12 — remember STAT3 (pan-autoimmune (positive control)): POSITIVE-CONTROL HOSTILE-PROBE (Claude Science adversarial red-team on re-upload
+- 2026-07-12 — remember DOCK2 (psoriasis): RED-TEAM STRESS-TEST (Claude Science on re-uploaded skill, 2026-07-12; re-derive
+- 2026-07-12 — verdict STAT3 [pan-autoimmune (positive control)]: SURVIVES (with 2 repairs)
+- 2026-07-12 — verdict DOCK2 [psoriasis]: B-
