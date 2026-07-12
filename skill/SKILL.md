@@ -1,9 +1,9 @@
 ---
-name: tcell-target-explorer
-description: Discover, validate, and remember novel CD4+ T-cell drug targets for autoimmune diseases from the Marson/Pritchard genome-scale CRISPRi Perturb-seq screen. Use when the user asks what to target for an autoimmune disease (Crohn's, rheumatoid arthritis, type 1 diabetes, asthma, lupus, MS, etc.), wants novel/understudied/druggable T-cell regulator leads wired to a disease's own GWAS risk genes, wants to trust-rank targets by CRISPRi knockdown QC or activation state, or wants to validate and record target hypotheses. Discovers mechanistic leads with disease_mechanisms(), validates them against the scientific-web connectors AND the field's live community signal, and remembers findings in a provenance-tracked knowledge base.
+name: louis
+description: Louis — discover, validate, and remember novel CD4+ T-cell drug targets for autoimmune diseases from the Marson/Pritchard genome-scale CRISPRi Perturb-seq screen. Use when the user asks what to target for an autoimmune disease (Crohn's, rheumatoid arthritis, type 1 diabetes, asthma, lupus, MS, etc.), wants novel/understudied/druggable T-cell regulator leads wired to a disease's own GWAS risk genes, wants to trust-rank targets by CRISPRi knockdown QC or activation state, or wants to validate and record target hypotheses. Discovers mechanistic leads with disease_mechanisms(), validates them against the scientific-web connectors AND the field's live community signal, and remembers findings in a provenance-tracked knowledge base.
 ---
 
-# T-Cell Target Explorer
+# Louis — CD4+ T-cell target discovery, validation & memory
 
 Turns a genome-scale CD4+ T-cell CRISPRi Perturb-seq screen (Zhu, Dann, …, Pritchard, Marson 2025)
 into a **discover → validate → listen → remember** workflow. The engine runs here in this compute
