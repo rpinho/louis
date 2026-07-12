@@ -12,3 +12,10 @@
 - **@Chiragrx07** (RxOfLife💉) · 2026-07-05 · ♥4: This phenomenon is called "polyautoimmunity" / autoimmune clustering.  Classic associations:-  Hashimoto's thyroiditis → T1DM, Addison's disease, pernicious anemia.  Vitiligo → together with Addison's forms Autoimmune Polyglandular Syndrome — https://x.com/Chiragrx07/status/2073797946513199276
 - **@dogefather_Twit** (The Dogefather🌕) · 2026-07-07 · ♥0: additional information on this disease 🦠 down below   ⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️⬇️  What Is Autoimmune Gastritis (AIG/AAG)? It is a chronic autoimmune disease in which the immune system mistakenly attacks and destroys parietal cells in the li — https://x.com/dogefather_Twit/status/2074304546705408079
 - **2026-07-11** (autoimmune disease): JOURNAL POST via Bluesky (@natrevimmunol Nature Reviews Immunology): 'T cell engagers reprogramme T cells to eliminate pathogenic cell populations - an emerging biologic strategy for autoimmune disease.' The T-cell-engager therapeutic angle for autoimmunity.  — *source: Bluesky @natrevimmunol.nature.com (Nature Reviews Immunology; off-allowlist Bluesky feed)*
+
+## Community signal (Bluesky) — harvested 2026-07-11
+
+*Query: `Bluesky searchPosts: autoimmune disease`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@us-news.bsky.social** ⭐ () · 2026-07-11 · ♥0: Bryan Johnson Says an Incurable Autoimmune Disease Has Changed His Longevity Mission  https://www.europesays.com/us/927845/  Bryan Johnson has built a public profile around trying to slow aging, measure his body in extreme detail,…#us #news — https://bsky.app/profile/us-news.bsky.social/post/3mqerii2a6a27 · https://www.europesays.com/us/927845/
+- **@acr-journals.bsky.social** ⭐ (ACR Journals) · 2026-07-11 · ♥0: Rule-based algorithms for identifying IIM cases in EHR data doi.org/10.1002/acr2...  Autoimmune disease risk with GLP-1RA, DPP-4i, & SGLT2i treatment in patients with diabetes doi.org/10.1002/acr2... — https://bsky.app/profile/acr-journals.bsky.social/post/3mqeoivj6xs2l · https://doi.org/10.1002/acr2.90102 · https://doi.org/10.1002/acr2.90046

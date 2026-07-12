@@ -15,3 +15,9 @@
 - **@agtprpnabsrdty** (🔻agitprop + absurdity🔻) · 2026-07-07 · ♥1: RNA viruses marketed as acute infections turned out to be chronic trespassers in tissue reservoirs, converting brief sickness into long-term inflammatory disease.  Viral persistence displaces the acute-infection model:  Standard virology he — https://x.com/agtprpnabsrdty/status/2074626037124579734 · https://www.nature.com/articles/s41590-026-02577-5
 - **@OpteeHealth** (OPTEE HEALTH) · 2026-07-07 · ♥0: @DBTIndia The link between persistent Th17 activity and systemic inflammation is worth watching for chronic respiratory and metabolic conditions too. CCL20 signaling appears in asthma models — may partly explain why COPD exacerbations and g — https://x.com/OpteeHealth/status/2074470269125787919
 - **2026-07-11** (asthma): JOURNAL via Bluesky (@cp-trendsimmuno, Trends in Immunology): 'SIRT6 bridges glycolysis and epigenetics to neutrophilic asthma' - an epigenetic (SIRT6) axis in asthma. — https://bsky.app/profile/cp-trendsimmuno.bsky.social/post/3mnjz5gbgsk2r · http://dlvr.it/TStq6Z
+
+## Community signal (Bluesky) — harvested 2026-07-11
+
+*Query: `Bluesky searchPosts: asthma`. Recent field chatter — pre-paper leads, not validated claims.*
+
+- **@longtail-news.bsky.social** ⭐ (Longtail News) · 2026-07-12 · ♥0: Feed: "eScholarship Publishing Article Feed" Published on Friday, July 10, 2026 — https://bsky.app/profile/longtail-news.bsky.social/post/3mqfxakmkop2a · https://journalpub.escholarship.org/uciem_cpcem/article/id/53246/
