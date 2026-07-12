@@ -123,3 +123,109 @@ kb.verdict("DOT1L", "rheumatoid arthritis", "<grade>", "<rationale>")   # the sc
 Route each finding to its own target profile with a real source. A target profile is a reputation
 record: data facts + literature novelty + community signal + validation + verdicts accrue to it.
 The KB is git-tracked markdown — shareable with a student or a lab.
+
+## 5 — SYNTHESIZE ACROSS DISEASES (the cross-disease / pan-autoimmune view)
+
+When the question is *portfolio-level* — "which handles recur across diseases, and is
+there ONE mechanism behind it?" — don't re-derive per disease. Run this five-step recipe.
+It reads the accumulated verdicts, finds what recurs, and grades each recurrer as
+**pan-autoimmune vs disease-specific** with the connectors. Output: a synthesis table +
+verdicts filed back to each profile.
+
+**Skeptic's frame:** recurrence in this screen is almost always *module-conserved* — the
+same GRN module lights up in several diseases because those diseases share GWAS risk genes,
+NOT because one regulator convergently controls them. Step 3 is what separates "shared
+disease wiring" from "one mechanism." Everything here is module-level co-cluster
+association, not a proven gene-level edge.
+
+### Step 1 — Pull every graded verdict, find the recurrers
+
+```python
+from tcell_targets import kb_index
+verds = kb_index.query(rec_type="verdict", limit=200)["records"]   # every verdict, all diseases
+
+# grade-A/B set; best grade per (gene,disease); recurrence = A/B in >=2 diseases
+def is_AB(g): return g and g[0] in ("A", "B")
+from collections import defaultdict
+gene_dis = defaultdict(dict)
+for v in verds:
+    if is_AB(v["grade"]):
+        gene_dis[v["gene"]][v["disease"]] = v["grade"]
+recur = {g: d for g, d in gene_dis.items() if len(d) >= 2}   # rank by len(d) desc
+```
+*MCP-tool equivalent:* `kb_query(rec_type="verdict", limit=200)`. Note the grade parser only
+reads a bare `**B**` token — file verdicts with a clean leading grade if you want them
+`grade`-queryable.
+
+### Step 2 — Anchor each recurrer to its module / state / risk-gene spine
+
+```python
+from tcell_targets import disease_mechanisms
+for dis in {v["disease"] for v in verds if v["disease"]}:
+    for m in disease_mechanisms(dis, top_modules=60):        # keys: module, fires_in_state,
+        names = [h["gene"] if isinstance(h, dict) else h      #       odds_ratio, fdr,
+                 for h in m["candidate_handles"]]             #       disease_risk_genes,
+        # record (disease, m["module"], m["fires_in_state"], m["odds_ratio"], m["disease_risk_genes"])
+        # for each recurrer gene found in `names`
+```
+A handle that recurs sits in **one fixed module** across diseases. Read off (a) is it the
+SAME module each time? (b) same activation state? (c) what risk genes are shared across the
+spines? Same module + shared spine (e.g. IRF8/PTPN22/REL/EGR2/ETS1) = the recurrence is
+disease-risk-gene overlap, not a convergent regulator.
+
+### Step 3 — Grade pan-autoimmune vs disease-specific with the connectors
+
+All connector calls run in the **`repl` tool** via `host.mcp(...)`. Resolve IDs first
+(Open Targets `search` over `entityNames:["target"]` / `["disease"]`), then per handle:
+
+```python
+# (a) Tractability + which diseases have a GENETIC (not just literature) association
+host.mcp("clinical-genomics", "open_targets_graphql",
+         query="query($id:String!){target(ensemblId:$id){tractability{modality label value}}}",
+         variables={"id": ensembl_id})
+host.mcp("clinical-genomics", "open_targets_graphql",           # per-disease datatype split
+         query="query($id:String!,$efos:[String!]){target(ensemblId:$id){associatedDiseases"
+               "(Bs:$efos){rows{disease{id name} score datatypeScores{id score}}}}}",
+         variables={"id": ensembl_id, "efos": efo_list})
+#   -> read datatypeScores: genetic_association present & >0 in >1 disease = broader genetic base
+
+# (b) GWAS Catalog — do the hits map to the gene ITSELF, and to which traits?
+host.mcp("human-genetics", "gwas_associations_for_gene", gene_symbol=g, max_records=500)
+#   filter efo_traits/reported_trait to autoimmune terms; check mapped_genes (own gene vs flanking
+#   = causal-gene-ambiguous locus) and whether traits are T-cell autoimmune vs allergy/OA/other
+host.mcp("human-genetics", "gwas_get_variant", rs_id=lead_rs)   # confirm locus/consequence
+
+# (c) ClinicalTrials — is a SELECTIVE compound already tried in ANY autoimmune indication?
+host.mcp("clinical-trials", "search_trials", intervention="<drug OR class terms>",
+         condition="rheumatoid arthritis OR lupus OR multiple sclerosis OR colitis OR "
+                   "Crohn OR psoriasis OR autoimmune", count_total=True, page_size=20)
+#   distinguish selective vs class-level (e.g. pan-HDAC != HDAC7-selective)
+
+# (d) PubMed — mechanism novelty for THIS gene x CD4/Treg, and the unifying-mechanism test
+host.mcp("pubmed", "search_articles", query="<GENE> AND (Treg OR CD4 T cell)", max_results=5)
+host.mcp("pubmed", "get_article_metadata", pmids=[...])          # pull the load-bearing abstracts
+```
+Write `host.mcp` results to `./handoff/*.json`; do the tabulation in the `python` tool.
+**Verify any load-bearing citation** (confirm it exists; peer-reviewed vs preprint).
+
+### Step 4 — Decide the ONE-mechanism question, then classify each handle
+
+- **One mechanism?** Only if the recurrers share module AND state AND a genetic axis. If they
+  sit in different modules / different activation states (Rest vs Stim8hr) / different classes
+  (metabolic vs epigenetic), the recurrence is shared disease wiring — say so explicitly.
+- **Pan-autoimmune** = genetic association (own-gene GWAS, OT `genetic_association`) in
+  multiple diseases, not one shared ambiguous locus. **Disease-specific** = recurs at module
+  level but genetics concentrate in one disease / map to a non-autoimmune trait.
+
+### Step 5 — Record verdicts + findings, snapshot the KB
+
+```python
+from tcell_targets import kb, kb_index
+kb.remember(gene, "<cross-disease finding>", "<connector + provenance>")      # per handle
+kb.verdict(gene, "pan-autoimmune (cross-disease)", "<grade>", "<rationale>")  # the judgment
+kb.remember_signal("<mechanism topic>", [{...}], kind="topic",
+                   platform="Claude Science synthesis")                        # the axis note
+kb.reindex(); kb_index.build()                                                 # rebuild both indices
+```
+*MCP-tool equivalents:* `kb_remember`, `kb_verdict`. Then zip `kb/` and save
+`cross_disease_synthesis.csv` + `tcell_kb_snapshot.zip` as artifacts.
