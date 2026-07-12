@@ -90,3 +90,37 @@ question (bar 3) before any in-vivo bet.
 - **Cannot:** (i) causal attribution of any RA variant to DOT1L (there is no RA genetic anchor — the
   lead is novelty+mechanism); (ii) in-vivo RA efficacy (a cell-intrinsic CD4 result is necessary, not
   sufficient — a transfer / cKO arthritis model is the next tier); (iii) selectivity beyond pinometostat's known profile (the genetic arm carries selectivity).
+
+## 10. Red-team — failure modes & the first gate (Claude Science, 2026-07-12)
+
+Three ways this design misleads, each with the cheapest fix:
+
+**False positive #1 — global H3K79me2 collapse mistaken for module-38 specificity (the signature DOT1L
+artifact).** DOT1L is the sole H3K79 writer and H3K79me2 marks the gene bodies of ~all actively
+transcribed genes, so knockdown produces a genome-wide sag of highly-transcribed genes — IL21R / PTGER4
+/ CD28 / SELL slide down *with everything else*. A module-only panel (normalized to housekeepers) then
+shows a coherent "on-hypothesis" drop that is really loss of a housekeeping elongation mark. **Fix
+(cheap):** add an **expression- and H3K79me2-occupancy-matched non-module control gene set** to the
+Tier-1 panel; specificity = module 38 moves *beyond the genome-wide slump*, not merely ≠ 0.
+
+**False positive #2 — composition / wrong-state shift, not a cell-intrinsic edge.** (a) *Treg-fraction
+composition:* DOT1L supports Treg identity, so KD can shrink the FOXP3⁺ fraction; several module-38
+genes (IL21R, CD28, SELL, LEF1) are DE Treg-vs-Tconv, so losing Tregs alone moves the bulk average — a
+composition artifact, not cis-regulation. (b) *Wrong state:* the module fires at **Rest**, but DOT1L's
+footprint peaks at **Stim48h**; reading at Stim48h sweeps IL21R/PTGER4 in as generic activation targets.
+**Fix (cheap):** require the shift **inside the FOXP3⁻ Tconv gate** and **at Rest** (treat a Stim48h-only
+shift as the activation footprint, not the module).
+
+**False negative — a pinometostat (catalytic-only) null wrongly kills a real lead.** Pinometostat blocks
+only methyltransferase activity; it cannot report DOT1L's **scaffold** role (DotCom / AF9–ENL–AF10). And
+H3K79me2 is a stable, slow-turnover, replication-coupled mark — in barely-dividing resting cells a
+standard 48–72 h window can give a *clock-artifact* null. **Fix:** make **CRISPRi KD the sole
+load-bearing go/no-go arm**; demote pinometostat to a **mechanism classifier that can never trigger a
+kill** (catalytic-null + positive KD ⇒ reclassify as scaffold → degrader follow-on); gate readouts on
+**actual global H3K79me2 loss** (a clock, not a calendar day).
+
+**→ Highest-value first gate:** the **Tier-1 module-38 edge test at Rest**, upgraded with the
+matched-background panel (kills FP1) and run inside the FOXP3⁻ Tconv gate (kills FP2), entered only after
+the H3K79me2-loss KD-QC (protects against the FN kinetics artifact). Cheapest readout, decisive kill, and
+it neutralizes both false positives on the same plate. Honest caveat: it tests specificity *vs
+background*, not *direct* regulation — that's what the Tier-3 CUT&RUN is for; it just shouldn't be the first spend.
