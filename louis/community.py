@@ -71,6 +71,26 @@ _NOISE_TERMS = ("leaky gut", "gut lining", "seed oil", "detox", "toxin", "vagus"
 # Accounts that are never research signal (AI bots / generic reply accounts) — vetoed outright.
 _JUNK_HANDLES = {"grok", "askperplexity", "perplexity_ai", "chatgptbot", "grokinc"}
 
+# On-topic gate — a post must READ as immunology / T-cell / a disease / a method to count as
+# signal. A lab-sounding handle is NOT enough on its own: the junk harvests rode in on crypto/
+# finance '@…Labs' / '@…News' accounts with zero biology. This is the same gate the baked
+# fallback already uses, now applied to the LIVE harvest (X + Bluesky) so junk never gets filed.
+_IMMUNE_RE = re.compile(
+    r"\b(immun|autoimmun|T[ -]?cells?|CD4|CD8|Treg|FOXP3|Th1|Th2|Th17|Tfh|regulatory T|"
+    r"cytokine|lymphocyte|inflammat|tolerance|interleukin|IL-?\d|STAT\d|JAK\d?|checkpoint|"
+    r"antibod|B[ -]?cells?|dendritic|macrophage|antigen|MHC|TCR|CRISPR|single[- ]cell|scRNA|"
+    r"lupus|SLE|arthritis|colitis|Crohn|psoriasis|sclerosis|diabetes|asthma|eczema|celiac|"
+    r"thyroiditis|biorxiv|medrxiv|preprint)\b", re.I)
+# Hard veto: finance/market chatter (cashtags, options-desk phrasing) — never scientific signal.
+_NOISE_RE = re.compile(
+    r"\$[A-Z]{1,6}\b|\b(daily analysis|expected move|call wall|intraday|premarket|short interest)\b", re.I)
+
+
+def _on_topic(text: str) -> bool:
+    """True if the post reads as immunology/disease/method context and isn't finance chatter.
+    The keep gate for community signal — a lab-sounding handle alone can NOT get a post in."""
+    return bool(_IMMUNE_RE.search(text)) and not _NOISE_RE.search(text)
+
 
 def xurl_available() -> bool:
     """True when the `xurl` CLI (the X API access) can be found — the live tier."""
@@ -179,6 +199,11 @@ def _extract_posts(d: dict, min_engagement: int = 0) -> tuple[list, int]:
         if not signal and _count(txt, _NOISE_TERMS) > 0:
             vetoed += 1
             continue
+        # HARD VETO: off-topic or finance chatter. A lab-sounding handle is NOT enough to keep an
+        # off-topic post — this is the hole the junk crypto/finance '@…Labs' accounts rode through.
+        if not _on_topic(txt):
+            vetoed += 1
+            continue
         posts.append({
             "handle": u.get("username", "?"),
             "author": u.get("name", "?"),
@@ -240,19 +265,8 @@ def _baked_posts_for_gene(gene: str) -> list:
     return _parse_baked_posts(path.read_text()) if path.exists() else []
 
 
-# Keep the baked fallback on-topic: a post must read as immunology / T-cell (or a disease/
-# method) context. Kills harvest noise ($TICKER chatter, politics, off-topic feeds) that rode
-# in on a gene-batched OR-query, so the disease view never shows a stock post as "signal".
-_IMMUNE_RE = re.compile(
-    r"\b(immun|autoimmun|T[ -]?cells?|CD4|CD8|Treg|FOXP3|Th1|Th2|Th17|Tfh|regulatory T|"
-    r"cytokine|lymphocyte|inflammat|tolerance|interleukin|IL-?\d|STAT\d|JAK\d?|checkpoint|"
-    r"antibod|B[ -]?cells?|dendritic|macrophage|antigen|MHC|TCR|CRISPR|single[- ]cell|scRNA|"
-    r"lupus|SLE|arthritis|colitis|Crohn|psoriasis|sclerosis|diabetes|asthma|eczema|celiac|"
-    r"thyroiditis|biorxiv|medrxiv|preprint)\b", re.I)
-# Hard veto: finance/market chatter (cashtags, options-desk phrasing) that can share a gene
-# page with a real hit but is never scientific signal — the $SPX/$TVRD bots.
-_NOISE_RE = re.compile(
-    r"\$[A-Z]{1,6}\b|\b(daily analysis|expected move|call wall|intraday|premarket|short interest)\b", re.I)
+# (_IMMUNE_RE / _NOISE_RE / _on_topic are defined near the top of this module — the same on-topic
+# gate is shared by the live harvest and this baked fallback, so both filter identically.)
 
 
 def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
@@ -260,7 +274,7 @@ def _baked_signal(entity: str, kind: str, top: int = 8) -> list:
     For a gene, its own filed posts; for a disease, posts aggregated across its relevant
     target genes (deduped). Research-vetted (⭐) posts rank first."""
     _rank = lambda p: (p.get("starred", False), p.get("date", ""), p.get("likes", 0))
-    _ok = lambda p: bool(_IMMUNE_RE.search(p.get("text", ""))) and not _NOISE_RE.search(p.get("text", ""))
+    _ok = lambda p: _on_topic(p.get("text", ""))
     if kind != "disease":
         return sorted((p for p in _baked_posts_for_gene(entity) if _ok(p)), key=_rank, reverse=True)[:top]
     from . import core

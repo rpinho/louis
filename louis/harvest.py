@@ -288,6 +288,8 @@ def _bsky_filter(posts, per_top):
         p["high_signal"] = community._signal_name(u)
         if not p["high_signal"] and community._count(p["text"], community._NOISE_TERMS) > 0:
             continue
+        if not community._on_topic(p["text"]):          # off-topic / finance chatter — same gate as X
+            continue
         if not (p["high_signal"] or community._count(p["text"], community._RESEARCH_TERMS) >= 2):
             continue
         p["_score"] = community._score(p["text"], u, {"like_count": p.get("likes", 0), "retweet_count": 0})
