@@ -58,6 +58,7 @@ _SOURCE_LABELS = {
     "community_signal": "live community signal (X/Twitter)",
     "kb_recall": "the shared lab knowledge base",
     "kb_search": "the shared lab knowledge base",
+    "kb_query": "the shared lab knowledge base",
     "list_diseases": "",  # trivial lookup — not worth citing
 }
 
@@ -90,7 +91,7 @@ def _format_trace(trace: list) -> str:
 # A trailing flag on a message forces from-scratch (no-KB) mode for THAT message;
 # without it, the instance default applies (env TCELL_NO_MEMORY, else with-memory).
 _NOMEM_TOKENS = ("--nomem", "/nomem", "[scratch]")
-_MODE_HEADER = {True: "🧠 *with lab memory*", False: "🆕 *no memory — from scratch*"}
+_MODE_HEADER = {True: "🧠 **with lab memory**", False: "🆕 **no memory — from scratch**"}
 
 
 def _parse_mode(text: str) -> tuple[str, bool]:
@@ -197,15 +198,18 @@ def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
             _status(f"🔎 _Louis is consulting {label}…_")
 
     answer, trace = _answer(text, use_memory=use_memory, on_tool=on_tool)
-    body = _MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer)
+    md = _MODE_HEADER[use_memory] + "\n\n" + answer      # RAW GFM — tables render in a markdown block
     if trace:
-        body += "\n\n" + _format_trace(trace)
+        md += "\n\n" + _format_trace(trace)
     # Clear the transient status, then post the dossier fresh (no "(edited)" tag).
     try:
         client.chat_delete(channel=channel, ts=ts)
     except Exception:
         pass
-    say(text=body, thread_ts=thread)
+    try:                                                  # markdown block renders GFM tables
+        say(text=md[:400], blocks=[{"type": "markdown", "text": md}], thread_ts=thread)
+    except Exception:                                     # older Slack → plain-text fallback
+        say(text=_to_mrkdwn(md), thread_ts=thread)
     return True
 
 
@@ -246,10 +250,13 @@ def build_app():
         ack()
         text, use_memory = _parse_mode(command.get("text", ""))
         answer, trace = _answer(text, use_memory=use_memory)
-        blocks = _MODE_HEADER[use_memory] + "\n" + _to_mrkdwn(answer)
+        md = _MODE_HEADER[use_memory] + "\n\n" + answer
         if trace:
-            blocks += "\n\n" + _format_trace(trace)
-        respond(text=blocks, response_type="in_channel")  # public — the lab sees it
+            md += "\n\n" + _format_trace(trace)
+        try:                                              # markdown block renders GFM tables
+            respond(text=md[:400], blocks=[{"type": "markdown", "text": md}], response_type="in_channel")
+        except Exception:
+            respond(text=_to_mrkdwn(md), response_type="in_channel")
 
     @app.command("/remember")
     def on_remember(ack, command, respond):
