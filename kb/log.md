@@ -594,3 +594,4 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — remember DOCK2 (type 1 diabetes mellitus): RED-TEAM (engine-verified, run #2): DOCK2's psoriasis(mod54)/T1D(mod27) links ar
 - 2026-07-12 — verdict HDAC7 [multiple sclerosis]: B-
 - 2026-07-12 — verdict STAT3 [pan-autoimmune (positive control)]: HOLDS
+- 2026-07-12 — remember STAT3 (pan-autoimmune (positive control)): POSITIVE-CONTROL CONCORDANCE (engine-verified, run #2): the recovery-ranking (sc
