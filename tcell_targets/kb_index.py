@@ -1,28 +1,130 @@
 """
-Query the derived SQLite dimensional index (built by scripts/build_kb_index.py).
+Derived SQLite dimensional index over the markdown knowledge base — BUILD + QUERY.
 
-The markdown under kb/ is the source of truth; this reads the regenerable index for
-FAST, DIMENSIONAL retrieval — slicing the KB by gene × disease × record type × grade ×
-activation state × source tier, plus FTS5 full-text — the questions grep-over-markdown
-can't answer cleanly. Rebuilds the index on demand if it's missing.
+The markdown under kb/ is the source of truth; this module builds a regenerable SQLite
+index (dimension columns + an FTS5 full-text index) for FAST cross-cutting retrieval, and
+queries it. It is SELF-CONTAINED — build and query live here — so it works inside the
+shipped skill (Claude Science) with no external build script: the first kb_query rebuilds
+the index from the packaged markdown if it's missing.
+
+Slices the KB by gene × disease × record type × grade × activation state × source tier,
+plus FTS5 full-text — the questions grep-over-markdown can't answer cleanly:
+'all grade-A druggable leads', 'the epigenetic axis across diseases', 'who's active on DOT1L'.
 """
 from __future__ import annotations
 import os
+import re
 import sqlite3
-import subprocess
-import sys
 from pathlib import Path
 
 KB_DIR = Path(os.environ.get("TCELL_KB_DIR") or (Path(__file__).resolve().parent.parent / "kb"))
 DB = KB_DIR / "index.sqlite"
-_BUILDER = Path(__file__).resolve().parent.parent / "scripts" / "build_kb_index.py"
+
+# ---- parse a KB markdown list line into a structured record -----------------
+_DATE = re.compile(r"\*\*(?:VERDICT\s+)?(\d{4}-\d{2}-\d{2})\*\*")
+_DISEASE = re.compile(r"\*\*(?:VERDICT\s+)?\d{4}-\d{2}-\d{2}\*\*\s*\(([^)]+)\):")
+_VERDICT_GRADE = re.compile(r"\):\s*\*\*([A-D][+-]?)\*\*")
+_SCAN_GRADE = re.compile(r"grade\s+([A-D][+-]?)", re.I)
+_STATE = re.compile(r"\b(Rest|Stim8hr|Stim48hr|resting[- ]state|activation-induced|activation-modulated|constitutive)\b", re.I)
+_URL = re.compile(r"(https?://[^\s)]+)")
+
+
+def _rec_type(line: str, text: str) -> str:
+    if line.startswith("- **VERDICT"):
+        return "verdict"
+    if line.startswith("- **@"):
+        return "community_post"
+    if "AUTOMATED LIT-SCAN" in text:
+        return "lit_scan"
+    if "CONFERENCE ABSTRACT" in text:
+        return "conference"
+    if "PREPRINT" in text.upper():
+        return "preprint"
+    return "finding"
+
+
+def _source_tier(text: str, source: str, rec_type: str) -> str:
+    blob = (text + " " + source).lower()
+    if rec_type == "verdict":
+        return "verdict"
+    if rec_type == "lit_scan":
+        return "lit_scan"
+    if rec_type in ("community_post", "preprint", "conference"):
+        return "community"
+    if "claude science" in blob:
+        return "claude_science"
+    if "perturb-seq" in blob or "disease_mechanisms" in blob or "marson" in blob:
+        return "screen"
+    return "other"
+
+
+def _parse_line(line: str, gene: str):
+    if not line.startswith("- **"):
+        return None
+    dmatch = _DATE.search(line)
+    date = dmatch.group(1) if dmatch else None
+    dm = _DISEASE.search(line)
+    disease = dm.group(1).strip() if dm else None
+    text = line[dm.end():].strip() if dm else line[2:].strip()
+    sm = re.search(r"\*source:\s*(.+?)\*", line)
+    src = sm.group(1).strip() if sm else ""
+    rec_type = _rec_type(line, text)
+    if rec_type == "verdict":
+        g = _VERDICT_GRADE.search(line)
+        grade = g.group(1) if g else None
+    else:
+        g = _SCAN_GRADE.search(text)
+        grade = g.group(1).upper() if g else None
+    st = _STATE.search(text)
+    urls = _URL.findall(line)
+    return {
+        "gene": gene, "disease": disease, "rec_type": rec_type, "grade": grade,
+        "state": st.group(1).lower() if st else None,
+        "source_tier": _source_tier(text, src, rec_type),
+        "date": date, "url": urls[-1].rstrip(".,;·") if urls else None, "text": text,
+    }
+
+
+# ---- build ------------------------------------------------------------------
+def build() -> dict:
+    """(Re)build the index from the markdown KB. Returns summary stats."""
+    if DB.exists():
+        DB.unlink()
+    con = sqlite3.connect(DB)
+    con.executescript("""
+        CREATE TABLE records (
+          id INTEGER PRIMARY KEY, gene TEXT, disease TEXT, rec_type TEXT, grade TEXT,
+          state TEXT, source_tier TEXT, date TEXT, url TEXT, text TEXT
+        );
+        CREATE VIRTUAL TABLE records_fts USING fts5(text, content='records', content_rowid='id');
+    """)
+    n = 0
+    for md in sorted((KB_DIR / "wiki" / "targets").glob("*.md")):
+        gene = md.stem
+        for line in md.read_text().splitlines():
+            rec = _parse_line(line, gene)
+            if not rec:
+                continue
+            cur = con.execute(
+                "INSERT INTO records (gene,disease,rec_type,grade,state,source_tier,date,url,text) "
+                "VALUES (:gene,:disease,:rec_type,:grade,:state,:source_tier,:date,:url,:text)", rec)
+            con.execute("INSERT INTO records_fts (rowid, text) VALUES (?, ?)", (cur.lastrowid, rec["text"]))
+            n += 1
+    con.commit()
+    stats = {
+        "records": n,
+        "genes": con.execute("SELECT COUNT(DISTINCT gene) FROM records").fetchone()[0],
+        "diseases": con.execute("SELECT COUNT(DISTINCT disease) FROM records WHERE disease IS NOT NULL").fetchone()[0],
+        "by_type": dict(con.execute("SELECT rec_type, COUNT(*) FROM records GROUP BY rec_type").fetchall()),
+        "by_tier": dict(con.execute("SELECT source_tier, COUNT(*) FROM records GROUP BY source_tier").fetchall()),
+    }
+    con.close()
+    return stats
 
 
 def rebuild() -> bool:
-    """(Re)build the index from the markdown KB. Returns True on success."""
     try:
-        subprocess.run([sys.executable, str(_BUILDER)], check=True,
-                       capture_output=True, timeout=120)
+        build()
     except Exception:
         return False
     return DB.exists()
@@ -32,6 +134,7 @@ def _ensure() -> bool:
     return DB.exists() or rebuild()
 
 
+# ---- query ------------------------------------------------------------------
 def query(text: str | None = None, disease: str | None = None, gene: str | None = None,
           grade: str | None = None, rec_type: str | None = None, state: str | None = None,
           source_tier: str | None = None, limit: int = 25) -> dict:
@@ -48,7 +151,7 @@ def query(text: str | None = None, disease: str | None = None, gene: str | None 
     Returns {n, records:[{gene,disease,rec_type,grade,state,source_tier,date,url,text}]}.
     """
     if not _ensure():
-        return {"error": "index unavailable — run scripts/build_kb_index.py", "records": []}
+        return {"error": "index unavailable", "records": []}
     con = sqlite3.connect(DB)
     con.row_factory = sqlite3.Row
     where, params = [], []
