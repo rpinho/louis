@@ -99,6 +99,14 @@ programs active on the target now, each with a date and link — then one line o
 space is. This is a first-class question, not an afterthought.
 - MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known (data facts, novelty, \
 the community signal, prior verdicts) instead of re-deriving.
+- COLLABORATIVE MEMORY — you can be TOLD, not just asked, and the knowledge base is SHARED with the \
+whole lab, so you can WRITE to it. When someone hands you real knowledge — a bench result that changes a \
+finding ("we tested DOT1L, the module edge didn't hold"), a strength/grade correction ("that correlation \
+is weaker than you think"), or field activity ("John's already running that", "Ricardo has DOCK2") — FILE \
+it: kb_recall the gene first (so you update the right profile and don't duplicate), then kb_remember the \
+note, or kb_verdict to raise/lower a grade, ATTRIBUTED via `source` to WHO told you. Then confirm in ONE \
+line what you filed and to which profile ("✍️ filed to DOT1L …"). Only write real, specific knowledge — \
+results, corrections, field-activity, claims — never chit-chat; if you're unsure it's worth keeping, ask first.
 - CROSS-CUTTING questions — 'all grade-A leads', 'the epigenetic axis across diseases', 'resting-state \
 handles', 'who's active across my whole portfolio' — use kb_query (dimensional + full-text search over \
 the WHOLE KB at once), not kb_recall (which is a single gene or disease).
@@ -108,20 +116,27 @@ prioritize experiments, not clinical claims.
 - If asked something the data can't answer, say so rather than guessing."""
 
 
-def _system(use_memory: bool = True) -> str:
+def _system(use_memory: bool = True, speaker: str | None = None) -> str:
     """The system prompt. In no-memory mode, drop the recall-before-derive rule and the
-    'fall back to the KB' pointer — the model answers purely from the live tools + reasoning."""
+    'fall back to the KB' pointer — the model answers purely from the live tools + reasoning.
+    `speaker` (set in Slack) names who Louis is talking to, so writes to the shared memory are attributed."""
     if use_memory:
-        return SYSTEM
-    s = SYSTEM.replace(
-        "If it's unavailable in this environment, note that and rely on kb_recall for baked signal.",
-        "If it's unavailable in this environment, say so and reason from the live tool data and your own knowledge.")
-    s = s.replace(
-        "- MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known "
-        "(data facts, novelty, the community signal, prior verdicts) instead of re-deriving.",
-        "- NO-MEMORY MODE: there is NO knowledge base this session — no stored findings, prior verdicts, "
-        "or baked community signal. Derive every answer fresh from the live tools and your own reasoning; "
-        "do not claim to recall prior results.")
+        s = SYSTEM
+    else:
+        s = SYSTEM.replace(
+            "If it's unavailable in this environment, note that and rely on kb_recall for baked signal.",
+            "If it's unavailable in this environment, say so and reason from the live tool data and your own knowledge.")
+        s = s.replace(
+            "- MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known "
+            "(data facts, novelty, the community signal, prior verdicts) instead of re-deriving.",
+            "- NO-MEMORY MODE: there is NO knowledge base this session — no stored findings, prior verdicts, "
+            "or baked community signal. Derive every answer fresh from the live tools and your own reasoning; "
+            "do not claim to recall prior results.")
+    if speaker and use_memory:
+        import datetime
+        s += (f"\n\nYou're in the lab's SHARED Slack, talking with **{speaker}** (today is "
+              f"{datetime.date.today().isoformat()}). When you file anything to the shared memory, set "
+              f"`source` = 'Slack · {speaker}' so the lab knows who reported it.")
     return s
 
 
@@ -268,12 +283,51 @@ TOOLS = [
             "required": [],
         },
     },
+    {
+        "name": "kb_remember",
+        "description": (
+            "WRITE to the SHARED lab memory — file a new finding, a correction, a bench result, or a claim "
+            "about who is working on a gene, onto that gene's profile with provenance. Use when someone TELLS "
+            "you something worth keeping (not just asks): a result that changes a prior finding, a strength "
+            "caveat ('that correlation is weaker than you think'), or field activity ('John is already running "
+            "that'). kb_recall the gene FIRST so you update the right profile and don't duplicate. Appends a "
+            "dated note tagged with your `source`."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "gene": {"type": "string", "description": "gene symbol the note is about, e.g. DOT1L"},
+                "finding": {"type": "string", "description": "the note to remember, one clear sentence"},
+                "source": {"type": "string", "description": "who/where it came from — in Slack use 'Slack · <speaker>'"},
+                "disease": {"type": "string", "description": "optional disease context, e.g. 'rheumatoid arthritis'"},
+            },
+            "required": ["gene", "finding", "source"],
+        },
+    },
+    {
+        "name": "kb_verdict",
+        "description": (
+            "WRITE to the SHARED lab memory — record or UPDATE the scientist's A–D verdict for a gene in a "
+            "disease (e.g. DOWNGRADE after a labmate reports a negative bench result or a weaker-than-thought "
+            "signal). Appends a dated verdict; the newest is the current call. kb_recall first to see the prior one."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "gene": {"type": "string"},
+                "disease": {"type": "string"},
+                "grade": {"type": "string", "description": "A, B+, B, C+, C, or D"},
+                "rationale": {"type": "string", "description": "why — include WHO reported it and WHAT changed"},
+            },
+            "required": ["gene", "disease", "grade", "rationale"],
+        },
+    },
 ]
 
 
-# The KB-backed tools handed to Claude. In no-memory mode these are withheld so the
-# model cannot read the knowledge base (community_signal is the LIVE engine, not the KB).
-_MEMORY_TOOLS = {"kb_recall", "kb_query"}
+# The KB-backed tools handed to Claude. In no-memory mode these are withheld so the model
+# can neither read NOR write the knowledge base (community_signal is the LIVE engine, not the KB).
+_MEMORY_TOOLS = {"kb_recall", "kb_query", "kb_remember", "kb_verdict"}
 
 
 def _tools(use_memory: bool = True) -> list:
@@ -327,13 +381,17 @@ def _dispatch(name: str, args: dict):
         if name == "kb_query":
             from . import kb_index
             return _clean(kb_index.query(**args))
+        if name == "kb_remember":
+            return _clean(kb.remember(args["gene"], args["finding"], args["source"], args.get("disease")))
+        if name == "kb_verdict":
+            return _clean(kb.verdict(args["gene"], args["disease"], args["grade"], args.get("rationale", "")))
         return {"error": f"unknown tool {name}"}
     except Exception as e:  # let Claude see + recover from a bad call
         return {"error": f"{type(e).__name__}: {e}"}
 
 
 def answer(question: str, history: list | None = None, api_key: str | None = None,
-           max_rounds: int = 6, use_memory: bool | None = None, on_tool=None):
+           max_rounds: int = 6, use_memory: bool | None = None, on_tool=None, speaker: str | None = None):
     """
     Run the grounded tool-use loop and return (answer_text, tool_trace, messages).
 
@@ -348,7 +406,7 @@ def answer(question: str, history: list | None = None, api_key: str | None = Non
 
     if use_memory is None:
         use_memory = default_use_memory()
-    system, tools = _system(use_memory), _tools(use_memory)
+    system, tools = _system(use_memory, speaker=speaker), _tools(use_memory)
     client = Anthropic(api_key=api_key or os.environ.get("ANTHROPIC_API_KEY"))
     messages = list(history or [])
     messages.append({"role": "user", "content": question})

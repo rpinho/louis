@@ -154,7 +154,7 @@ def _engine_summary(disease: str, use_memory: bool = True) -> str:
     return "\n".join(lines)
 
 
-def _answer(question: str, use_memory: bool = True, on_tool=None, history=None) -> tuple[str, list, list]:
+def _answer(question: str, use_memory: bool = True, on_tool=None, history=None, speaker=None) -> tuple[str, list, list]:
     """NL answer via Claude if a key is set; else a deterministic engine summary.
     use_memory=False skips all KB reads/writes (from-scratch, faster).
     on_tool(name) fires as each source is queried — used to stream live status.
@@ -163,7 +163,7 @@ def _answer(question: str, use_memory: bool = True, on_tool=None, history=None) 
     if os.environ.get("ANTHROPIC_API_KEY"):
         try:
             from .assistant import answer
-            text, trace, messages = answer(question, history=history, use_memory=use_memory, on_tool=on_tool)
+            text, trace, messages = answer(question, history=history, use_memory=use_memory, on_tool=on_tool, speaker=speaker)
             return text, trace, messages
         except Exception as e:  # fall back rather than fail the demo
             return (_engine_summary(question, use_memory=use_memory) + f"\n\n_(NL layer error: {type(e).__name__})_",
@@ -177,8 +177,24 @@ def _answer(question: str, use_memory: bool = True, on_tool=None, history=None) 
 # 'what about CBLB?' / 'why?' keep full context. In-memory; resets on restart (fine for a demo).
 _THREAD_HISTORY: dict = {}
 
+# Slack user id -> readable @handle, so writes to the SHARED memory are attributed to who told Louis. Cached.
+_SPEAKER_CACHE: dict = {}
 
-def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
+
+def _speaker(client, user_id) -> str | None:
+    """Resolve a Slack user id to a readable @handle for write-provenance (who reported the correction/claim)."""
+    if not user_id:
+        return None
+    if user_id not in _SPEAKER_CACHE:
+        try:
+            u = client.users_info(user=user_id)["user"]
+            _SPEAKER_CACHE[user_id] = "@" + (u.get("name") or u.get("profile", {}).get("display_name") or user_id)
+        except Exception:
+            _SPEAKER_CACHE[user_id] = f"@{user_id}"
+    return _SPEAKER_CACHE[user_id]
+
+
+def _reply(raw_text: str, thread: str, say, client, channel: str, speaker=None) -> bool:
     """Post an instant placeholder, stream Louis's progress as he queries each source,
     then deliver the finished dossier as a FRESH message and clear the placeholder — so
     the answer the lab keeps (and the camera sees) never carries an '(edited)' tag.
@@ -201,7 +217,7 @@ def _reply(raw_text: str, thread: str, say, client, channel: str) -> bool:
             _status(f"🔎 _Louis is consulting {label}…_")
 
     answer, trace, messages = _answer(text, use_memory=use_memory, on_tool=on_tool,
-                                      history=_THREAD_HISTORY.get(thread) or None)
+                                      history=_THREAD_HISTORY.get(thread) or None, speaker=speaker)
     _THREAD_HISTORY[thread] = messages                   # carry the conversation for follow-ups
     md = _MODE_HEADER[use_memory] + "\n\n" + answer      # RAW GFM — tables render in a markdown block
     if trace:
@@ -230,7 +246,7 @@ def build_app():
         thread = event.get("thread_ts") or event.get("ts")
         _THREAD_HISTORY.setdefault(thread, [])        # engage the thread; follow-ups won't need a tag
         raw = re.sub(r"<@[^>]+>", "", event.get("text", "")).strip()
-        if not _reply(raw, thread, say, client, event["channel"]):
+        if not _reply(raw, thread, say, client, event["channel"], speaker=_speaker(client, event.get("user"))):
             say(text="I'm *Louis*. Name a disease and I'll find + vet the T-cell targets — "
                      "e.g. *what should we hit for rheumatoid arthritis?*  "
                      "_(add `--nomem` to answer from scratch, no lab memory.)_",
@@ -248,7 +264,7 @@ def build_app():
         bot_id = context.get("bot_user_id")
         if bot_id and f"<@{bot_id}>" in event.get("text", ""):
             return                                    # tagged → on_mention handles it (no double reply)
-        _reply(re.sub(r"<@[^>]+>", "", event.get("text", "")).strip(), thread, say, client, event["channel"])
+        _reply(re.sub(r"<@[^>]+>", "", event.get("text", "")).strip(), thread, say, client, event["channel"], speaker=_speaker(client, event.get("user")))
 
     def on_ask(ack, command, respond):
         ack()
