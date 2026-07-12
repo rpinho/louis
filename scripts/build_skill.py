@@ -25,7 +25,23 @@ DATA_FILES = [
     "DE_stats.csv",
     "Th2_Th1_polarization_signature_DE_results_full.csv",
 ]
-MAX_UNCOMPRESSED_MB = 30  # Claude Science skill limit
+MAX_UNCOMPRESSED_MB = 30   # Claude Science skill size limit
+MAX_FILES = 195            # Claude Science skill file-count cap is 200 — leave margin
+
+
+def _post_count(p: Path) -> int:
+    return sum(1 for line in p.read_text().splitlines() if line.startswith("- **@"))
+
+
+def _is_lead(p: Path) -> bool:
+    """A real lead carries a verdict or a data/validation finding — not just community chatter."""
+    for line in p.read_text().splitlines():
+        if line.startswith("- **VERDICT"):
+            return True
+        if (line.startswith("- **20") and "source:" in line
+                and not line.startswith("- **@") and "profile opened" not in line):
+            return True
+    return False
 
 
 def _add(zf: zipfile.ZipFile, src: Path, arcname: str, sizes: dict):
@@ -50,9 +66,25 @@ def build() -> Path:
                 sys.exit(f"missing data file: {src}")
             _add(zf, src, f"data/{name}", sizes)
 
+        # non-gene-profile kb files (skip the regenerable index.sqlite)
+        targets_dir = REPO / "kb" / "wiki" / "targets"
         for path in sorted((REPO / "kb").rglob("*")):
-            if path.is_file() and "__pycache__" not in path.parts:
+            if (path.is_file() and "__pycache__" not in path.parts
+                    and targets_dir not in path.parents and path.name != "index.sqlite"):
                 _add(zf, path, f"kb/{path.relative_to(REPO / 'kb')}", sizes)
+
+        # gene profiles: every real LEAD + the highest-signal markers, within the file budget
+        # (Claude Science caps skills at 200 files; the harvest minted many thin marker profiles).
+        profiles = sorted(targets_dir.glob("*.md"))
+        lead_set = {p for p in profiles if _is_lead(p)}
+        markers = sorted((p for p in profiles if p not in lead_set), key=_post_count, reverse=True)
+        budget = MAX_FILES - len(sizes)
+        keep = lead_set | set(markers[:max(0, budget - len(lead_set))])
+        for p in sorted(keep):
+            _add(zf, p, f"kb/wiki/targets/{p.name}", sizes)
+        print(f"  gene profiles: kept {len(keep)}/{len(profiles)} "
+              f"({len(lead_set)} leads + {len(keep) - len(lead_set)} top-signal markers; "
+              f"dropped {len(profiles) - len(keep)} thin markers)")
 
     uncompressed = sum(sizes.values())
     zipped = OUT.stat().st_size
@@ -64,6 +96,8 @@ def build() -> Path:
     print(f"  kb/ files: {kb_files}  (target profiles + disease profiles + community signal)")
     if uncompressed > MAX_UNCOMPRESSED_MB * 1e6:
         sys.exit(f"ERROR: uncompressed size exceeds {MAX_UNCOMPRESSED_MB} MB — trim before upload.")
+    if len(sizes) > 200:
+        sys.exit(f"ERROR: {len(sizes)} files exceeds Claude Science's 200-file cap — trim before upload.")
     return OUT
 
 
