@@ -1,6 +1,8 @@
-# 🧬 T-Cell Target Explorer
+# 🔎 Louis
 
-**Ask Claude to discover novel, druggable CD4+ T-cell drug targets for an autoimmune disease — grounded in a real CRISPR screen, validated against the scientific web, and remembered — right inside your Claude session.**
+*A CD4+ T-cell target detective — named for Louis Pasteur: nothing trusted until it's verified. Built on the T-Cell Target Explorer engine (the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq screen).*
+
+**Ask Louis to discover novel, druggable CD4+ T-cell drug targets for an autoimmune disease — grounded in a real CRISPR screen, validated against the scientific web AND the field's live community signal, and remembered in a shared lab knowledge base.**
 
 An **MCP server**: no separate app, no API key, no metered credits. You talk to Claude the way you already do; this server grounds every answer in the **Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq** (Zhu, Dann, …, Pritchard, Marson 2025; [preprint](https://www.biorxiv.org/content/10.64898/2025.12.23.696273v1) · [CZI Virtual Cells Platform](https://virtualcellmodels.cziscience.com/dataset/genome-scale-tcell-perturb-seq)) — disease enrichment, gene-network influence, CRISPRi knockdown QC, and activation-state dependence.
 

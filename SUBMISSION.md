@@ -1,4 +1,4 @@
-# Submission packet — T-Cell Target Explorer
+# Submission packet — Louis
 
 The 150-word summary, the 3-minute demo script, and the judging-criteria map.
 Numbers are produced live (`python -m tcell_targets.core` re-checks the discovery
@@ -8,9 +8,9 @@ Numbers are produced live (`python -m tcell_targets.core` re-checks the discover
 
 ## Submission summary (~190 words)
 
-**T-Cell Target Explorer** is an **MCP server** that turns a genome-scale CD4+ T-cell CRISPRi
-Perturb-seq screen (Marson/Pritchard 2025) into a discovery tool that lives *inside Claude* —
-no separate app, no API key. Ask it for drug targets for an autoimmune disease and it does four
+**Louis** is an **MCP server + Slack bot** (built on the T-Cell Target Explorer engine) that turns a
+genome-scale CD4+ T-cell CRISPRi Perturb-seq screen (Marson/Pritchard 2025) into a discovery,
+validation, and memory assistant that lives *inside Claude* — no separate app, no API key. Ask it for drug targets for an autoimmune disease and it does four
 things: **(1) DISCOVER** — it wires druggable regulator "handles" to the disease's own GWAS risk
 genes through the screen's gene-regulatory modules, gated by CRISPRi knockdown QC (the trust flag)
 and tagged by activation state; **(2) VALIDATE** — it hands each lead to Claude Science's scientific
@@ -53,7 +53,7 @@ A Slack bot shares it all with the lab. Every claim traces to a source. Built wi
 
 ### Beat 6 — Share it with the lab, and what it is (2:55–3:20)
 - **[SCREEN]** Flip to Slack. In a public channel: *`@target-explorer what should we hit for RA?`* → the same trust-ranked leads + community signal appear; `/remember` files to the shared KB.
-- **[SAY]** "And because knowledge has to be shared, it meets a lab where they already talk — Slack, public channels only, every question compounding into one memory. Discover, validate, listen, remember — inside Claude, no API key, no bioinformatician. It produces a novel, druggable, testable lead a bench scientist would actually chase: DOT1L, not textbook STAT3. That's T-Cell Target Explorer — built with Claude, living inside it, and shared with your whole lab."
+- **[SAY]** "And because knowledge has to be shared, it meets a lab where they already talk — Slack, public channels only, every question compounding into one memory. Discover, validate, listen, remember — inside Claude, no API key, no bioinformatician. It produces a novel, druggable, testable lead a bench scientist would actually chase: DOT1L, not textbook STAT3. That's Louis — built with Claude, living inside it, and shared with your whole lab."
 
 ---
 
