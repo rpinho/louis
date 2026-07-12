@@ -595,3 +595,7 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — verdict HDAC7 [multiple sclerosis]: B-
 - 2026-07-12 — verdict STAT3 [pan-autoimmune (positive control)]: HOLDS
 - 2026-07-12 — remember STAT3 (pan-autoimmune (positive control)): POSITIVE-CONTROL CONCORDANCE (engine-verified, run #2): the recovery-ranking (sc
+- 2026-07-12 — remember PPM1D (asthma): RED-TEAM STRESS-TEST (Claude Science on the re-uploaded skill, 2026-07-12; re-de
+- 2026-07-12 — remember HDAC7 (ulcerative colitis): RED-TEAM STRESS-TEST (Claude Science on the re-uploaded skill, 2026-07-12; re-de
+- 2026-07-12 — verdict PPM1D [asthma]: C+
+- 2026-07-12 — verdict HDAC7 [ulcerative colitis]: B
