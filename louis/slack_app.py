@@ -91,16 +91,34 @@ def _format_trace(trace: list) -> str:
 # A trailing flag on a message forces from-scratch (no-KB) mode for THAT message;
 # without it, the instance default applies (env TCELL_NO_MEMORY, else with-memory).
 _NOMEM_TOKENS = ("--nomem", "/nomem", "[scratch]")
-_MODE_HEADER = {True: "🧠 **with lab memory**", False: "🆕 **no memory — from scratch**"}
+_NOLAB_TOKENS = ("--nolab", "--baseline", "/nolab")
 
 
-def _parse_mode(text: str) -> tuple[str, bool]:
-    """Strip a trailing --nomem / /nomem / [scratch] flag → (clean_text, use_memory)."""
+def _mode_header(use_memory: bool, exclude=None) -> str:
+    if not use_memory:
+        return "🆕 **no memory — from scratch**"
+    if exclude:
+        return f"🧠 **with memory — excluding {', '.join(sorted(exclude))}**"
+    return "🧠 **with lab memory**"
+
+
+def _parse_mode(text: str) -> tuple[str, bool, set | None]:
+    """Parse trailing memory-control flags → (clean_text, use_memory, exclude_tiers). Provenance-scoped:
+    --nomem / [scratch]  → no memory at all (use_memory=False).
+    --nolab / --baseline → answer on the validated KB but EXCLUDE lab-contributed (Slack) knowledge.
+    --exclude <tier,...> → exclude any provenance tier(s): lab, community, claude_science, lit_scan, screen, verdict."""
     t = (text or "").strip()
     for tok in _NOMEM_TOKENS:
         if t.lower().endswith(tok):
-            return t[: -len(tok)].strip(), False
-    return t, default_use_memory()
+            return t[: -len(tok)].strip(), False, None
+    m = re.search(r"--exclude[:\s]+([a-z_,\s]+)$", t, re.I)
+    if m:
+        tiers = {x.strip().lower() for x in re.split(r"[,\s]+", m.group(1)) if x.strip()}
+        return t[: m.start()].strip(), True, (tiers or None)
+    for tok in _NOLAB_TOKENS:
+        if t.lower().endswith(tok):
+            return t[: -len(tok)].strip(), True, {"lab"}
+    return t, default_use_memory(), None
 
 
 def _baked_memory_lines(disease: str) -> list[str]:
@@ -154,7 +172,7 @@ def _engine_summary(disease: str, use_memory: bool = True) -> str:
     return "\n".join(lines)
 
 
-def _answer(question: str, use_memory: bool = True, on_tool=None, history=None, speaker=None) -> tuple[str, list, list]:
+def _answer(question: str, use_memory: bool = True, on_tool=None, history=None, speaker=None, exclude=None) -> tuple[str, list, list]:
     """NL answer via Claude if a key is set; else a deterministic engine summary.
     use_memory=False skips all KB reads/writes (from-scratch, faster).
     on_tool(name) fires as each source is queried — used to stream live status.
@@ -163,7 +181,7 @@ def _answer(question: str, use_memory: bool = True, on_tool=None, history=None, 
     if os.environ.get("ANTHROPIC_API_KEY"):
         try:
             from .assistant import answer
-            text, trace, messages = answer(question, history=history, use_memory=use_memory, on_tool=on_tool, speaker=speaker)
+            text, trace, messages = answer(question, history=history, use_memory=use_memory, on_tool=on_tool, speaker=speaker, exclude=exclude)
             return text, trace, messages
         except Exception as e:  # fall back rather than fail the demo
             return (_engine_summary(question, use_memory=use_memory) + f"\n\n_(NL layer error: {type(e).__name__})_",
@@ -199,7 +217,7 @@ def _reply(raw_text: str, thread: str, say, client, channel: str, speaker=None) 
     then deliver the finished dossier as a FRESH message and clear the placeholder — so
     the answer the lab keeps (and the camera sees) never carries an '(edited)' tag.
     False if there was nothing to answer."""
-    text, use_memory = _parse_mode(raw_text)
+    text, use_memory, exclude = _parse_mode(raw_text)
     if not text:
         return False
     ph = say(text="🔎 _Louis is on the case…_", thread_ts=thread)
@@ -217,9 +235,9 @@ def _reply(raw_text: str, thread: str, say, client, channel: str, speaker=None) 
             _status(f"🔎 _Louis is consulting {label}…_")
 
     answer, trace, messages = _answer(text, use_memory=use_memory, on_tool=on_tool,
-                                      history=_THREAD_HISTORY.get(thread) or None, speaker=speaker)
+                                      history=_THREAD_HISTORY.get(thread) or None, speaker=speaker, exclude=exclude)
     _THREAD_HISTORY[thread] = messages                   # carry the conversation for follow-ups
-    md = _MODE_HEADER[use_memory] + "\n\n" + answer      # RAW GFM — tables render in a markdown block
+    md = _mode_header(use_memory, exclude) + "\n\n" + answer   # RAW GFM — tables render in a markdown block
     if trace:
         md += "\n\n" + _format_trace(trace)
     # Clear the transient status, then post the dossier fresh (no "(edited)" tag).
@@ -268,9 +286,9 @@ def build_app():
 
     def on_ask(ack, command, respond):
         ack()
-        text, use_memory = _parse_mode(command.get("text", ""))
-        answer, trace, _ = _answer(text, use_memory=use_memory)
-        md = _MODE_HEADER[use_memory] + "\n\n" + answer
+        text, use_memory, exclude = _parse_mode(command.get("text", ""))
+        answer, trace, _ = _answer(text, use_memory=use_memory, exclude=exclude)
+        md = _mode_header(use_memory, exclude) + "\n\n" + answer
         if trace:
             md += "\n\n" + _format_trace(trace)
         try:                                              # markdown block renders GFM tables

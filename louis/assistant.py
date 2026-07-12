@@ -354,7 +354,7 @@ _COLS = ["gene", "confidence", "disease_odds_ratio", "controls_n_genes",
          "state_pattern", "kd_verified", "offtarget_risk", "th2_vs_th1_lfc", "p_adj_fdr"]
 
 
-def _dispatch(name: str, args: dict):
+def _dispatch(name: str, args: dict, exclude=None):
     try:
         if name == "list_diseases":
             return core.list_diseases()
@@ -377,10 +377,10 @@ def _dispatch(name: str, args: dict):
                 args["entity"], kind=args.get("kind", "target"), top=int(args.get("top", 8)),
                 allow_baked=True))
         if name == "kb_recall":
-            return _clean(kb.recall(args["entity"]))
+            return _clean(kb.recall(args["entity"], exclude_sources=exclude))
         if name == "kb_query":
             from . import kb_index
-            return _clean(kb_index.query(**args))
+            return _clean(kb_index.query(**args, exclude_tier=exclude))
         if name == "kb_remember":
             return _clean(kb.remember(args["gene"], args["finding"], args["source"], args.get("disease")))
         if name == "kb_verdict":
@@ -391,7 +391,8 @@ def _dispatch(name: str, args: dict):
 
 
 def answer(question: str, history: list | None = None, api_key: str | None = None,
-           max_rounds: int = 6, use_memory: bool | None = None, on_tool=None, speaker: str | None = None):
+           max_rounds: int = 6, use_memory: bool | None = None, on_tool=None, speaker: str | None = None,
+           exclude=None):
     """
     Run the grounded tool-use loop and return (answer_text, tool_trace, messages).
 
@@ -427,7 +428,7 @@ def answer(question: str, history: list | None = None, api_key: str | None = Non
                             on_tool(block.name)
                         except Exception:
                             pass
-                    out = _dispatch(block.name, block.input)
+                    out = _dispatch(block.name, block.input, exclude=exclude)
                     results.append({
                         "type": "tool_result",
                         "tool_use_id": block.id,

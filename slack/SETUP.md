@@ -45,3 +45,26 @@ In Slack, invite the bot to a public channel: `/invite @louis`, then:
 Without `ANTHROPIC_API_KEY` the bot still works — it returns a deterministic engine
 summary (discovery handles + community signal). With the key, Claude answers in natural
 language, grounded in the same tools.
+
+## Collaborative memory + demo controls
+
+Louis **writes** to the shared KB, not just reads it — tell him something in a thread and he
+files it, attributed to you:
+- *"@louis actually we tested DOT1L — the module edge didn't hold, that verdict's too strong"* → he downgrades the verdict + files the result.
+- *"@louis note that John's already running DOCK2"* → he files it as field activity, so nobody gets scooped.
+
+Provenance-scoped **memory flags** (append to any question) control what he draws on — handy for demos:
+
+| Flag | Effect |
+|---|---|
+| *(none)* | full shared memory |
+| `--nolab` | answer on the **validated** KB only — exclude lab-contributed (Slack) knowledge (the "before the lab weighed in" view) |
+| `--exclude <tier>` | exclude any provenance tier: `lab`, `community`, `claude_science`, `lit_scan`, `screen`, `verdict` |
+| `--nomem` | no memory at all — answer from the live screen + reasoning only (the from-scratch contrast) |
+
+Reset the lab-contributed knowledge for a clean demo take (the validated KB is untouched):
+
+```bash
+python scripts/reset_lab_knowledge.py            # dry-run — show what would be removed
+python scripts/reset_lab_knowledge.py --apply    # remove + reindex
+```

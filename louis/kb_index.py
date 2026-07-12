@@ -44,6 +44,8 @@ def _rec_type(line: str, text: str) -> str:
 
 
 def _source_tier(text: str, source: str, rec_type: str) -> str:
+    if "slack" in source.lower():        # lab-contributed via Slack — a provenance tier that beats rec_type
+        return "lab"
     blob = (text + " " + source).lower()
     if rec_type == "verdict":
         return "verdict"
@@ -137,7 +139,7 @@ def _ensure() -> bool:
 # ---- query ------------------------------------------------------------------
 def query(text: str | None = None, disease: str | None = None, gene: str | None = None,
           grade: str | None = None, rec_type: str | None = None, state: str | None = None,
-          source_tier: str | None = None, limit: int = 25) -> dict:
+          source_tier: str | None = None, exclude_tier=None, limit: int = 25) -> dict:
     """
     Dimensional + full-text search across the whole knowledge base. Every argument is
     optional and ANDs together:
@@ -167,6 +169,9 @@ def query(text: str | None = None, disease: str | None = None, gene: str | None 
         where.append("state LIKE ?"); params.append(f"%{state.lower()}%")
     if source_tier:
         where.append("source_tier = ?"); params.append(source_tier)
+    if exclude_tier:                                     # provenance-scoped memory: drop these tiers (e.g. 'lab')
+        _ex = [exclude_tier] if isinstance(exclude_tier, str) else list(exclude_tier)
+        where.append("source_tier NOT IN (%s)" % ",".join(["?"] * len(_ex))); params.extend(_ex)
     if text:
         where.append("id IN (SELECT rowid FROM records_fts WHERE records_fts MATCH ?)")
         params.append(text)

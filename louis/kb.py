@@ -90,7 +90,7 @@ def _touch_index(gene: str) -> None:
             f.write(f"- [{gene}]({rel})\n")
 
 
-def recall(entity: str) -> dict:
+def recall(entity: str, exclude_sources=None) -> dict:
     """
     Read what the KB already knows about a target gene or a disease — BEFORE re-deriving it.
     Returns the stored profile(s), or a note that it's not in the KB yet.
@@ -105,6 +105,19 @@ def recall(entity: str) -> dict:
     if not hits:
         return {"entity": entity, "known": False,
                 "note": f"Nothing in the KB for {entity!r} yet. Derive it, then call kb_remember to file it."}
+    if exclude_sources:                                   # provenance-scoped recall: drop lines from these tiers (e.g. 'lab')
+        from .kb_index import _parse_line
+        _ex = {exclude_sources} if isinstance(exclude_sources, str) else set(exclude_sources)
+
+        def _drop(txt):
+            keep = []
+            for ln in txt.splitlines():
+                rec = _parse_line(ln, entity) if ln.startswith("- **") else None
+                if rec and rec.get("source_tier") in _ex:
+                    continue
+                keep.append(ln)
+            return "\n".join(keep)
+        hits = {k: _drop(v) for k, v in hits.items()}
     return {"entity": entity, "known": True, **hits}
 
 
