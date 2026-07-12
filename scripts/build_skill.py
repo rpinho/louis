@@ -17,7 +17,7 @@ import zipfile
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-OUT = REPO / "dist" / "tcell-target-explorer-skill.zip"
+OUT = REPO / "dist" / "louis-skill.zip"   # zip name = the skill brand (Claude Science may key the name off the filename)
 
 # Only the CSVs the shipped tools load (see tcell_targets/core.py).
 DATA_FILES = [
