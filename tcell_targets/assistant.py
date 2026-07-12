@@ -68,6 +68,13 @@ activity from the KB, the trust flags, and the activation state. Lead with a one
 ONE specific hole, and the single change that would most improve it. Be a skeptical colleague weighing \
 their idea, not a search engine.
 
+PHONE-A-FRIEND — a scientist may bring a TABLE of hypotheses (or a list of leads) and ask for a quick \
+thumbs-up/down on each, the way they'd text a trusted colleague. Deliver a compact go / watch / skip \
+table — **👍 / 🤔 / 👎** per row — grounded in BOTH the trust flag (is the screen signal clean, the \
+knockdown verified?) AND the field's read (what community_signal + kb_recall show labs, preprints, and \
+conferences are saying), with one terse clause of why for each. Don't re-derive the full case file per \
+row; keep the whole table scannable in one glance.
+
 Rules of the house:
 - Surface the activation state. A T cell's regulators change with its state, and the screen measured \
 three (Rest / Stim8hr / Stim48hr). When it matters, say which state a target acts in — e.g. \
@@ -85,6 +92,9 @@ programs active on the target now, each with a date and link — then one line o
 space is. This is a first-class question, not an afterthought.
 - MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known (data facts, novelty, \
 the community signal, prior verdicts) instead of re-deriving.
+- CROSS-CUTTING questions — 'all grade-A leads', 'the epigenetic axis across diseases', 'resting-state \
+handles', 'who's active across my whole portfolio' — use kb_query (dimensional + full-text search over \
+the WHOLE KB at once), not kb_recall (which is a single gene or disease).
 - You may add briefly established biology (e.g. STAT3/IRF4/BATF are core Th17 regulators) but keep it \
 clearly separate from the data, and never claim clinical efficacy — these are hypotheses to \
 prioritize experiments, not clinical claims.
@@ -227,12 +237,36 @@ TOOLS = [
             "required": ["entity"],
         },
     },
+    {
+        "name": "kb_query",
+        "description": (
+            "DIMENSIONAL SEARCH across the WHOLE knowledge base at once (not one entity) — the fast way to "
+            "answer cross-cutting questions: 'all grade-A druggable leads', 'the epigenetic axis across "
+            "diseases', 'resting-state handles for lupus', 'what's active on DOT1L across every disease'. "
+            "Every filter is optional and ANDs together; combine with a full-text 'text' query. Use this for "
+            "portfolio / cross-disease questions; use kb_recall for a single gene or disease."
+        ),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "text": {"type": "string", "description": "FTS query over record text, e.g. 'inhibitor', 'epigenetic OR methyltransferase'"},
+                "disease": {"type": "string", "description": "disease substring, e.g. 'lupus'"},
+                "gene": {"type": "string", "description": "exact gene symbol, e.g. 'DOT1L'"},
+                "grade": {"type": "string", "description": "exact grade: A, B+, B, C+, C, or D"},
+                "rec_type": {"type": "string", "description": "verdict | finding | community_post | preprint | conference | lit_scan"},
+                "state": {"type": "string", "description": "activation state substring: rest, stim8hr, stim48hr, activation-induced"},
+                "source_tier": {"type": "string", "description": "screen | claude_science | lit_scan | community | verdict"},
+                "limit": {"type": "integer", "description": "max rows (default 25)"},
+            },
+            "required": [],
+        },
+    },
 ]
 
 
 # The KB-backed tools handed to Claude. In no-memory mode these are withheld so the
 # model cannot read the knowledge base (community_signal is the LIVE engine, not the KB).
-_MEMORY_TOOLS = {"kb_recall"}
+_MEMORY_TOOLS = {"kb_recall", "kb_query"}
 
 
 def _tools(use_memory: bool = True) -> list:
@@ -283,6 +317,9 @@ def _dispatch(name: str, args: dict):
                 allow_baked=True))
         if name == "kb_recall":
             return _clean(kb.recall(args["entity"]))
+        if name == "kb_query":
+            from . import kb_index
+            return _clean(kb_index.query(**args))
         return {"error": f"unknown tool {name}"}
     except Exception as e:  # let Claude see + recover from a bad call
         return {"error": f"{type(e).__name__}: {e}"}

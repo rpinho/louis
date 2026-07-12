@@ -202,6 +202,25 @@ def kb_recall(entity: str) -> dict:
 
 
 @mcp.tool()
+def kb_query(text: str = "", disease: str = "", gene: str = "", grade: str = "",
+             rec_type: str = "", state: str = "", source_tier: str = "", limit: int = 25) -> dict:
+    """
+    DIMENSIONAL SEARCH across the WHOLE knowledge base at once (not one entity) — the fast way to answer
+    cross-cutting questions: 'all grade-A druggable leads', 'the epigenetic axis across diseases',
+    'resting-state handles for lupus', 'what is active on DOT1L across every disease'. Every filter is
+    optional and ANDs together; combine with a full-text `text` query (FTS5). rec_type: verdict | finding
+    | community_post | preprint | conference | lit_scan. source_tier: screen | claude_science | lit_scan |
+    community | verdict. Use kb_recall for one gene/disease; kb_query for portfolio / cross-disease views.
+    """
+    if _no_memory():
+        return dict(_MEMORY_DISABLED, query=text or gene or disease)
+    from . import kb_index
+    return kb_index.query(text=text or None, disease=disease or None, gene=gene or None,
+                          grade=grade or None, rec_type=rec_type or None, state=state or None,
+                          source_tier=source_tier or None, limit=limit)
+
+
+@mcp.tool()
 def kb_search(term: str = "", kind: str = "", has_signal: bool = False,
               has_verdict: bool = False, content: bool = False, limit: int = 25) -> dict:
     """
