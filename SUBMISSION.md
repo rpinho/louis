@@ -36,6 +36,19 @@ only in a preprint + a conference abstract) while **killing MEN1 (menin buzz is 
 GLS (signal is synoviocytes, wrong cell), and CBLB/RIPK1 (edge already closed/published).**
 Separating edge from noise *is* the product.
 
+The **opportunity map** makes that spine visual — candidate **grade** (y) against **novelty** (x),
+each point a connector-graded verdict:
+
+<p align="center">
+  <img src="docs/figures/opportunity_map.svg" width="90%" alt="The opportunity map — grade vs novelty; the green corner holds the novel, well-founded leads (DOT1L, HDAC7, PPM1D, RASA2, HIF1A)">
+</p>
+
+The green corner — high-grade **and** understudied — is the whole product: DOT1L, HDAC7, PPM1D, RASA2,
+HIF1A. The known genes (IL21R, STAT3, ZAP70, AHR) sit right, *validated but crowded*; DOCK2 is genuine
+whitespace still maturing; INSR is the screen grading its own artifact a D. And the honesty is in what's
+*absent* — MEN1 and GLS aren't plotted, because their story is misattributed buzz and cross-disease grade
+drift, not a clean grade × novelty point; the two-axis map refuses to flatten them into false leads.
+
 ---
 
 ## 3-minute demo script (beat by beat)
@@ -127,8 +140,9 @@ Separating edge from noise *is* the product.
 - **Depth (20%)** — a real GRN + CRISPRi-QC trust layer, an activation-state axis, and a
   module→risk-gene discovery engine on the authors' tables; a community-signal engine that self-filters
   by gene symbol and vetoes wellness noise; a knowledge base in a mature PKM shape (routing, provenance,
-  recall-before-derive, dimensional `kb_query`, cross-disease synthesis). Honest resolution stated
-  throughout: module-level co-cluster hypotheses to *test*, not proven gene-level edges.
+  recall-before-derive, dimensional `kb_query`, cross-disease synthesis, and a grade × novelty opportunity
+  map that prioritizes the whole portfolio at a glance). Honest resolution stated throughout: module-level
+  co-cluster hypotheses to *test*, not proven gene-level edges.
 
 ---
 

@@ -21,3 +21,6 @@ _inbox/
 
 # Derived SQLite retrieval index (regenerated from the markdown KB) — local only
 kb/index.sqlite
+
+# Local figure-render scratch (Quick Look PNGs of committed SVGs) — local only
+scratch_preview/
