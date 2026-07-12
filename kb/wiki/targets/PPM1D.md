@@ -1,0 +1,9 @@
+# PPM1D
+
+*CD4+ T-cell regulator — target profile. Data facts, novelty, mechanism, and scientist verdicts, each with provenance.*
+
+## Findings
+
+- **2026-07-12** (asthma): profile opened for a verdict  — *source: scientist*
+- **VERDICT 2026-07-12** (asthma): **B+** — TOP Th2 lead. mod 88 (Stim48hr, OR 2.6; type-2 cytokine cluster IL4/IL13/IL5/IL2). The ONLY asthma handle with a direct, peer-reviewed, CD4-intrinsic mechanism: Wip1-KO & Wip1-inhibitor mice are PROTECTED from Th9-driven allergic airway inflammation (JACI 2017, PMID 28732646) — favourable inhibitor direction. Potent tool cpd GSK2830371 (ChEMBL, IC50 6-86 nM, max_phase=null/preclinical). Novel (0 asthma trials). Caveats: no asthma GWAS; phosphatase tractability imperfect; Wip1 touches p53 (viability confound to control).
+- **2026-07-12** (asthma): KEY CROSS-DISEASE RESULT (asthma Th2 validation): the top asthma handles are Th2-SPECIFIC and distinct from the recurring Th1/Th17 leads. All 6 Th1/Th17 leads (HDAC7/DOT1L/GLS/AHR/DOCK2/RIPK1) are kd-verified in the screen, but NONE is a handle in asthma's TOP modules (79/85/86/88/89/90/94/110 vs the Th1/Th17 27/38/54/59). Asthma surfaces a Th2 set wired to type-2 cytokine risk genes (IL4/IL13/IL5) + 17q21/ORMDL3. HONEST NUANCE (engine-verified, corrects Science's 'zero overlap'): GLS's module 100 IS weakly asthma-enriched (lower-ranked, not top-8) - the metabolic handle partially bridges Th1/Th17<->Th2, consistent with metabolism not being Th-subset-specific. Net: recurrence = module-conservation from shared risk genes; Th2 shares little wiring with Th1/Th17, so its modules AND handles differ. The approach is principled disease-specific, not one-gene-fits-all.  — *source: Claude Science asthma Th2 validation 2026-07-12 (Open Targets/ChEMBL max_phase/GWAS Catalog/PubMed/ClinicalTrials)*
