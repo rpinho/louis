@@ -48,7 +48,7 @@ Separating edge from noise *is* the product.
 - **[SAY]** "This is a genome-scale CRISPR screen of human T cells — a map of autoimmune drug
   targets. The hardest thing in biology isn't the analysis; it's getting a bench scientist to
   *use* a dataset like this. So we didn't build a website. We put it inside Claude — and named it
-  Louis, after Pasteur. It discovers, it doesn't just look up."
+  Louis, after Pasteur (and, like Claude, a French name). It discovers, it doesn't just look up."
 
 ### Beat 2 — DISCOVER + TRUST (0:25–1:05)
 - **[SCREEN]** In Slack: *`@louis for rheumatoid arthritis, skip the obvious targets — novel
@@ -115,7 +115,7 @@ Separating edge from noise *is* the product.
   *composes with Claude Science's* connectors for validation; and its **listen** layer adds a data
   source even Science lacks — the field's pre-paper chatter on X/Bluesky/conference floors. The
   knowledge base was itself deepened by **recursion**: Louis's own skill run *inside* Claude Science
-  across five diseases, its findings ingested back with provenance.
+  across nine diseases, its findings ingested back with provenance.
 - **Depth (20%)** — a real GRN + CRISPRi-QC trust layer, an activation-state axis, and a
   module→risk-gene discovery engine on the authors' tables; a community-signal engine that self-filters
   by gene symbol and vetoes wellness noise; a knowledge base in a mature PKM shape (routing, provenance,
@@ -127,11 +127,17 @@ Separating edge from noise *is* the product.
 ## How this was built with Claude (the recursion)
 
 The seed KB was small. To deepen it, Louis's **own skill was uploaded into Claude Science** and run
-across RA, SLE, Crohn's, MS, and UC — each session validating the leads against Open Targets / ChEMBL /
-PubMed / GWAS Catalog / ClinicalTrials, grading A–D, and writing findings back with per-source
-provenance. Those write-backs were ingested into the repo KB (additive, deduped, corrections kept),
-a cross-disease synthesis recipe was folded back into the skill, and the community moat (X / Bluesky /
-conference abstracts — everything off Science's allowlist) was harvested and baked in so it ships even
-inside the sandbox. The result: **191 target profiles, ~1,030 provenance-stamped records**, four
-connector-verified diseases, and a hero lead (DOT1L) whose pre-paper edge was confirmed by a system
-that went looking everywhere else first.
+across **nine autoimmune diseases** — RA, SLE, Crohn's, MS, UC, psoriasis, type-1 diabetes, asthma,
+atopic eczema — each session validating the leads against Open Targets / ChEMBL / PubMed / GWAS Catalog /
+ClinicalTrials, grading A–D, and writing findings back with per-source provenance. Those write-backs were
+ingested into the repo KB (additive, deduped, corrections kept — several times catching Claude Science
+stating a drug's phase *from memory* when its own ChEMBL lookup said otherwise, and re-verifying every
+screen number against the engine). A cross-disease synthesis recipe was folded back into the skill; the
+community moat (X / Bluesky / conference abstracts — off Science's allowlist) was harvested and baked in.
+
+The result: **195 target profiles, ~1,070 provenance-stamped records**, nine connector-verified diseases,
+new leads per disease (**DOCK2, HIF1A, PPM1D, RASA2** — DOCK2 independently corroborated the same week by
+a Bluesky post from the Waggoner Lab), two full experiment designs, and a portfolio synthesis whose
+punchline is *honesty*: the recurring handles are **module-conservation on shared GWAS hubs, not one
+convergent mechanism** — with two disjoint conserved axes, Th1/Th17 and Th2. A hero lead (DOT1L) whose
+pre-paper edge was confirmed by a system that went looking everywhere else first.

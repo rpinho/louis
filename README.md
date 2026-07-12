@@ -1,6 +1,10 @@
+<p align="center">
+  <img src="docs/louis.png" width="150" alt="Louis — a CD4+ T-cell target detective">
+</p>
+
 # 🔎 Louis
 
-*A CD4+ T-cell target detective — named for Louis Pasteur: nothing trusted until it's verified. Built on the Louis engine (the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq screen).*
+*A CD4+ T-cell target detective — named for Louis Pasteur (pronounced "Louie"; like Claude, a French name): **nothing trusted until it's verified.** Grounded in the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq screen.*
 
 **Ask Louis to discover novel, druggable CD4+ T-cell drug targets for an autoimmune disease — grounded in a real CRISPR screen, validated against the scientific web AND the field's live community signal, and remembered in a shared lab knowledge base.**
 
@@ -90,6 +94,26 @@ Four things, none of which a literature search can give you — because they liv
 - **Activation state.** A T cell's regulators shift with its state; the screen measured three (Rest / Stim8hr / Stim48hr) and ~87% of hub regulators change ≥2× across them. The server surfaces which state a target acts in — the state-dependence a bench immunologist otherwise needs a whole experiment to read. (The **three measured states**, not modeling unmeasured ones.)
 - **A learning knowledge base.** `kb_recall / kb_remember / kb_verdict` maintain a git-tracked markdown KB (a target profile is a reputation record: data facts + literature novelty + validation + the scientist's verdict, each with provenance). Recall before deriving; file findings back so nothing is re-derived; hand the whole thing to a student.
 - **The off-allowlist layer — social + conference.** `community_signal` turns the engine's own discoveries into search terms and reads what immunologists are *saying* about each lead — on **X** and on the **conference floor** (ACR/EULAR abstracts). This is the one layer Claude Science structurally can't reach: its sandbox is a strict domain **allowlist** (PubMed, bioRxiv, ChEMBL, Open Targets are on it — Twitter and conference-abstract sites are **not**). So the papers and preprints it already has; what it's missing is what the field is saying *around* them — before, beyond, and sometimes instead of publication. Curated (labs/journals first, wellness vetoed) and baked into the KB, so it ships even inside that sandbox.
+
+## What it found — validated across 9 diseases
+
+Louis's own skill was run *inside Claude Science* across **nine autoimmune diseases** — RA, SLE, Crohn's, MS, UC, psoriasis, type-1 diabetes, asthma, atopic eczema — each candidate pressure-tested against Open Targets / ChEMBL / GWAS Catalog / PubMed / ClinicalTrials, graded A–D, and written back to the KB. What came out:
+
+- **Novel leads a database wouldn't hand you** — DOT1L (RA), HDAC7 (UC/MS), **DOCK2** (a Rac-GEF whose autoimmune-CD4 role Bluesky independently corroborated the *same week* — the Waggoner Lab's "TCR–SUB1–DOCK2 axis promotes autoimmunity"), **PPM1D** (asthma + eczema, with a tool inhibitor), **RASA2** (eczema — best genetics of the set, honestly flagged as undruggable today).
+- **It refuses to overclaim.** Asked whether the recurring "epigenetic axis" (DOT1L/HDAC7/MEN1) is one pan-autoimmune *mechanism*, Louis says **no** — the recurrence is *module-conservation* on shared GWAS hubs (ETS1/IRF8/BACH2/CD28/PTPN22…), not convergent regulation. Refusing the flashy overclaim is the credible answer.
+- **Two disjoint conserved axes.** The Th1/Th17 diseases share one module-set; the Th2/allergic diseases (asthma + eczema) share a *different* one — a PPM1D/METAP2 type-2-cytokine hub — with metabolic GLS the only cross-over.
+
+<p align="center">
+  <img src="docs/figures/pan_autoimmune_synthesis.png" width="47%" alt="Pan-autoimmune synthesis — recurrence is module-conserved, not one mechanism">
+  &nbsp;
+  <img src="docs/figures/th2_conserved_hub.png" width="47%" alt="A Th2-conserved hub (PPM1D/METAP2) across asthma and eczema; GLS is the lone Th1/Th17 bridge">
+</p>
+
+And it designs the bench experiment. Ask Louis to *test* a lead and it returns a real two-arm protocol — CRISPRi knockdown + a selective inhibitor, sgRNA-resistant/catalytic-dead rescue controls, a mandatory direction-of-effect gate — on the screen's own activation-state axis:
+
+<p align="center">
+  <img src="docs/figures/hdac7_experiment_schematic.png" width="80%" alt="HDAC7 UC experiment: two-arm design + cheap-gate-first go/no-go">
+</p>
 
 ## Optional: local visual browser
 
