@@ -123,7 +123,7 @@ Four things, none of which a literature search can give you — because they liv
 Louis's own skill was run *inside Claude Science* across **nine autoimmune diseases** — RA, SLE, Crohn's, MS, UC, psoriasis, type-1 diabetes, asthma, atopic eczema — each candidate pressure-tested against Open Targets / ChEMBL / GWAS Catalog / PubMed / ClinicalTrials, graded A–D, and written back to the KB. What came out:
 
 <p align="center">
-  <img src="docs/figures/opportunity_map.svg" width="92%" alt="The opportunity map — candidate grade vs novelty. The green top-left corner (DOT1L, HDAC7, PPM1D, RASA2, HIF1A) holds the novel, well-founded targets; IL21R/STAT3/ZAP70/AHR sit right as validated-but-crowded; DOCK2 is understudied whitespace.">
+  <img src="docs/figures/opportunity_map.png" width="94%" alt="The opportunity map — candidate grade vs novelty. The green top-left corner (DOT1L, HDAC7, PPM1D, RASA2, HIF1A) holds the novel, well-founded targets; IL21R/STAT3/ZAP70/AHR sit right as validated-but-crowded; DOCK2 is understudied whitespace.">
 </p>
 
 **The whole thesis in one picture:** candidate **grade** (how good a lead) against **novelty** (how understudied this gene is *for this disease, in T cells*). A database hands you the crowded right side; Louis is built for the **green corner** — high-grade *and* barely in the literature. DOT1L, HDAC7, PPM1D, RASA2, HIF1A land there. The known genes (IL21R, STAT3, ZAP70, AHR) sit right, validated but crowded; DOCK2 is real whitespace still maturing; INSR is the screen honestly grading its own artifact a D. Every point traces to a connector-checked verdict — regenerate it with `python scripts/opportunity_map.py`.

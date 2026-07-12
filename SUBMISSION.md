@@ -40,7 +40,7 @@ The **opportunity map** makes that spine visual — candidate **grade** (y) agai
 each point a connector-graded verdict:
 
 <p align="center">
-  <img src="docs/figures/opportunity_map.svg" width="90%" alt="The opportunity map — grade vs novelty; the green corner holds the novel, well-founded leads (DOT1L, HDAC7, PPM1D, RASA2, HIF1A)">
+  <img src="docs/figures/opportunity_map.png" width="90%" alt="The opportunity map — grade vs novelty; the green corner holds the novel, well-founded leads (DOT1L, HDAC7, PPM1D, RASA2, HIF1A)">
 </p>
 
 The green corner — high-grade **and** understudied — is the whole product: DOT1L, HDAC7, PPM1D, RASA2,
