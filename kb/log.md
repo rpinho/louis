@@ -555,3 +555,28 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-11 — community_signal SAMHD1 (target): filed 2 posts (harvested 2026-07-11)
 - 2026-07-11 — remember SLAMF1: profile opened for community signal
 - 2026-07-11 — community_signal SLAMF1 (target): filed 1 posts (harvested 2026-07-11)
+- 2026-07-12 — remember IL21R (type 1 diabetes mellitus): profile opened for a verdict
+- 2026-07-12 — verdict IL21R [type 1 diabetes mellitus]: B
+- 2026-07-12 — remember HIF1A (type 1 diabetes mellitus): profile opened for a verdict
+- 2026-07-12 — verdict HIF1A [type 1 diabetes mellitus]: B
+- 2026-07-12 — verdict AHR [type 1 diabetes mellitus]: C
+- 2026-07-12 — verdict DOCK2 [type 1 diabetes mellitus]: C
+- 2026-07-12 — verdict IL2RB [type 1 diabetes mellitus]: C
+- 2026-07-12 — verdict INSR [type 1 diabetes mellitus]: D
+- 2026-07-12 — remember HIF1A (type 1 diabetes mellitus): T1D cross-cutting skeptical result (Claude Science): NOT ONE of the 6 T1D handle
+- 2026-07-12 — verdict AHR [pan-autoimmune (cross-disease)]: C
+- 2026-07-12 — verdict DOCK2 [pan-autoimmune (cross-disease)]: C
+- 2026-07-12 — verdict MEN1 [pan-autoimmune (cross-disease)]: C
+- 2026-07-12 — remember HDAC7 (pan-autoimmune (cross-disease)): PAN-AUTOIMMUNE SYNTHESIS conclusion (Claude Science §5): NO recurring handle is 
+- 2026-07-12 — remember DOT1L (pan-autoimmune (cross-disease)): Cross-disease (§5): DOT1L is disease-specific (SLE-lean), NOT a pan-AI convergen
+- 2026-07-12 — remember GLS (pan-autoimmune (cross-disease)): Cross-disease (§5): GLS recurs in module 100 (Stim8hr) across ~5 diseases becaus
+- 2026-07-12 — remember PPM1D (asthma): profile opened for a verdict
+- 2026-07-12 — verdict PPM1D [asthma]: B+
+- 2026-07-12 — verdict METAP2 [asthma]: B
+- 2026-07-12 — verdict ZAP70 [asthma]: B-
+- 2026-07-12 — verdict KDM8 [asthma]: C
+- 2026-07-12 — remember RHEB (asthma): profile opened for a verdict
+- 2026-07-12 — verdict RHEB [asthma]: C-
+- 2026-07-12 — remember PPM1D (asthma): KEY CROSS-DISEASE RESULT (asthma Th2 validation): the top asthma handles are Th2
+- 2026-07-12 — community_signal DOCK2 (target): filed 4 posts (harvested 2026-07-12)
+- 2026-07-12 — community_signal ZAP70 (target): filed 7 posts (harvested 2026-07-12)
