@@ -12,7 +12,7 @@ An **MCP server**: no separate app, no API key, no metered credits. You talk to 
 
 *Built for the Built with Claude: Life Sciences hackathon (Builder track).*
 
-> **✓ Blind positive control.** Told only a disease's GWAS risk genes — *no* known targets — Louis re-derives the textbook **Th17 master-regulator triad STAT3 · BATF · IRF4** as its top-3 blind candidates for the core inflammatory diseases (the validated Th17 network core, Ciofani et al., *Cell* 2012), with **STAT3 #1 in 6 diseases** — *before* it ever proposes a novel handle. It recovers what's known before it proposes what's novel; that's what earns trust in a pick like DOT1L. Reproduce in one command: `python scripts/positive_control.py` ([details](#what-it-found--validated-across-9-diseases)).
+> **✓ Blind positive control.** Told only a disease's GWAS risk genes — *no* known targets — Louis re-derives the textbook **Th17 master-regulator triad STAT3 · BATF · IRF4** as its top-3 blind candidates for the core inflammatory diseases (the validated Th17 network core, Ciofani et al., *Cell* 2012), with **STAT3 #1 in 6 diseases**. Those known masters are the *calibration, not the product*: ask Louis to **skip the obvious** and the same ranking surfaces the novel, druggable handle (DOT1L — 0 RA papers, in no database) instead. Nailing the known is what earns trust in the novel — it's the telescope resolving known stars before you believe the new one. Reproduce in one command: `python scripts/positive_control.py` ([details](#what-it-found--validated-across-9-diseases)).
 
 ---
 
