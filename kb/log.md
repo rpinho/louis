@@ -580,3 +580,9 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — remember PPM1D (asthma): KEY CROSS-DISEASE RESULT (asthma Th2 validation): the top asthma handles are Th2
 - 2026-07-12 — community_signal DOCK2 (target): filed 4 posts (harvested 2026-07-12)
 - 2026-07-12 — community_signal ZAP70 (target): filed 7 posts (harvested 2026-07-12)
+- 2026-07-12 — verdict RASA2 [atopic eczema]: B+
+- 2026-07-12 — verdict PPM1D [atopic eczema]: B
+- 2026-07-12 — verdict METAP2 [atopic eczema]: B-
+- 2026-07-12 — verdict GLS [atopic eczema]: C+
+- 2026-07-12 — verdict CBLB [atopic eczema]: C
+- 2026-07-12 — remember PPM1D (atopic eczema): ECZEMA Th2 validation (Claude Science) answers both cross-disease questions: (Q1
