@@ -586,3 +586,5 @@ Append-only record of derivations, findings, and verdicts.
 - 2026-07-12 — verdict GLS [atopic eczema]: C+
 - 2026-07-12 — verdict CBLB [atopic eczema]: C
 - 2026-07-12 — remember PPM1D (atopic eczema): ECZEMA Th2 validation (Claude Science) answers both cross-disease questions: (Q1
+- 2026-07-12 — remember DOT1L (rheumatoid arthritis): RED-TEAM CRACK (Claude Science 2026-07-12, engine-verified): the DOT1L->RA link 
+- 2026-07-12 — verdict DOT1L [rheumatoid arthritis]: C
