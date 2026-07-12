@@ -1,5 +1,5 @@
 """
-T-Cell Target Explorer — no-terminal target-discovery tool for a bench immunologist.
+Louis — no-terminal target-discovery tool for a bench immunologist.
 
 Run:  streamlit run app.py
 Ask, in plain English, what to target for an immune disease — Claude answers by
@@ -11,13 +11,13 @@ import os
 import streamlit as st
 import pandas as pd
 import altair as alt
-from tcell_targets import list_diseases, disease_targets, target_evidence, state_profile
-from tcell_targets.core import regulator_detail
-from tcell_targets import assistant
+from louis import list_diseases, disease_targets, target_evidence, state_profile
+from louis.core import regulator_detail
+from louis import assistant
 
-st.set_page_config(page_title="T-Cell Target Explorer", page_icon="🧬", layout="wide")
+st.set_page_config(page_title="Louis", page_icon="🧬", layout="wide")
 
-st.title("🧬 T-Cell Target Explorer")
+st.title("🧬 Louis")
 st.caption(
     "**Ask what to target for an immune disease and get a grounded, trust-ranked answer** — Claude "
     "reasons over the screen's own evidence (disease enrichment, GRN influence, CRISPRi knockdown QC) "
@@ -208,7 +208,7 @@ st.dataframe(
 st.download_button(
     "⬇️ Download this target report (CSV)",
     df.to_csv(index=False).encode(),
-    file_name=f"tcell_targets_{disease.replace(' ', '_')}.csv",
+    file_name=f"louis_{disease.replace(' ', '_')}.csv",
     mime="text/csv",
 )
 

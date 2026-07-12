@@ -1,5 +1,5 @@
 [project]
-name = "tcell-target-explorer"
+name = "louis"
 version = "0.2.0"
 description = "MCP + engine: trust-ranked CD4+ T-cell drug targets from genome-scale Perturb-seq, inside Claude."
 readme = "README.md"
@@ -17,12 +17,12 @@ app = ["streamlit>=1.50", "altair>=5.0", "anthropic>=0.40"]
 slack = ["slack-bolt>=1.18", "anthropic>=0.40", "certifi"]
 
 [project.scripts]
-tcell-targets-mcp = "tcell_targets.mcp_server:main"
-tcell-targets-slack = "tcell_targets.slack_app:main"
+louis-mcp = "louis.mcp_server:main"
+louis-slack = "louis.slack_app:main"
 
 [build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["tcell_targets"]
+packages = ["louis"]

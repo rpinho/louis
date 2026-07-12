@@ -1,5 +1,5 @@
 """
-Core logic for the T-Cell Target Explorer.
+Core logic for the Louis.
 
 Turns the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq (Zhu, Dann, ...,
 Pritchard, Marson 2025; CZI Virtual Cells Platform) into a self-serve

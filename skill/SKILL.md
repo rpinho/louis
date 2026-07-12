@@ -16,7 +16,7 @@ hypotheses to prioritize bench work — not clinical claims.
 
 ## Setup (run once at the start of a session)
 
-The skill bundles the engine (`tcell_targets/`), the dataset (`data/`), and a seeded knowledge
+The skill bundles the engine (`louis/`), the dataset (`data/`), and a seeded knowledge
 base (`kb/`) that already contains validated target profiles + community signal. Make the package
 importable and point the KB at a writable directory (the skill folder may be read-only):
 
@@ -25,18 +25,18 @@ import os, sys, shutil, tempfile
 from pathlib import Path
 
 SKILL_DIR = Path(__file__).parent if "__file__" in dir() else Path.cwd()
-# If tcell_targets isn't importable, set SKILL_DIR to the folder that contains this SKILL.md
-# and the tcell_targets/ package, then re-run.
+# If louis isn't importable, set SKILL_DIR to the folder that contains this SKILL.md
+# and the louis/ package, then re-run.
 sys.path.insert(0, str(SKILL_DIR))
 
 # KB must be writable. The sandbox HOME dir (~) is read-only — use the workspace, else a temp dir.
-kb_dir = Path(os.environ.get("TCELL_KB_DIR") or (Path.cwd() / "tcell_target_kb"))
+kb_dir = Path(os.environ.get("LOUIS_KB_DIR") or (Path.cwd() / "louis_kb"))
 try:
     kb_dir.mkdir(parents=True, exist_ok=True)
 except OSError:
-    kb_dir = Path(tempfile.mkdtemp(prefix="tcell_kb_"))
+    kb_dir = Path(tempfile.mkdtemp(prefix="louis_kb_"))
 shutil.copytree(SKILL_DIR / "kb", kb_dir, dirs_exist_ok=True)   # seed from the bundled validated KB
-os.environ["TCELL_KB_DIR"] = str(kb_dir)
+os.environ["LOUIS_KB_DIR"] = str(kb_dir)
 
 try:
     import pandas  # noqa
@@ -47,7 +47,7 @@ except ImportError:
 ## 1 — DISCOVER (novel, mechanistic, trust-ranked leads)
 
 ```python
-from tcell_targets import list_diseases, disease_mechanisms, disease_targets, target_evidence
+from louis import list_diseases, disease_mechanisms, disease_targets, target_evidence
 list_diseases()                                    # the 17 diseases available
 mods = disease_mechanisms("rheumatoid arthritis")  # the discovery call
 ```
@@ -78,7 +78,7 @@ peer-reviewed or a preprint).
 ## 3 — LISTEN (the field's bleeding-edge, pre-paper signal)
 
 ```python
-from tcell_targets import kb
+from louis import kb
 kb.recall("AHR")                    # baked community signal is embedded in the profile
 kb.recall("rheumatoid arthritis")   # disease-level chatter (labs/journals) too
 ```
@@ -89,7 +89,7 @@ tool's own leads. This is signal the paper/database connectors don't have yet �
 preprint drops, pipeline news. See `kb/community_signal.md` for the index of which leads the field
 is actively discussing. Treat posts as leads to weigh, not validated claims.
 
-*Live refresh:* `from tcell_targets import community; community.community_signal("DOT1L")` pulls
+*Live refresh:* `from louis import community; community.community_signal("DOT1L")` pulls
 fresh chatter where X access exists (Claude Code / Desktop). In this sandbox there is no X access,
 so read the **baked** signal from the KB via `kb.recall`.
 
@@ -141,7 +141,7 @@ association, not a proven gene-level edge.
 ### Step 1 — Pull every graded verdict, find the recurrers
 
 ```python
-from tcell_targets import kb_index
+from louis import kb_index
 verds = kb_index.query(rec_type="verdict", limit=200)["records"]   # every verdict, all diseases
 
 # grade-A/B set; best grade per (gene,disease); recurrence = A/B in >=2 diseases
@@ -160,7 +160,7 @@ reads a bare `**B**` token — file verdicts with a clean leading grade if you w
 ### Step 2 — Anchor each recurrer to its module / state / risk-gene spine
 
 ```python
-from tcell_targets import disease_mechanisms
+from louis import disease_mechanisms
 for dis in {v["disease"] for v in verds if v["disease"]}:
     for m in disease_mechanisms(dis, top_modules=60):        # keys: module, fires_in_state,
         names = [h["gene"] if isinstance(h, dict) else h      #       odds_ratio, fdr,
@@ -220,7 +220,7 @@ Write `host.mcp` results to `./handoff/*.json`; do the tabulation in the `python
 ### Step 5 — Record verdicts + findings, snapshot the KB
 
 ```python
-from tcell_targets import kb, kb_index
+from louis import kb, kb_index
 kb.remember(gene, "<cross-disease finding>", "<connector + provenance>")      # per handle
 kb.verdict(gene, "pan-autoimmune (cross-disease)", "<grade>", "<rationale>")  # the judgment
 kb.remember_signal("<mechanism topic>", [{...}], kind="topic",
@@ -228,4 +228,4 @@ kb.remember_signal("<mechanism topic>", [{...}], kind="topic",
 kb.reindex(); kb_index.build()                                                 # rebuild both indices
 ```
 *MCP-tool equivalents:* `kb_remember`, `kb_verdict`. Then zip `kb/` and save
-`cross_disease_synthesis.csv` + `tcell_kb_snapshot.zip` as artifacts.
+`cross_disease_synthesis.csv` + `louis_kb_snapshot.zip` as artifacts.

@@ -12,9 +12,9 @@ Recent-search is rate-limited (~60 requests / 15 min on the Basic tier), so the 
 throttles and backs off; it writes to the KB as it goes, so partial progress always persists.
 
 Run:
-    python -m tcell_targets.harvest                 # priority set (handles + top markers)
-    python -m tcell_targets.harvest --all           # every discovered gene (long; backs off)
-    python -m tcell_targets.harvest --limit 40      # cap the number of genes
+    python -m louis.harvest                 # priority set (handles + top markers)
+    python -m louis.harvest --all           # every discovered gene (long; backs off)
+    python -m louis.harvest --limit 40      # cap the number of genes
 """
 from __future__ import annotations
 
@@ -456,7 +456,7 @@ def write_rollup(summary: dict, handles: dict, risk: dict):
     lines = ["# Community signal index",
              "",
              "*Genes from the discovery engine that have live immune-context chatter on X "
-             "this week. Built by `python -m tcell_targets.harvest`. Each links to that gene's "
+             "this week. Built by `python -m louis.harvest`. Each links to that gene's "
              "profile, where the posts are filed with provenance.*",
              ""]
     filed = summary.get("filed", {})

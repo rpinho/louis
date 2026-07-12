@@ -1,6 +1,6 @@
 # Community signal index
 
-*Genes from the discovery engine that have live immune-context chatter on X this week. Built by `python -m tcell_targets.harvest`. Each links to that gene's profile, where the posts are filed with provenance.*
+*Genes from the discovery engine that have live immune-context chatter on X this week. Built by `python -m louis.harvest`. Each links to that gene's profile, where the posts are filed with provenance.*
 
 - **[STAT3](wiki/targets/STAT3.md)** — 6 posts (handle, 7 diseases)
 - **[CXCR4](wiki/targets/CXCR4.md)** — 6 posts (marker, 3 diseases)

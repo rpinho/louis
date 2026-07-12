@@ -1,5 +1,5 @@
 """
-Louis — the T-Cell Target Explorer Slack bot (the "share it with your lab" surface).
+Louis — the Louis Slack bot (the "share it with your lab" surface).
 
 Louis is the assistant persona (named for Louis Pasteur: nothing trusted until verified).
 Meet scientists where they already work. @mention the bot or use /ask-target in a
@@ -15,9 +15,9 @@ Env:
   SLACK_BOT_TOKEN    xoxb-...    Bot User OAuth token (scopes: app_mentions:read, chat:write, commands)
   SLACK_APP_TOKEN    xapp-...    App-level token for Socket Mode (scope: connections:write)
   ANTHROPIC_API_KEY  sk-ant-...  the NL brain (optional; without it, a deterministic engine summary is used)
-  TCELL_KB_DIR       optional    shared KB location (defaults to the repo's kb/)
+  LOUIS_KB_DIR       optional    shared KB location (defaults to the repo's kb/)
 
-Run:  pip install "tcell-target-explorer[slack]"  &&  python -m tcell_targets.slack_app
+Run:  pip install "louis[slack]"  &&  python -m louis.slack_app
 """
 from __future__ import annotations
 
@@ -293,7 +293,7 @@ def _require_tokens() -> None:
             "Missing Slack token(s): " + ", ".join(missing) + ".\n"
             "Put them in .secrets/slack.env and load it, then run again:\n"
             "  set -a; . .secrets/slack.env; set +a\n"
-            "  python -m tcell_targets.slack_app\n"
+            "  python -m louis.slack_app\n"
             "See slack/SETUP.md for where each token comes from."
         )
 
@@ -304,7 +304,7 @@ def main() -> None:
     _require_tokens()
     from slack_bolt.adapter.socket_mode import SocketModeHandler
     app = build_app()
-    print("T-Cell Target Explorer Slack bot — Socket Mode. Ctrl-C to stop.")
+    print("Louis Slack bot — Socket Mode. Ctrl-C to stop.")
     SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
 
 

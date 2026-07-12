@@ -5,7 +5,7 @@
 ## Findings
 
 - **2026-07-11**: profile opened for community signal  — *source: community_signal*
-- **2026-07-10** (rheumatoid arthritis): Discovered via tcell-target-explorer for RA: co-clusters with GRN module 100 (fires Stim8hr (8h), enriched in RA risk genes [TRAF1, FYN, PTPN22, IL21R (same module as GLS)]); CRISPRi knockdown-verified handle. Module-level co-cluster association, NOT a proven gene-level edge.  — *source: tcell-target-explorer disease_mechanisms() — Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq*
+- **2026-07-10** (rheumatoid arthritis): Discovered via louis for RA: co-clusters with GRN module 100 (fires Stim8hr (8h), enriched in RA risk genes [TRAF1, FYN, PTPN22, IL21R (same module as GLS)]); CRISPRi knockdown-verified handle. Module-level co-cluster association, NOT a proven gene-level edge.  — *source: louis disease_mechanisms() — Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq*
 - **2026-07-10** (rheumatoid arthritis): Druggability: Moderate — druggable-family + high-quality pocket; sardomozide/SAM486A (AdoMetDC inhibitor) reached Ph2 (oncology), now dormant  — *source: Claude Science validation (Open Targets, ChEMBL, GWAS Catalog, PubMed, ClinicalTrials.gov), 2026-07-11*
 - **2026-07-10** (rheumatoid arthritis): Human genetics (GWAS Catalog): 12 total assoc, 0 immune, 0 RA  — *source: Claude Science validation (Open Targets, ChEMBL, GWAS Catalog, PubMed, ClinicalTrials.gov), 2026-07-11*
 - **2026-07-10** (rheumatoid arthritis): RA/CD4 novelty: 0 RA papers, 1 autoimmune+T-cell — polyamine metabolism in T cells is an emerging area (parallels GLS metabolic theme). Already pursued for RA? No RA trials.  — *source: Claude Science validation (Open Targets, ChEMBL, GWAS Catalog, PubMed, ClinicalTrials.gov), 2026-07-11*

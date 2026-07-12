@@ -18,9 +18,9 @@ import re
 from datetime import date
 from pathlib import Path
 
-# Default: the repo's kb/. Override with TCELL_KB_DIR so a packaged bundle can write
+# Default: the repo's kb/. Override with LOUIS_KB_DIR so a packaged bundle can write
 # to a user-writable dir (an installed .mcpb dir may be read-only).
-KB_DIR = Path(os.environ.get("TCELL_KB_DIR") or (Path(__file__).resolve().parent.parent / "kb"))
+KB_DIR = Path(os.environ.get("LOUIS_KB_DIR") or (Path(__file__).resolve().parent.parent / "kb"))
 
 
 def _today() -> str:

@@ -3,11 +3,11 @@
 Build the Claude Desktop .mcpb bundle from repo sources — reproducible packaging.
 
 Layout: manifest.json + server/main.py + server/lib/ (pip-installed deps: pandas, mcp)
-+ server/tcell_targets/ (the engine) + server/data/ (the 3 shipped CSVs) + server/kb/
++ server/louis/ (the engine) + server/data/ (the 3 shipped CSVs) + server/kb/
 (the seeded KB with baked community signal). Deps are pip-installed at build time rather
 than vendored into git.
 
-    python scripts/build_mcpb.py          ->  dist/tcell-target-explorer.mcpb
+    python scripts/build_mcpb.py          ->  dist/louis.mcpb
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 BUILD = REPO / "dist" / "mcpb_build"
-OUT = REPO / "dist" / "tcell-target-explorer.mcpb"
+OUT = REPO / "dist" / "louis.mcpb"
 DEPS = ["pandas>=2.0", "mcp>=1.2"]
 DATA_FILES = [
     "cluster_autoimmune_enrichment_results.csv",
@@ -41,7 +41,7 @@ def build() -> Path:
     subprocess.run([sys.executable, "-m", "pip", "install", "--quiet",
                     "--target", str(server / "lib"), *DEPS], check=True)
 
-    shutil.copytree(REPO / "tcell_targets", server / "tcell_targets",
+    shutil.copytree(REPO / "louis", server / "louis",
                     ignore=shutil.ignore_patterns("__pycache__", "*.pyc"))
     for name in DATA_FILES:
         shutil.copy2(REPO / "data" / name, server / "data" / name)

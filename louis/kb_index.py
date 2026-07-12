@@ -17,7 +17,7 @@ import re
 import sqlite3
 from pathlib import Path
 
-KB_DIR = Path(os.environ.get("TCELL_KB_DIR") or (Path(__file__).resolve().parent.parent / "kb"))
+KB_DIR = Path(os.environ.get("LOUIS_KB_DIR") or (Path(__file__).resolve().parent.parent / "kb"))
 DB = KB_DIR / "index.sqlite"
 
 # ---- parse a KB markdown list line into a structured record -----------------

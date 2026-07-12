@@ -1,7 +1,7 @@
 {
   "mcpServers": {
-    "tcell-target-explorer": {
-      "command": ".venv/bin/tcell-targets-mcp",
+    "louis": {
+      "command": ".venv/bin/louis-mcp",
       "args": []
     }
   }

@@ -31,9 +31,9 @@ SLACK_APP_TOKEN=xapp-...
 
 ## 4. Run it
 ```bash
-pip install -e ".[slack]"              # or: pip install "tcell-target-explorer[slack]"
+pip install -e ".[slack]"              # or: pip install "louis[slack]"
 set -a; . .secrets/slack.env; set +a   # load the tokens into the environment
-python -m tcell_targets.slack_app
+python -m louis.slack_app
 ```
 
 ## 5. Use it

@@ -18,7 +18,7 @@ import urllib.parse
 import urllib.request
 from urllib.error import URLError
 
-_UA = {"User-Agent": "tcell-target-explorer/0.3 (research; contact via github.com/rpinho)"}
+_UA = {"User-Agent": "louis/0.3 (research; contact via github.com/rpinho)"}
 _EUROPEPMC = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
 
 

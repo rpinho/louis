@@ -2,13 +2,13 @@
 """
 Build the Claude Science skill zip from repo sources — reproducible packaging.
 
-Assembles: SKILL.md (at zip root) + tcell_targets/ (the engine, incl. the community
+Assembles: SKILL.md (at zip root) + louis/ (the engine, incl. the community
 listen layer) + data/ (the 3 CSVs the shipped tools actually load) + kb/ (the seeded,
 validated knowledge base with baked community signal). The two large CSVs
 (guide_kd_efficiency, sgrna_library_metadata) are intentionally excluded — the shipped
 tools don't load them, and dropping them keeps the zip under Science's 30 MB cap.
 
-    python scripts/build_skill.py         ->  dist/tcell-target-explorer-skill.zip
+    python scripts/build_skill.py         ->  dist/louis-skill.zip
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "dist" / "louis-skill.zip"   # zip name = the skill brand (Claude Science may key the name off the filename)
 
-# Only the CSVs the shipped tools load (see tcell_targets/core.py).
+# Only the CSVs the shipped tools load (see louis/core.py).
 DATA_FILES = [
     "cluster_autoimmune_enrichment_results.csv",
     "DE_stats.csv",
@@ -57,8 +57,8 @@ def build() -> Path:
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as zf:
         _add(zf, REPO / "skill" / "SKILL.md", "SKILL.md", sizes)
 
-        for py in sorted((REPO / "tcell_targets").glob("*.py")):
-            _add(zf, py, f"tcell_targets/{py.name}", sizes)
+        for py in sorted((REPO / "louis").glob("*.py")):
+            _add(zf, py, f"louis/{py.name}", sizes)
 
         for name in DATA_FILES:
             src = REPO / "data" / name

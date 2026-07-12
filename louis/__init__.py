@@ -1,4 +1,4 @@
-"""T-Cell Target Explorer — disease -> trusted candidate targets from CD4+ T-cell Perturb-seq."""
+"""Louis — disease -> trusted candidate targets from CD4+ T-cell Perturb-seq."""
 from .core import (list_diseases, disease_targets, disease_mechanisms,
                    regulator_detail, target_evidence, state_profile, summary)
 

@@ -1,5 +1,5 @@
 """
-T-Cell Target Explorer — MCP server.
+Louis — MCP server.
 
 Runs the engine as agent-native tools *inside* Claude (Desktop / Code / any MCP
 host). The host LLM does the reasoning on the user's subscription — no API key,
@@ -9,12 +9,12 @@ knockdown QC (the trust flag), and activation-state dependence.
 
 Run (stdio transport, for Claude Desktop / Claude Code):
 
-    python -m tcell_targets.mcp_server
+    python -m louis.mcp_server
 
 Register in Claude Code:
 
-    claude mcp add tcell-target-explorer -- \
-        /path/to/.venv/bin/python -m tcell_targets.mcp_server
+    claude mcp add louis -- \
+        /path/to/.venv/bin/python -m louis.mcp_server
 """
 from __future__ import annotations
 from mcp.server.fastmcp import FastMCP
@@ -67,7 +67,7 @@ _INSTRUCTIONS_NOMEMORY = (
 )
 
 mcp = FastMCP(
-    "tcell-target-explorer",
+    "louis",
     instructions=_INSTRUCTIONS_HEAD + (_INSTRUCTIONS_NOMEMORY if _no_memory() else _INSTRUCTIONS_MEMORY),
 )
 

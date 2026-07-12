@@ -1,7 +1,7 @@
 {
   "manifest_version": "0.3",
-  "name": "tcell-target-explorer",
-  "display_name": "T-Cell Target Explorer",
+  "name": "louis",
+  "display_name": "Louis",
   "version": "0.3.0",
   "description": "Discover, validate, listen, and remember novel CD4+ T-cell drug targets for autoimmune diseases from a genome-scale CRISPRi Perturb-seq screen (Marson/Pritchard 2025). Wires druggable regulator handles to a disease's own risk-gene modules, trust-gated by knockdown QC and activation state, adds live X/Twitter community signal for each lead, and keeps a learning knowledge base.",
   "author": {

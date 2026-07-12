@@ -4,7 +4,7 @@
 
 ## Findings
 
-- **2026-07-11** (Crohn's disease): Co-clusters in module 88 (fires in Stim48hr, module OR=4.0, FDR=6.5e-04) with IBD/Crohn's GWAS risk genes; network out-degree 771. MODULE-LEVEL CO-CLUSTER ASSOCIATION — candidate upstream controller to test, NOT a proven gene-level edge.  — *source: Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq (tcell-target-explorer disease_mechanisms)*
+- **2026-07-11** (Crohn's disease): Co-clusters in module 88 (fires in Stim48hr, module OR=4.0, FDR=6.5e-04) with IBD/Crohn's GWAS risk genes; network out-degree 771. MODULE-LEVEL CO-CLUSTER ASSOCIATION — candidate upstream controller to test, NOT a proven gene-level edge.  — *source: Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq (louis disease_mechanisms)*
 - **2026-07-11** (Crohn's disease): Open Targets Crohn's: indirect(ontology-propagated) overall=0.757 vs DIRECT-only=0.000 (IBD direct=0.000). Gap = propagation from related diseases; direct score is the honest disease link.  — *source: Open Targets Platform GraphQL (enableIndirect true vs false)*
 - **2026-07-11** (Crohn's disease): Tractability (SM buckets): ['Advanced Clinical', 'Structure with Ligand', 'High-Quality Ligand', 'Med-Quality Pocket', 'Druggable Family']. Clinical compound: BELORANIB (CHEMBL4297504) max_phase=3.0.  — *source: Open Targets tractability + ChEMBL get_mechanism/compound_search*
 - **2026-07-11** (Crohn's disease): Handle is NOT itself a GWAS risk gene for IBD/Crohn's — association is via co-clustered module risk genes only. Module risk genes with real IBD/Crohn GWAS signal: ['CD226', 'IL2', 'STAT3', 'CD6'].  — *source: GWAS Catalog (gwas_associations_for_gene / gwas_get_variant)*

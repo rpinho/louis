@@ -1,7 +1,7 @@
 # Submission packet — Louis
 
 The ~190-word summary, the 3-minute demo script, and the judging-criteria map.
-Numbers are produced live (`python -m tcell_targets.core` re-checks the discovery
+Numbers are produced live (`python -m louis.core` re-checks the discovery
 + demo invariants on every run; `python scripts/build_kb_index.py` reports KB size).
 
 ---

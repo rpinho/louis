@@ -5,7 +5,7 @@
 ## Findings
 
 - **2026-07-11**: profile opened for community signal  — *source: community_signal*
-- **2026-07-11** (Crohn's disease): Co-clusters in module 82 (fires in Rest, module OR=5.3, FDR=3.5e-02) with IBD/Crohn's GWAS risk genes; network out-degree 1069. MODULE-LEVEL CO-CLUSTER ASSOCIATION — candidate upstream controller to test, NOT a proven gene-level edge.  — *source: Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq (tcell-target-explorer disease_mechanisms)*
+- **2026-07-11** (Crohn's disease): Co-clusters in module 82 (fires in Rest, module OR=5.3, FDR=3.5e-02) with IBD/Crohn's GWAS risk genes; network out-degree 1069. MODULE-LEVEL CO-CLUSTER ASSOCIATION — candidate upstream controller to test, NOT a proven gene-level edge.  — *source: Zhu/Dann/Pritchard/Marson 2025 CD4+ Perturb-seq (louis disease_mechanisms)*
 - **2026-07-11** (Crohn's disease): Open Targets Crohn's: indirect(ontology-propagated) overall=0.882 vs DIRECT-only=0.100 (IBD direct=0.014). Gap = propagation from related diseases; direct score is the honest disease link.  — *source: Open Targets Platform GraphQL (enableIndirect true vs false)*
 - **2026-07-11** (Crohn's disease): Tractability (SM buckets): ['Structure with Ligand']. Clinical compound: MIK-BETA-1 (CHEMBL2109326) max_phase=1.0.  — *source: Open Targets tractability + ChEMBL get_mechanism/compound_search*
 - **2026-07-11** (Crohn's disease): Handle is NOT itself a GWAS risk gene for IBD/Crohn's — association is via co-clustered module risk genes only. Module risk genes with real IBD/Crohn GWAS signal: ['STAT4', 'JAK2', 'TNFSF8', 'UBAC2'].  — *source: GWAS Catalog (gwas_associations_for_gene / gwas_get_variant)*

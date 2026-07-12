@@ -1,6 +1,6 @@
 # 🔎 Louis
 
-*A CD4+ T-cell target detective — named for Louis Pasteur: nothing trusted until it's verified. Built on the T-Cell Target Explorer engine (the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq screen).*
+*A CD4+ T-cell target detective — named for Louis Pasteur: nothing trusted until it's verified. Built on the Louis engine (the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq screen).*
 
 **Ask Louis to discover novel, druggable CD4+ T-cell drug targets for an autoimmune disease — grounded in a real CRISPR screen, validated against the scientific web AND the field's live community signal, and remembered in a shared lab knowledge base.**
 
@@ -53,32 +53,32 @@ The tools (all grounded, no LLM guessing):
 ## Quick start
 
 ```bash
-git clone https://github.com/rpinho/tcell-target-explorer && cd tcell-target-explorer
+git clone https://github.com/rpinho/louis && cd louis
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .                      # core engine + MCP server
 python scripts/download_data.py       # small public tables (~34 MB), MIT
 ```
 
-**Claude Code** — the repo ships a `.mcp.json`, so just open the project and approve the `tcell-target-explorer` server (or `claude mcp add tcell-target-explorer -- .venv/bin/tcell-targets-mcp`). Then ask your question.
+**Claude Code** — the repo ships a `.mcp.json`, so just open the project and approve the `louis` server (or `claude mcp add louis -- .venv/bin/louis-mcp`). Then ask your question.
 
 **Claude Desktop** — add to `claude_desktop_config.json` (the editable install makes the command location-independent):
 
 ```json
 {
   "mcpServers": {
-    "tcell-target-explorer": {
-      "command": "/ABSOLUTE/PATH/tcell-target-explorer/.venv/bin/tcell-targets-mcp"
+    "louis": {
+      "command": "/ABSOLUTE/PATH/louis/.venv/bin/louis-mcp"
     }
   }
 }
 ```
 
-Restart Claude, and ask: *"Using tcell-target-explorer, what should I target for rheumatoid arthritis, and which are verified?"*
+Restart Claude, and ask: *"Using louis, what should I target for rheumatoid arthritis, and which are verified?"*
 
 Sanity-check the engine + server without Claude:
 
 ```bash
-python -m tcell_targets.core     # prints top targets, asserts the Crohn's→STAT3 demo invariant
+python -m louis.core     # prints top targets, asserts the Crohn's→STAT3 demo invariant
 ```
 
 ## What makes it more than a lookup
@@ -106,7 +106,7 @@ pip install -e ".[app]" && streamlit run app.py   # → http://localhost:8501
 A **Slack bot** (Socket Mode — no hosting, no public URL) puts the same engine where a lab already talks. `@target-explorer what should we hit for RA?` or `/ask-target rheumatoid arthritis` returns trust-ranked leads + the community signal **in a public channel** (knowledge is shared, not siloed in DMs), and `/remember` files findings to the **shared** KB so the whole team's questions compound into one memory. Setup (~3 min) and the paste-to-create app manifest are in [`slack/SETUP.md`](slack/SETUP.md).
 
 ```bash
-pip install -e ".[slack]" && python -m tcell_targets.slack_app
+pip install -e ".[slack]" && python -m louis.slack_app
 ```
 
 ## Data

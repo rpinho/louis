@@ -31,7 +31,7 @@ _PUBLIC = "https://www.reddit.com"      # unauthenticated .json search — works
 def _ua() -> str:
     """Reddit bans generic User-Agents (python-requests, curl). Send a descriptive one."""
     who = os.environ.get("REDDIT_USERNAME", "research")
-    return f"tcell-target-explorer/0.3 (T-cell target discovery; by u/{who})"
+    return f"louis/0.3 (T-cell target discovery; by u/{who})"
 
 
 def _curl(url: str, headers=None, method: str = "GET", data: str | None = None,
