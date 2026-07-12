@@ -57,6 +57,12 @@ drift, not a clean grade × novelty point; the two-axis map refuses to flatten t
 > remember run through the Louis MCP/skill; validate + experiment-design run in Claude Science;
 > the Slack coda shows where a lab actually talks. All Anthropic, all on the subscription — no
 > third-party app, no API key. Every answer is TL;DR-first and scannable (it's a video). Screen-record it.
+>
+> **Two visual anchors carry the credibility (Beat 2):** the **opportunity map** (the one-glance
+> landscape — DOT1L in the green corner) and the **blind positive control** (the same ranking
+> re-derives STAT3/BATF/IRF4). **Timing:** at full length this runs ~3:20. To hit a hard 3:00, compress
+> Beat 4 to a single line ("the protocol exists, cheap-gate-first — full version in the repo") and Beat 5
+> to just the `--nomem` flip. Do **not** cut Beat 3 (the moat) or Beat 6 (the closer) — those are what win.
 
 ### Beat 1 — the real problem (0:00–0:25)
 - **[SAY]** "This is a genome-scale CRISPR screen of human T cells — a map of autoimmune drug
@@ -64,14 +70,17 @@ drift, not a clean grade × novelty point; the two-axis map refuses to flatten t
   *use* a dataset like this. So we didn't build a website. We put it inside Claude — and named it
   Louis, after Pasteur (and, like Claude, a French name). It discovers, it doesn't just look up."
 
-### Beat 2 — DISCOVER + TRUST (0:25–1:05)
+### Beat 2 — DISCOVER + TRUST (0:25–1:10) ← now anchored by the opportunity map + positive control
 - **[SCREEN]** In Slack: *`@louis for rheumatoid arthritis, skip the obvious targets — novel
   druggable handles wired to the risk genes, and which can I trust?`*
-- **[SAY]** "It doesn't hand me STAT3. It wires **DOT1L** — an epigenetic enzyme, pinometostat in
-  the clinic — to a module carrying the RA risk genes **IL21R** and **PTGER4** in *resting* T cells,
-  knockdown verified clean. And it leads with the **trust flag**: a high-enrichment hit whose
-  knockdown was never confirmed is a *caution*, not a recommendation. The regulator→risk-gene link
-  exists in **no external database** — only in this screen."
+- **[SAY]** "It doesn't hand me STAT3. It wires **DOT1L** — an epigenetic enzyme, pinometostat in the
+  clinic — to the RA risk genes **IL21R / PTGER4** in *resting* T cells, knockdown verified clean, and
+  that regulator→risk-gene link is in **no external database**. Two things make that trustworthy."
+- **[SCREEN]** flash the **opportunity map** — DOT1L sits alone in the green *novel & well-founded* corner.
+- **[SAY]** "One — the **trust flag**: a high-enrichment hit whose knockdown was never confirmed is a
+  *caution*, not a rec. Two — the *same ranking*, run **blind**, re-derives the textbook Th17 masters
+  **STAT3 · BATF · IRF4** as its top 3. It recovers what's known before it names something novel —
+  *that's* what earns DOT1L the green corner, not my say-so."
 
 ### Beat 3 — LISTEN: who else, and is it real? (1:05–1:55) ← the moat + the honesty
 - **[SCREEN]** *`@louis who else is working on DOT1L — and is the buzz real edge or hype?`*
