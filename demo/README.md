@@ -6,7 +6,7 @@
 > an MCP server in Claude Code, a bot in Slack).
 
 Data: the genome-scale CD4⁺ T-cell CRISPRi Perturb-seq screen — *Zhu, Dann … Pritchard & Marson, bioRxiv 2025*.
-Repo: <https://github.com/rpinho/louis> · **Try it yourself → four install paths in [`CLAUDE.md`](../CLAUDE.md)** · open the [presenter deck](presenter.html) (15 click-through cards).
+Repo: <https://github.com/rpinho/louis> · **Try it yourself → four install paths in [`CLAUDE.md`](../CLAUDE.md)** · open the [presenter deck](presenter.html) (13 click-through cards).
 
 This folder is the demo **on paper**, so a judge can evaluate it without watching a recording:
 the run-of-show, the **verbatim current-build bot outputs**, screenshots of the deck and the
@@ -14,9 +14,9 @@ Slack threads, and one-command instructions to reproduce every output yourself.
 
 | | |
 |---|---|
-| [`presenter.html`](presenter.html) | The **actual slide deck** — open it (15 click-through cards). The screenshots below are just for GitHub's inline preview. |
+| [`presenter.html`](presenter.html) | The **actual slide deck** — open it (13 click-through cards). The screenshots below are just for GitHub's inline preview. |
 | [`outputs/verbatim_outputs.md`](outputs/verbatim_outputs.md) | Every beat's answer, reproduced through the **exact Slack brain** (`louis.assistant.answer`). Invariant-locked — the load-bearing claims reproduce (see [`tests/`](../tests/test_demo_invariants.py)); exact wording/formatting varies run to run. |
-| [`screenshots/deck_01…15.png`](screenshots/) | The presenter deck, one PNG per card. |
+| [`screenshots/deck_01…13.png`](screenshots/) | The presenter deck, one PNG per card. |
 | [`screenshots/slack_1…6_*.png`](screenshots/) | The Slack threads (incl. the bleeding-edge signal), rendered from the verbatim outputs. |
 | [`../CLAUDE.md`](../CLAUDE.md) | **Try it yourself** — four install paths (skill / plugin / MCP / bot) + every gotcha. |
 
@@ -53,7 +53,7 @@ Official hackathon weights this is built against: **Impact 25 · Claude Use 25 �
 
 ---
 
-## Run-of-show — 3:00, five prompts + one "before" flash
+## Run-of-show — 3:00, Science before/after, then the 5-beat Slack spine
 
 | # | Where | Beat | Deck |
 |---|-------|------|------|
@@ -61,12 +61,13 @@ Official hackathon weights this is built against: **Impact 25 · Claude Use 25 �
 | 1 | Science | **After:** Louis skill on → DOT1L **A→C**, provenance tier + ⚠Reviewer; HDAC7 stays lit | `deck_06` ★ |
 | 2 | Science | The memory *is* the trust — recursion + a calibration caption (1 of 77) | `deck_07` |
 | 3 | Slack | HDAC7 — honest co-cluster, peer-reviewed direction, screen-unique legs | `deck_09` |
-| 4 | Slack | ELI5, two sentences | `slack_4` |
-| 5 | Slack | The lab teaches Louis → the lead survives → a Monday go/no-go | `deck_13` ✔ |
+| 4 | Slack | **Design the HDAC7 experiment** → a two-arm go/no-go + a figure card | `deck_10` |
+| 5 | Slack | The lab teaches Louis (write→read) → the lead survives → a Monday go/no-go | `deck_11` ✔ |
+| 6 | Slack | **DOCK2** — reads *and* tiers the bleeding edge (X · Bluesky · abstracts) | `deck_12` |
 
-The **"Try it yourself — four ways"** closer (`deck_14`) folds in the *"meets you where you work — not
-another website"* differentiation and the four install paths. Two optional skeptic volleys
-(`deck_10`–`deck_12`) sit in the deck for Q&A / the longer cut.
+The **"Try it yourself — four ways"** closer (`deck_13`) folds in the *"meets you where you work — not
+another website"* differentiation and the four install paths. The IL-17 / hub / PPM1D **skeptic volleys**
+and the ELI5 are Q&A-only now — they live in `#louis-demo` (and `slack_4`), not the recorded cut.
 
 ---
 
@@ -128,8 +129,7 @@ and stays human-in-the-loop.
 **The bleeding edge (3rd pillar) — reads the off-allowlist floor, and *tiers* it.** Ask what the field is
 saying right now and Louis pulls the signal a database can't reach — **X, Bluesky, conference abstracts** —
 then its **⚠Reviewer tiers it honestly**: *"all Bluesky posts pointing at peer-reviewed papers — signal-tier,
-the megaphone not the evidence."* It reads the pre-paper floor **and** refuses to let chatter inflate a grade
-(it even discloses when live X is down). The weakest of the four pillars, but genuinely new.
+the megaphone not the evidence."* It reads the pre-paper floor **and** refuses to let chatter inflate a grade. The weakest of the four pillars, but genuinely new.
 
 ![Slack — bleeding-edge community signal](screenshots/slack_6_signal.png)
 
