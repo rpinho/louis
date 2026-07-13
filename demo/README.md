@@ -62,9 +62,10 @@ Official hackathon weights this is built against: **Impact 25 · Claude Use 25 �
 | 2 | Science | The memory *is* the trust — recursion + a calibration caption (1 of 77) | `deck_07` |
 | 3 | Slack | HDAC7 — honest co-cluster, peer-reviewed direction, screen-unique legs | `deck_09` |
 | 4 | Slack | ELI5, two sentences | `slack_4` |
-| 5 | Slack | The lab teaches Louis → the lead survives → a Monday go/no-go | `deck_14` ✔ |
+| 5 | Slack | The lab teaches Louis → the lead survives → a Monday go/no-go | `deck_13` ✔ |
 
-The differentiator card (**Louis meets you where you work**, `deck_13`) and two optional skeptic volleys
+The **"Try it yourself — four ways"** closer (`deck_14`) folds in the *"meets you where you work — not
+another website"* differentiation and the four install paths. Two optional skeptic volleys
 (`deck_10`–`deck_12`) sit in the deck for Q&A / the longer cut.
 
 ---
