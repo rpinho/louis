@@ -1,7 +1,7 @@
 # Verbatim Louis outputs — current build (learn · trust · bleeding-edge signal)
 
-> Reproduced through the **exact Slack brain** (`louis.assistant.answer`), the same code the
-> `@louis` bot runs, on **2026-07-13**, against a **throwaway copy of `kb/`** (real KB untouched).
+> Reproduced through the **exact Slack brain** (`louis.assistant.answer`) on **2026-07-13**, against
+> a **throwaway copy of `kb/`** (real KB untouched). Tool traces shown.
 
 
 ---
@@ -11,32 +11,31 @@
 **Prompt:** `is DOT1L a good novel target for rheumatoid arthritis? recall first, be honest about trust.`  
 **Tools Louis called:** `kb_recall`
 
-TL;DR — **DOT1L for RA is a C, not a novel top lead** — the RA "wiring" is a cross-disease-union artifact (DOT1L isn't in RA's own significant regulator set, enrichment FDR 0.68), so the headline doesn't survive its own stress-test.
+TL;DR — **No.** DOT1L looks like a dream novel RA lead on paper, but it was stress-tested and **downgraded A → C** — the RA "wiring" is a cross-disease artifact, not an RA-specific edge. A hit is a clue, not a conviction.
 
-**Current call: `C`** (stress-test downgrade **A→C**, 2026-07-12) — supersedes the original A-grade.
-
-| Pillar | Read |
+| Field | Read |
 |---|---|
-| **Link** | 🔴 union artifact |
-| **Direction** | 🟡 open, Treg risk |
-| **Novelty** | 🟡 RA-only whitespace |
-| **Druggability** | 🟡 pinometostat, onc-only |
+| **Current grade** | **C** (was A 2026-07-10 → **C** 2026-07-12) |
+| **Lead** | H3K79 methyltransferase, drugged (pinometostat Ph2) |
+| **Trust** | KD **verified**, clean guide ✓ — QC is *not* the problem |
 
-**Why it fell (load-bearing):**
-- DOT1L is **not** in RA's own module-38 regulator set — that set is MEN1/ARRDC4, regulator enrichment **FDR 0.68** (non-sig). It enters the pool only because the engine unions regulators across all diseases.
-- Systemically only **1 of 77** regulator clusters ever clears significance (the STAT3/Crohn's triad, q=0.025). The novel handles are co-cluster *hypotheses*, not enriched edges. The DOT1L→IL21R edge is untested by construction (engine stores counts, not identities).
+**Why it fell (the load-bearing crack):**
+- **Link is an artifact** — DOT1L is *not* in RA's own module-38 regulator set (enrichment **fdr = 0.68**, non-sig). It enters the pool only because regulators are unioned across all diseases (contributed by SLE/CAD rows).
+- Systemically **only 1 of 77 regulator clusters** ever clears significance — the STAT3/Crohn's triad. The novel handles are co-cluster *hypotheses*, not proven edges. The DOT1L→IL21R edge is **untested by construction** (engine stores counts, not identities).
 
-**Trust / QC:** knockdown **verified, clean guide**, module 38 fires at **Rest** — that part is solid. The problem is the *link*, not the CRISPRi QC.
+**The other holes:**
+- **Direction bidirectional / open** — Cameron (bioRxiv preprint, PMID 41427413) says Treg-Dot1L loss → fatal autoimmunity (inhibition could *worsen* RA); Scheer 2020 (peer-reviewed) says loss impairs effectors (could *help*). Genuine to-test question, not load-bearing for the kill.
+- **Not truly novel** — well-characterized CD4 epigenetic regulator (Scheer 2020); understudied *only in RA*.
+- **No genetic anchor** — top own-gene GWAS hit is knee osteoarthritis; OT RA = 0.0095, literature co-mention.
+- **Druggability stretch** — pinometostat is an IV oncology probe, 0 autoimmune trials.
 
-**Direction:** genuinely open, not "backwards." Cameron (bioRxiv, unreviewed) says Treg-DOT1L loss → autoimmunity (inhibition could *worsen* RA); Scheer 2020 (peer-reviewed) shows DOT1L also sustains Th1 effectors → loss could be protective. Net effect is a to-test question.
+**Who else:** 0 published DOT1L+RA+CD4 papers. Pre-paper floor: Cameron bioRxiv preprint (Treg identity) + ACR 2023 abstract #1589 (DNMT3A+DOT1L via AMPK) — adjacent, not RA-specific. Bluesky chatter is fibrosis/DC/leukemia, not RA. So: whitespace, but a *thin* one.
 
-**Field activity:** RA+DOT1L+T-cell = **0 published papers** (real whitespace), but DOT1L is a well-known CD4 regulator (Scheer 2020). Adjacent Treg work is preprint-stage (Cameron). No autoimmune trials — pinometostat is oncology-only, IV, Ph2.
+⚠ **Reviewer:** the direction-of-effect risk rests on an unreviewed bioRxiv preprint — hypothesis-strength only. The kill rests on the engine-verified link artifact (fdr 0.68), which is solid.
 
-⚠ **Reviewer:** the direction-of-effect risk rests on a **bioRxiv preprint** (PMID 41427413, not peer-reviewed) — hypothesis-strength. The *kill*, though, rests on the engine-verified enrichment FDR, which is load-bearing and direction-independent.
+**Verdict — C: a resting-state mechanistic-probe hypothesis, not a top RA lead.** If you still want to touch it, **go/no-go #1 is a FOXP3/Treg direction-of-effect gate** — CRISPRi in the FOXP3⁻ Tconv gate at Rest with an expression-matched background panel, before anything else.
 
-**Verdict:** Keep as a resting-state mechanistic-probe hypothesis, not a top lead. **Next step:** FOXP3/Treg direction-of-effect gate is go/no-go #1; the Tier-1 test is the module-38 edge at Rest with an expression-matched background panel (DOT1L is the sole H3K79 writer — global collapse mimics specificity).
-
-_Say expand for the full dossier._
+_Say **expand** for the full dossier + the filed experiment design._
 
 ---
 
@@ -45,21 +44,20 @@ _Say expand for the full dossier._
 **Prompt:** `but pinometostat's already in the clinic — why not just run it in RA?`  
 **Tools Louis called:** `(none — answered from context)`
 
-TL;DR — **A clinical-stage molecule is a convenience, not a reason to target the gene** — and here it's exactly the trap the stress-test flagged: druggability was over-weighted over a non-significant, direction-inverted RA hypothesis.
+TL;DR — Because pinometostat being in the clinic tells you it's *druggable*, not that *DOT1L is the right RA target* — and here the target link is the part that failed, not the chemistry.
 
-**Three reasons "it's in the clinic" doesn't rescue it:**
+**The clinic status doesn't touch the load-bearing crack:**
+- The RA "wiring" is a **cross-disease-union artifact** — DOT1L isn't in RA's own module-38 regulator set (enrichment **fdr 0.68**, non-sig). A clinical molecule pointed at a link that doesn't hold is still pointed at nothing.
+- **No RA genetic anchor** (OT RA 0.0095, top own-gene GWAS is knee osteoarthritis). Nothing says DOT1L drives RA.
 
-- **The RA link still isn't real.** Having a drug doesn't fix that DOT1L isn't in RA's own significant regulator set (enrichment **FDR 0.68**). You'd be running a good tool compound against a **union artifact**. Clinic-readiness ≠ RA relevance.
+**And the molecule itself isn't RA-ready:**
+- Pinometostat is **oncology-only** — MLL-leukemia, **max phase 2**, **continuous IV** infusion, **0 autoimmune trials**. That's a hospital leukemia regimen, not a chronic autoimmune drug.
+- **Direction is open/adverse-risk** — Cameron (bioRxiv preprint) says Treg-DOT1L loss → *fatal autoimmunity*, i.e. an inhibitor could **worsen** RA. You don't want to find that out in an RA patient.
+- Mechanistic catch: pinometostat is **catalytic-only** — it can't see DOT1L's DotCom scaffold role, and H3K79me2 is slow-turnover. A clean pinometostat null could *falsely kill* a real lead. That's why the filed design makes **CRISPRi KD the sole go/no-go arm** and uses pinometostat only to classify mechanism.
 
-- **You might dose it the wrong way.** DOT1L supports Treg identity (Cameron, bioRxiv — *unreviewed*). If inhibition collapses Tregs, pinometostat could **worsen** RA. Net direction is unresolved (Scheer 2020 cuts the other way for Th1). Running a phase-2 onc drug in an autoimmune indication before settling that is how you get an avoidable safety signal.
+⚠ **Reviewer:** the "worsens RA" direction rests on an unreviewed preprint — hypothesis-strength. The reasons *not* to jump to a clinical trial (no link, no anchor, IV oncology drug) are the load-bearing ones.
 
-- **Pinometostat can't even test the hypothesis cleanly.** It's a **catalytic** inhibitor — blind to DOT1L's DotCom **scaffold** role, and H3K79me2 is slow-turnover. A catalytic-only null could falsely kill a real scaffold-mediated lead. That's why in the filed design **CRISPRi KD is the sole go/no-go arm**; pinometostat only classifies mechanism.
-
-Also practically: pinometostat is **IV, continuous-infusion, oncology-only, 0 autoimmune trials**, program largely halted — not a plug-and-play RA asset.
-
-⚠ **Reviewer:** the "worsens RA" direction rests on a **preprint** — hypothesis-strength. The reason not to jump to clinic rests on the **engine-verified FDR 0.68** (load-bearing) plus the catalytic-vs-scaffold pharmacology (established biology).
-
-**Verdict:** Don't run pinometostat in RA yet. **Do first:** CRISPRi KD in resting primary CD4, gated on real H3K79me2 loss, read the module-38 edge against a matched background **and** a FOXP3/Treg direction-of-effect gate. If those clear, *then* pinometostat earns a dose-response — as a mechanism probe, not the go/no-go.
+**Verdict — a clinical-stage molecule shortens the *chemistry* path, not the *biology* path.** Next step isn't an RA trial; it's the **bench go/no-go**: CRISPRi in FOXP3⁻ Tconv at Rest with a matched background panel + a FOXP3/Treg direction-of-effect gate. Earn the target before you spend the drug.
 
 ---
 
