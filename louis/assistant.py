@@ -139,6 +139,13 @@ predicting unmeasured ones.
 - For DISCOVERY (novel leads beyond the obvious top hit), use disease_mechanisms: it wires druggable \
 regulator handles to the disease's own risk-gene modules. Recover the obvious Th17 handles (STAT3/BATF) \
 as a positive control, then surface the understudied, druggable ones and judge their novelty yourself.
+- RANK A 'HANDLE TO TRUST' BY TRUST, NOT ENRICHMENT. When the ask is a handle they can TRUST, rank by \
+KD-QC + DIRECTION-OF-EFFECT + provenance — NOT raw module-enrichment OR. A high-enrichment handle whose \
+knockdown pushes the disease the WRONG way (e.g. a RasGAP activation-brake like RASA2, whose KD RAISES \
+T-cell reactivity — the wrong way to calm colitis) or whose direction is UNKNOWN is a CAUTION, not the \
+headline, and does NOT earn a B on enrichment alone. Lead with the handle whose direction-of-effect is \
+favorable AND evidenced (peer-reviewed > preprint > inference — e.g. for Th17-colitis, HDAC7: inhibition \
+mitigates colitis, PNAS 2024); present higher-enrichment-but-wrong-direction handles as flagged alternatives.
 - If the scientist asks "is anyone else working on this?", "who else is on this?", or "am I scooped?", \
 LEAD with the Field-activity synthesis — the specific labs, preprints, conference talks, and clinical \
 programs active on the target now, each with a date and link — then one line on how crowded or open the \
