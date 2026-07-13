@@ -1,11 +1,12 @@
 # Louis — the 3-minute demo (jury package)
 
 > **Louis is a CD4⁺ T-cell drug-target discovery assistant that stress-tests its own
-> flagship and learns from your lab — built with Claude, and it meets you where you
-> already work** (a skill in Claude Science, an MCP server in Claude Code, a bot in Slack).
+> flagship, learns from your lab, and reads the bleeding edge — built with Claude, and it
+> meets you where you already work** (a skill in Claude Science, a plugin in Claude Desktop,
+> an MCP server in Claude Code, a bot in Slack).
 
 Data: the genome-scale CD4⁺ T-cell CRISPRi Perturb-seq screen — *Zhu, Dann … Pritchard & Marson, bioRxiv 2025*.
-Repo: <https://github.com/rpinho/louis> · Presenter deck: [`PRESENTER.html`](../_inbox/demo/PRESENTER.html) (15 cards, click-through).
+Repo: <https://github.com/rpinho/louis> · **Try it yourself → four install paths in [`CLAUDE.md`](../CLAUDE.md)** · open the [presenter deck](presenter.html) (15 click-through cards).
 
 This folder is the demo **on paper**, so a judge can evaluate it without watching a recording:
 the run-of-show, the **verbatim current-build bot outputs**, screenshots of the deck and the
@@ -13,29 +14,41 @@ Slack threads, and one-command instructions to reproduce every output yourself.
 
 | | |
 |---|---|
-| [`outputs/verbatim_outputs.md`](outputs/verbatim_outputs.md) | Every beat's answer, reproduced through the **exact Slack brain** (`louis.assistant.answer`) on the current build. 0 stale wording. |
+| [`presenter.html`](presenter.html) | The **actual slide deck** — open it (15 click-through cards). The screenshots below are just for GitHub's inline preview. |
+| [`outputs/verbatim_outputs.md`](outputs/verbatim_outputs.md) | Every beat's answer, reproduced through the **exact Slack brain** (`louis.assistant.answer`). Invariant-locked — the load-bearing claims reproduce (see [`tests/`](../tests/test_demo_invariants.py)); exact wording/formatting varies run to run. |
 | [`screenshots/deck_01…15.png`](screenshots/) | The presenter deck, one PNG per card. |
-| [`screenshots/slack_1…5_*.png`](screenshots/) | The Slack threads, rendered from the verbatim outputs (current build). |
+| [`screenshots/slack_1…6_*.png`](screenshots/) | The Slack threads (incl. the bleeding-edge signal), rendered from the verbatim outputs. |
+| [`../CLAUDE.md`](../CLAUDE.md) | **Try it yourself** — four install paths (skill / plugin / MCP / bot) + every gotcha. |
 
 ---
 
 ## The thesis — why this is more than a wrapper
 
-Three moves, all *in frame* in the same 3 minutes:
+Four moves, all *in frame* in the same 3 minutes:
 
-1. **Honesty you can watch.** Handed its own flagship RA lead **DOT1L**, Louis **stress-tests it A→C** —
+1. **Honesty you can watch (trust).** Handed its own flagship RA lead **DOT1L**, Louis **stress-tests it A→C** —
    the RA "wiring" is a cross-disease-union artifact (only **1 of 77** regulator clusters is ever
    significant), and the therapeutic *direction* is a genuine open question — DOT1L props up regulatory T
    cells (an inhibitor could *worsen* RA), but also sustains pathogenic effector programs (Scheer 2020), so
    it's a bench go/no-go, not a claim. The kill leads on the engine artifact, not the direction. Then it
    returns the **survivor** — **HDAC7** for Th17-driven colitis (favorable, *peer-reviewed* direction) — with
    the go/no-go experiment. A discovery tool that kills its own darling, with receipts, is the product.
-2. **It meets you where you work.** One engine + one shared memory, exposed three ways —
-   a **skill** in Claude Science, an **MCP server** in Claude Code, a **bot** in Slack. Louis isn't another
-   website you have to visit; it shows up where the scientist already is.
-3. **It learns.** Every finding is weighed by **provenance** (a preprint can't decide a grade), Louis
+2. **It learns.** Every finding is weighed by **provenance** (a preprint can't decide a grade), Louis
    **reviews itself**, and the **whole lab writes back** to one shared memory — so questions compound instead
    of restarting.
+3. **It reads the bleeding edge.** Louis pulls the off-allowlist signal a database can't — what immunologists
+   post on **X and Bluesky** and drop in **conference abstracts** — and *weighs* it: its reviewer tiers that
+   chatter **signal-strength** (a lead to chase, never evidence for a grade). The weakest of the four, but
+   genuinely new — no other tool reads *and* honestly tiers the pre-paper floor. (See the DOCK2 thread: Bluesky
+   flagged the TCR–SUB1–DOCK2 axis, and Louis surfaces it *and* refuses to let it inflate a grade.)
+4. **It meets you where you work — four ways.** One engine + one shared memory, exposed as a **skill**
+   (Claude Science), a **plugin** (Claude Desktop), an **MCP server** (Claude Code), and a **bot** (Slack).
+   Louis isn't another website you have to visit — and it's *trivial to try*: point your Claude at the repo and
+   it reads [`CLAUDE.md`](../CLAUDE.md) and installs it for you.
+
+> One of the scientists here said the best feeling is starting six months of analysis and going to **fold
+> laundry** while Claude Science runs it. With Louis's memory, the second time you ask — **you don't even
+> have time to fold the laundry.**
 
 Official hackathon weights this is built against: **Impact 25 · Claude Use 25 · Depth & Execution 20 · Demo 30.**
 
@@ -111,6 +124,14 @@ collaborative-memory **write → read** loop — the lab teaches Louis, and the 
 and stays human-in-the-loop.
 
 ![Slack — the write→read loop](screenshots/slack_5_write_read_loop.png)
+
+**The bleeding edge (3rd pillar) — reads the off-allowlist floor, and *tiers* it.** Ask what the field is
+saying right now and Louis pulls the signal a database can't reach — **X, Bluesky, conference abstracts** —
+then its **⚠Reviewer tiers it honestly**: *"all Bluesky posts pointing at peer-reviewed papers — signal-tier,
+the megaphone not the evidence."* It reads the pre-paper floor **and** refuses to let chatter inflate a grade
+(it even discloses when live X is down). The weakest of the four pillars, but genuinely new.
+
+![Slack — bleeding-edge community signal](screenshots/slack_6_signal.png)
 
 ---
 

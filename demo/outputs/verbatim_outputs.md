@@ -1,8 +1,8 @@
-# Verbatim Louis outputs — current build (stress-test / provenance-tier / self-reviewer)
+# Verbatim Louis outputs — current build (learn · trust · bleeding-edge signal)
 
 > Reproduced through the **exact Slack brain** (`louis.assistant.answer`), the same code the
-> `@louis` bot runs, on **2026-07-13**. Every capture ran against a **throwaway copy of `kb/`**
-> (real KB untouched). Tool traces shown so you can see what Louis actually called.
+> `@louis` bot runs, on **2026-07-13**, against a **throwaway copy of `kb/`** (real KB untouched).
+> Tool traces shown so you can see what Louis actually called.
 
 
 ---
@@ -203,6 +203,38 @@ TL;DR — **The B holds.** Jordan's negative KD falsifies the module-59 *wiring*
 **Verdict:** **B holds.** Next step tightens to the leg that IS decisive — a **FOXP3/Treg direction-of-effect gate**, not another wiring test.
 
 Want me to **file Jordan's negative KD** to the HDAC7 profile as a finding (retiring the module-59 leg, grade unchanged)? I won't write it without your go — say the word and give me Jordan's exact readout.
+
+---
+
+## Slack — the BLEEDING EDGE (3rd pillar): reads off-allowlist X/Bluesky/conference abstracts, tiers it as signal
+
+**Prompt:** `what's the community saying about DOCK2 right now — any off-allowlist signal (X, Bluesky, conference abstracts) the papers haven't caught?`  
+**Tools Louis called:** `kb_recall, community_signal`
+
+**TL;DR —** Live X came back empty, so this is the baked Bluesky harvest: DOCK2 has real recent chatter pointing one way — **blocking it is protective in autoimmune CD4** — but it's all peer-reviewed/journal accounts, i.e. signal-tier leads, not the unindexed pre-paper stuff you were hoping to scoop.
+
+**⚠ Live status:** X/Twitter access unavailable this session — `community_signal` returned baked Bluesky only. No genuinely off-allowlist X/Bluesky chatter surfaced beyond what's already in the KB.
+
+**The chatter (4 posts, all ⭐, all journal/lab accounts):**
+
+| Date | Who | Signal |
+|---|---|---|
+| 2025-12 | Waggoner Lab / *Immunity* | TCR-SUB1-**DOCK2** drives pathogenic CD4 infiltration |
+| 2026-05 | B. Garabedian | CCR7→DOCK2 relocalization, dysfunctional TEFF |
+| 2024-10 | ACR Journals | CPYPP (DOCK2i) ameliorates Sjögren |
+
+**Read:**
+- **Direction is consensus** — every post says DOCK2 activity is *pathogenic*, so **inhibition = protective**. That's the pillar that keeps DOCK2 alive in our KB.
+- **It's not whitespace-quiet, but it's not crowded either** — this is journal/PI-account amplification of published work, not a competitor racing you. No preprint or conference abstract in the feed jumping ahead of the papers.
+- **Nothing newer than what's baked** — freshest is May 2026 (Garabedian). No unindexed lead the literature hasn't caught.
+
+**⚠ Reviewer:** all four items are Bluesky posts pointing at peer-reviewed papers — **signal-tier, leads to weigh, not evidence for a grade**. The two direction papers (*Immunity* 2025, ACR Open Rheum 2024) are the load-bearing part; the posts are just the megaphone.
+
+**Where it stands in our KB (unchanged, don't confuse with new signal):** psoriasis **B-**, T1D **C**, pan-AI **C** — all stress-tested, "direction-validated but module-artifact + immunodeficiency-window-limited, knockdown-first."
+
+**Verdict:** No new off-allowlist signal to act on. If you want the true pre-paper edge, next step is to **watch conference abstracts (ACR/FOCIS) for a DOCK2-selective inhibitor** — the open question is a selectivity window around DOCK2-deficiency immunosuppression, and that's where a competitor would show up first.
+
+Want me to log a watch note on DOCK2, or check community signal on the SUB1 or CCR7 nodes those posts name?
 
 ---
 
