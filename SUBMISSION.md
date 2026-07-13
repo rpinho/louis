@@ -6,129 +6,91 @@ Numbers are produced live (`python -m louis.core` re-checks the discovery
 
 ---
 
-## Submission summary (100–200 words — official cap; this is 193)
+## Submission summary (100–200 words — official cap; this is ~195)
 
-**Louis** is an **MCP server + Slack bot** that turns a genome-scale CD4⁺ T-cell CRISPRi Perturb-seq
-screen (Marson/Pritchard 2025) into a discovery + memory assistant living *inside Claude* — no separate
-app, no API key. Named for Pasteur, Louis does five things. **DISCOVER** — it wires understudied,
-druggable regulator "handles" to a disease's own GWAS risk-gene modules, gated by CRISPRi knockdown QC
-(the **trust flag**) and tagged by activation state; as a **blind positive control**, the same ranking
-re-derives the known Th17 masters STAT3/BATF/IRF4 top-3. **VALIDATE** — it hands each lead to Claude
-Science's web (Open Targets, ChEMBL, PubMed, GWAS Catalog) to grade novelty and druggability. **LISTEN**
-— it reads what immunologists post on **X, Bluesky, and conference floors** *this week*, before it's a
-paper. **REMEMBER** — it files the whole chain, with provenance and confidence, to a shared knowledge
-base the **whole lab writes to**. **SYNTHESIZE** — it recurs handles across diseases to tell one
-mechanism from shared disease-wiring. For RA it surfaces **DOT1L** — novel, druggable (pinometostat),
-its regulator→risk-gene link in **no database** — corroborated by same-week signal Claude Science
-*cannot* reach. Every claim traces to a source, built with Claude.
+**Louis** is an **MCP server + Slack bot** that turns a genome-scale CD4⁺ T-cell CRISPRi Perturb-seq screen
+(Marson/Pritchard 2025) into a discovery-and-memory assistant living *inside Claude* — no separate app, no
+API key. Named for Pasteur, Louis **discovers** understudied, druggable regulator "handles" wired to a
+disease's own GWAS risk genes, gated by CRISPRi knockdown QC and activation state; as a **blind positive
+control**, the same ranking re-derives the known Th17 masters STAT3/BATF/IRF4 — **1 of 77 regulator clusters
+clears significance, Crohn's q=0.025, disease-calibrated, not a hub**. It **validates** each lead against
+Claude Science's connectors, **weighs every source by provenance** (a preprint or conference abstract is
+hypothesis-strength, never decisive), and **reviews itself** — the Claude Science reviewer, rebuilt for
+Slack. Its sharpest move is honesty: handed its own flagship RA lead **DOT1L**, Louis **red-teams it A→C** —
+the wiring is a cross-disease artifact and an inhibitor likely *worsens* RA — and returns the survivor,
+**HDAC7** for Th17-driven colitis (favorable, peer-reviewed direction), with the go/no-go experiment. It
+**remembers** the whole chain with provenance, and the whole lab **writes back**. Built with Claude.
 
 ---
 
 ## The one-liner spine (what makes it win)
 
-Louis doesn't just find a novel target — it **tells a genuine bleeding-edge bet from hype**, and
-proves it: for the same panel of leads it graded **DOT1L a real pre-paper edge** (mechanism lives
-only in a preprint + a conference abstract) while **killing MEN1 (menin buzz is all oncology),
-GLS (signal is synoviocytes, wrong cell), and CBLB/RIPK1 (edge already closed/published).**
-Separating edge from noise *is* the product.
+Louis's sharpest move is that it **red-teams its own flagship**. On the same RA panel where it first graded
+**DOT1L a top novel lead (A)**, Louis turns its own trust machinery on that call and downgrades it **A→C**:
+the regulator→risk-gene "wiring" is a *non-significant cross-disease-union artifact* (DOT1L isn't even in
+RA's own regulator set), and DOT1L supports Tregs — so an inhibitor likely **worsens** RA. A discovery tool
+that kills its own darling, with receipts, is one you can trust with the survivors. And it **discriminates**:
+the *same instrument* that dims DOT1L keeps **HDAC7 for Th17-driven colitis** lit at **B** (favorable,
+peer-reviewed direction), and, run blind, re-derives the textbook Th17 masters STAT3/BATF/IRF4 (**1 of 77
+regulator clusters clears significance, Crohn's q=0.025** — calibration, not a hub). Telling a calibrated
+call from an over-confident one *is* the product.
 
-The **opportunity map** makes that spine visual — candidate **grade** (y) against **novelty** (x),
-each point a connector-graded verdict:
+The **opportunity map** makes it visual — candidate **grade** (y) against **novelty** (x), each point a
+connector-graded verdict:
 
 <p align="center">
-  <img src="docs/figures/opportunity_map.png" width="90%" alt="The opportunity map — grade vs novelty; the green corner holds the novel, well-founded leads (DOT1L, HDAC7, PPM1D, RASA2, HIF1A)">
+  <img src="docs/figures/opportunity_map.png" width="90%" alt="The opportunity map — grade vs novelty. DOT1L is the killed flagship (downgraded to C); the survivors HDAC7, PPM1D, DOCK2 earn their grades on their own evidence.">
 </p>
 
-The green corner — high-grade **and** understudied — is the whole product: DOT1L, HDAC7, PPM1D, RASA2,
-HIF1A. The known genes (IL21R, STAT3, ZAP70, AHR) sit right, *validated but crowded*; DOCK2 is genuine
-whitespace still maturing; INSR is the screen grading its own artifact a D. And the honesty is in what's
-*absent* — MEN1 and GLS aren't plotted, because their story is misattributed buzz and cross-disease grade
-drift, not a clean grade × novelty point; the two-axis map refuses to flatten them into false leads.
+**DOT1L is no longer the green-corner win — it's the killed flagship, the trust demonstration.** The
+survivors earn their grades on their *own* evidence: **HDAC7** (Th17-colitis, favorable direction), **PPM1D**,
+**DOCK2** (understudied whitespace), each honestly caveated. The known genes (IL21R, STAT3, ZAP70, AHR) sit
+right, validated but crowded; INSR is the screen grading its own artifact a D. The positive control
+*calibrates the method* — it re-derives the known masters — but it **licenses no single pick**; every lead
+still earns its grade. And the honesty is in what's *absent*: MEN1 and GLS aren't plotted, because their
+story is misattributed buzz and cross-disease grade drift, not a clean grade × novelty point.
 
 ---
 
-## 3-minute demo script (beat by beat)
+## 3-minute demo script (Framing A — the honest instrument)
 
-> The whole demo is a conversation with **Louis**, in Slack and in Claude. Discover, listen,
-> remember run through the Louis MCP/skill; validate + experiment-design run in Claude Science;
-> the Slack coda shows where a lab actually talks. All Anthropic, all on the subscription — no
-> third-party app, no API key. Every answer is TL;DR-first and scannable (it's a video). Screen-record it.
->
-> **Two visual anchors carry the credibility (Beat 2):** the **opportunity map** (the one-glance
-> landscape — DOT1L in the green corner) and the **blind positive control** (the same ranking
-> re-derives STAT3/BATF/IRF4). **Timing:** at full length this runs ~3:20. To hit a hard 3:00, compress
-> Beat 4 to a single line ("the protocol exists, cheap-gate-first — full version in the repo") and Beat 5
-> to just the `--nomem` flip. Do **not** cut Beat 3 (the moat) or Beat 6 (the closer) — those are what win.
+> Two parts — **Claude Science** (before → after) then **Slack** (where a lab actually talks). All Anthropic,
+> all on the subscription — no third-party app, no API key. TL;DR-first, scannable (it's a video). Hard **3:00**.
 
-### Beat 1 — the real problem (0:00–0:25)
-- **[SAY]** "This is a genome-scale CRISPR screen of human T cells — a map of autoimmune drug
-  targets. The hardest thing in biology isn't the analysis; it's getting a bench scientist to
-  *use* a dataset like this. So we didn't build a website. We put it inside Claude — and named it
-  Louis, after Pasteur (and, like Claude, a French name). It discovers, it doesn't just look up."
+### Part 1 — Claude Science (before → after)
+- **Before:** naive Claude Science, *no Louis*, confidently recommends **DOT1L** for RA — and gets the
+  *direction wrong* (frames inhibition as good; never notices DOT1L props up regulatory T cells).
+- **After:** Louis's skill on, same question → Louis **recalls its own red-team and overrules its grade-A,
+  DOT1L A→C**: the RA "wiring" is a *non-significant cross-disease-union artifact* (DOT1L isn't in RA's own
+  regulator set), and an inhibitor likely *worsens* RA (Treg risk). It **tiers its evidence** — the kill
+  rests on the engine fact; the Treg mechanism is a *preprint* its own **reviewer** flags hypothesis-strength.
+  *The memory is the trust mechanism.* Paired in-frame with the survivor (**HDAC7 holds at B**), so it reads
+  "calibrated instrument," never "tool was wrong."
+- **Calibration + moat, shown:** the same ranking, run blind, re-derives the Th17 masters STAT3/BATF/IRF4
+  (**1 of 77 clusters, Crohn's q=0.025** — disease-calibrated, not a hub); it *discriminates* (DOT1L cracks,
+  HDAC7 holds) — the control calibrates the **method**, it licenses no pick. On screen: the off-allowlist
+  **ACR abstract** Science can't confirm, and the **recursion** (`kb_remember` writing a verdict back to the KB).
 
-### Beat 2 — DISCOVER + TRUST (0:25–1:10) ← now anchored by the opportunity map + positive control
-- **[SCREEN]** In Slack: *`@louis for rheumatoid arthritis, skip the obvious targets — novel
-  druggable handles wired to the risk genes, and which can I trust?`*
-- **[SAY]** "It doesn't hand me STAT3. It wires **DOT1L** — an epigenetic enzyme, pinometostat in the
-  clinic — to the RA risk genes **IL21R / PTGER4** in *resting* T cells, knockdown verified clean, and
-  that regulator→risk-gene link is in **no external database**. Two things make that trustworthy."
-- **[SCREEN]** flash the **opportunity map** — DOT1L sits alone in the green *novel & well-founded* corner.
-- **[SAY]** "One — the **trust flag**: a high-enrichment hit whose knockdown was never confirmed is a
-  *caution*, not a rec. Two — the *same ranking*, run **blind**, re-derives the textbook Th17 masters
-  **STAT3 · BATF · IRF4** as its top 3. It recovers what's known before it names something novel —
-  *that's* what earns DOT1L the green corner, not my say-so."
-
-### Beat 3 — LISTEN: who else, and is it real? (1:05–1:55) ← the moat + the honesty
-- **[SCREEN]** *`@louis who else is working on DOT1L — and is the buzz real edge or hype?`*
-- **[SAY]** "Claude Science reads *published papers* — but its sandbox is a strict allowlist; it
-  literally cannot reach Twitter, Bluesky, or a conference site. That's our moat. Louis grades
-  **DOT1L a genuine pre-paper edge**: the Treg-identity/DNA-demethylation mechanism that supports
-  it exists *only* as a bioRxiv preprint and an **ACR conference abstract** — off the allowlist.
-  And in the same breath it **rejects the hype**: the menin-inhibitor buzz around **MEN1** is all
-  leukemia, orthogonal; the **GLS** signal is synoviocytes, wrong cell type. Five sources converge
-  on DOT1L, and two of them Science *cannot see*. That's the friend who says: chase it — and here's
-  who's presenting it."
-
-### Beat 4 — EVALUATE: design the experiment (1:55–2:30)
-- **[SCREEN]** *`@louis is DOT1L a good bet — design the cleanest experiment.`* (Louis + Claude Science)
-- **[SAY]** "It returns a real two-arm protocol on the screen's own activation-state axis: CRISPRi
-  knockdown as the primary arm, pinometostat as the pharmacology complement, an **sgRNA-resistant +
-  catalytic-dead rescue** for specificity, **H3K79me2 CUT&RUN** target-engagement at IL21R, a
-  **mandatory Treg readout** because DOT1L supports Treg identity — and cheap-gate-first go/no-go
-  gates so a negative result kills the lead before any inhibitor work. *(We ran the same for the UC
-  lead, HDAC7 — full protocol shipped in the repo.)*"
-
-### Beat 5 — REMEMBER, and the trust chain (2:30–2:55)
-- **[SCREEN]** *`@louis remember DOT1L`* → then `kb_recall(DOT1L)` — one profile: discovery + novelty
-  + validation + community signal + verdict + experiment, each cited. Then flip **`--nomem`**.
-- **[SAY]** "It files the whole chain to a shareable KB — recall it and it's there, no re-derivation.
-  Watch the trust go all the way down: Claude Science's *own* reviewer flagged a citation it couldn't
-  confirm; an independent check confirmed the paper is real — but a *preprint*, a precision even the
-  validator missed. And the contrast: ask the same question with **memory off** and you get a generic
-  answer; with memory on, the whole compounded case. Every claim traces to a source **and its
-  confidence level**."
-
-### Beat 6 — the lab makes Louis smarter (2:55–3:25) ← the closer
-- **[SCREEN]** Slack, public channel. A labmate replies to Louis: *"@louis we tested DOT1L — the
-  module edge didn't hold, that verdict's too strong."* Louis: *"✍️ Filed to DOT1L — downgraded,
-  attributed to @jordan."* Ask again → the answer now carries the lab's result. Then flip `--nolab`
-  → the answer *before* the lab weighed in.
-- **[SAY]** "And he doesn't just answer — he *learns from the lab*. A bench result, a 'that's weaker
-  than you think', a 'John's already on that' — anyone can correct Louis in the channel and he files
-  it to the shared memory, **with their name on it**. `--nolab` shows what he knew before the lab
-  weighed in; the difference *is* the lab's own compounding knowledge. Discover, validate, listen,
-  remember, synthesize — and now learn, together. That's Louis: a very smart lab assistant that never
-  forgets and gets smarter every time the lab talks to it. Built with Claude — a French name, like
-  Louis — living inside it, and shared with your whole lab."
+### Part 2 — Slack (Louis where a lab works)
+- **Discovery:** `@louis` for IBD / Th17-driven colitis → **HDAC7, trust B**, led on the *peer-reviewed
+  direction* (HDAC4/7 drive Th17; inhibition mitigates Th17 colitis — PNAS 2024) + the screen-unique legs
+  (verified KD all 3 states, activation state); honest that the wiring is a co-cluster hypothesis and the
+  genetics is locus-ambiguous. ELI5 on demand. Pre-empts the "IL-17 blockade worsened Crohn's" objection.
+- **The lab teaches Louis (the closer):** a labmate reports the co-cluster edge didn't hold → Louis files it
+  *attributed to them*, **retracts that leg**, keeps the lead lit on the evidence that holds, and hands the
+  sharpened go/no-go experiment. `--nolab` shows the answer before the lab weighed in. **Discover, validate,
+  listen, remember — and learn, together. Built with Claude, living inside it, shared with your whole lab.**
 
 ---
 
 ## How it maps to the judging criteria
 
-- **Demo (30%)** — a live, five-move conversation (discover → validate → listen → remember →
-  synthesize) with a novel hero (DOT1L, not STAT3), a memorable spine (**edge vs hype**: it
-  corroborates DOT1L *and* rejects MEN1/GLS in the same answer), a real bench experiment, and a
-  Slack coda — every claim traced to a source *and* its confidence level.
+- **Demo (30%)** — a conversation whose spine is **honesty you can watch**: Louis red-teams its *own*
+  flagship (DOT1L A→C — the wiring is a cross-disease artifact, an inhibitor likely worsens RA), paired
+  in-frame with a survivor that holds (HDAC7, favorable peer-reviewed direction) and the blind positive
+  control, so it always reads "calibrated instrument," never "tool was wrong" — then hands over the survivor
+  + its go/no-go experiment, and learns from a bench result in the Slack coda. Every claim traces to a
+  source *and* its provenance tier.
 - **Impact (25%)** — attacks the bottleneck a bench scientist named as *the hardest thing*: adoption,
   not analysis. It hands a wet-lab that can't afford a bioinformatician a novel, druggable, testable
   lead (Claude Science independently confirmed the regulator→risk-gene edge exists in no external
@@ -145,9 +107,13 @@ drift, not a clean grade × novelty point; the two-axis map refuses to flatten t
   added exactly that way.
 - **Depth & Execution (20%)** — a **blind positive control** grounds the method: told only a disease's GWAS risk
   genes and no known targets, the *same* unsupervised ranking re-derives the textbook Th17 master triad
-  **STAT3 / BATF / IRF4** as its top-3 for the core inflammatory diseases (STAT3 #1 in 6 diseases;
-  one-command repro, `scripts/positive_control.py`) — it recovers the known before it proposes the novel,
-  which is what earns trust in DOT1L. On top of that: a real GRN + CRISPRi-QC trust layer, an
+  **STAT3 / BATF / IRF4** as its top-3 for the core inflammatory diseases (**1 of 77 regulator clusters clears
+  significance, and the top hit survives a global BH across all 1,309 tests, Crohn's q=0.025** — disease-
+  calibrated, dark in RA/SLE/T1D, not a hub; one-command repro, `scripts/positive_control.py`). It calibrates
+  the *method* — it **licenses no single pick**; every lead still earns its own grade. On top of that: an
+  **evidence-provenance tier** (engine/peer-reviewed = load-bearing; preprint/abstract = hypothesis-strength;
+  social = signal) and a **self-reviewer** that flags any grade resting on weak provenance — the Claude
+  Science reviewer, rebuilt for Slack; a real GRN + CRISPRi-QC trust layer, an
   activation-state axis, and a module→risk-gene discovery engine on the authors' tables; a community-signal
   engine that self-filters by gene symbol and vetoes wellness noise; a knowledge base in a mature PKM shape
   (routing, provenance, recall-before-derive, dimensional `kb_query`, cross-disease synthesis, and a
@@ -172,5 +138,8 @@ The result: **195 target profiles, ~1,070 provenance-stamped records**, nine con
 new leads per disease (**DOCK2, HIF1A, PPM1D, RASA2** — DOCK2 independently corroborated the same week by
 a Bluesky post from the Waggoner Lab), two full experiment designs, and a portfolio synthesis whose
 punchline is *honesty*: the recurring handles are **module-conservation on shared GWAS hubs, not one
-convergent mechanism** — with two disjoint conserved axes, Th1/Th17 and Th2. A hero lead (DOT1L) whose
-pre-paper edge was confirmed by a system that went looking everywhere else first.
+convergent mechanism** — with two disjoint conserved axes, Th1/Th17 and Th2. And the sharpest recursion
+result of all: the red-team ran **on Louis's own flagship** — Claude Science, driving Louis's skill,
+downgraded **DOT1L A→C** (the RA wiring is a cross-disease artifact; an inhibitor likely worsens RA), and
+Louis wrote that verdict *back to its own KB* — so it now **recalls the red-team on its former darling**.
+A system that went looking everywhere else first, then turned that scrutiny on itself.

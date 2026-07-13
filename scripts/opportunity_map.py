@@ -28,17 +28,17 @@ OUT = REPO / "docs" / "figures" / "opportunity_map.svg"
 # Curated for readability: MEN1 (graded B in RA but its story is hype-misattribution, not grade) and
 # GLS (grade swings B+->C+ across diseases) are told in the LISTEN/synthesis narrative, not this map.
 DATA = [
-    ("DOT1L", "RA",        "A",  0,  "pinometostat in clinic", True),
-    ("HDAC7", "MS",        "A",  2,  "", False),
-    ("PPM1D", "asthma",    "B+", 2,  "new Th2 lead", False),
+    ("HDAC7", "UC",        "B",  1,  "survivor lead", True),
+    ("DOT1L", "RA",        "C",  0,  "red-teamed to C", False),
+    ("HDAC7", "MS",        "B-", 2,  "", False),
+    ("PPM1D", "asthma",    "C+", 2,  "Th9 backup", False),
     ("RASA2", "eczema",    "B+", 0,  "undruggable", False),
     ("HIF1A", "T1D",       "B",  2,  "pleiotropic", False),
-    ("DOT1L", "psoriasis", "B",  0,  "recurs", False),
     ("IL21R", "T1D",       "B",  19, "", False),
     ("STAT3", "T1D",       "B",  29, "positive control", False),
     ("ZAP70", "asthma",    "B-", 19, "", False),
     ("AHR",   "psoriasis", "C",  29, "approved drug", False),
-    ("DOCK2", "T1D",       "C",  0,  "discovery-stage", False),
+    ("DOCK2", "psoriasis", "B-", 0,  "scarred survivor", False),
     ("INSR",  "T1D",       "D",  2,  "low-confidence", False),
 ]
 
