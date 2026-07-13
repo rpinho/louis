@@ -61,40 +61,40 @@ TL;DR — Because pinometostat being in the clinic tells you it's *druggable*, n
 
 ---
 
-## Slack Beat 3 — HDAC7 discovery (honest, direction-led)
+## Slack Beat 3 — HDAC7, the survivor lead (named recall, honest legs)
 
-**Prompt:** `for IBD / Th17-colitis, a novel CD4 handle I can trust — be honest about the weak legs`  
-**Tools Louis called:** `disease_mechanisms, disease_targets, kb_recall, target_evidence, target_evidence, state_profile`
+**Prompt:** `is HDAC7 a CD4 handle I can trust for IBD / Th17-colitis? be honest about the weak legs`  
+**Tools Louis called:** `kb_recall, target_evidence, state_profile, regulator_detail`
 
-The KB has this one worked hard already — and it's been stress-tested. Here's the honest read.
+TL;DR — **HDAC7 is a real IBD/Th17-colitis handle at grade B** — worth pursuing because the *direction* is favorable (inhibition mitigates Th17 colitis, peer-reviewed), but the "wires-to-risk-genes" story is a co-cluster hypothesis, not a proven edge.
 
-**TL;DR —** For Th17-colitis, **HDAC7** is your novel CD4 handle worth trusting on *direction* — an inhibitor is predicted to help (HDAC4/7 drive Th17; blocking them mitigates colitis, PNAS 2024) — but its "wired to IBD risk genes" story is a co-cluster hypothesis (FDR=1.00), not a proven edge, so lead on mechanism, not genetics.
-
-**Lead — HDAC7** · module 59 tolerance node, Stim8hr · **current grade B** (Crohn's/UC, stress-tested from B+)
-
-| Leg | Read |
+| Leg | Status |
 |---|---|
-| Direction | 👍 **holds** — inhibitor helps Th17-colitis |
-| Wiring | 🤔 co-cluster, **FDR=1.00** |
-| Genetics | 🤔 own-gene but allergy/platelet-led |
+| **Direction** | ✅ holds — carries the grade |
+| **Genetics** | 🤔 own-gene but ambiguous |
+| **Wiring** | ❌ cracked (FDR=1.00) |
 
-**Evidence (screen, verified):**
-- Module 59 downstream: **OR 3.3, FDR 6.1e-3** — real, but a *pan-inflammatory* tolerance module (IL10/BACH2/PRDM1/CD28), not IBD-specific.
-- GRN out-degree **134**, ~87th pct; **activation-modulated**, peaks **Stim48hr** (84→56→134).
-- **KD verified clean in all 3 states.**
+**Lead** — class IIa HDAC; an inhibitor is predicted to *help* UC/Th17-colitis.
 
-**The weak legs — honestly:**
-- ⚠ **Wiring is not an edge.** Module-59 *regulator* enrichment is **FDR=1.00** across all diseases — HDAC7 sits *near* a real module, not proven to control it.
-- ⚠ **Genetics is locus-ambiguous.** rs11168249 is own-gene but led by platelet count + asthma; **not a CD4 eQTL** for HDAC7. Causal gene *and* cell ambiguous.
-- ⚠ **No HDAC7-selective compound** — pan-HDACi only (vorinostat POC, NCT03167437). Translational whitespace, not a validity problem for a CRISPRi test.
+**Evidence (screen, verified)**
+- Module 59 (Stim8hr): **OR 3.3, FDR 6.1e-3** — but this is the *downstream* module (real, yet pan-inflammatory, sig in ~9 diseases), not UC-specific.
+- GRN out-degree **134** (86th pct), activation-modulated, peaks **Stim48hr** (84→56→134 across Rest/Stim8/Stim48).
+- KD **verified on-target, clean guide in all 3 states** ✅.
 
-**Field activity:** Active but *not* crowded on the CD4/IBD angle — PNAS 2024 (PMID 38657041) defined the HDAC4/7→Th17 mechanism; Hafler/Verdin own the *MS/Treg* angle (opposite direction). The selective-HDAC7 Th17-colitis handle is genuinely open.
+**Where the legs are weak (your ask):**
+1. **Wiring** — module-59 *regulator* enrichment is **FDR=1.00** across all 8 diseases (intersection = HDAC7 itself). It sits *near* the module, not a demonstrated controller. Statistically identical to DOT1L's failed leg.
+2. **Genetics** — rs11168249 maps to HDAC7 at gene level, but 38 associations are **platelet/asthma-led**; UC real but minor (~6e-9), partly Ellinghaus 5-disease pleiotropy. **Not a detectable HDAC7 eQTL in CD4 T cells** → causal gene *and* cell ambiguous.
+3. **Compound** — **zero HDAC7-selective molecules**; only pan-HDACi (vorinostat POC NCT03167437) + class-IIa tools TMP195/TMP269. Whitespace, not a validity threat since CRISPRi is the primary experiment.
 
-**Verdict — B, worth pursuing, lead on direction not genetics.** Next bench step: CRISPRi KD of HDAC7 (≥2 guides + rescue) on the Rest/Stim8hr/Stim48hr axis, test the module-59 edge vs a STAT3/BATF positive-control floor — with a **mandatory FOXP3/Treg readout** to catch the self-tolerance double-edge.
+**What actually carries the B** — DIRECTION: HDAC4/7 + Aiolos + SMRT/NCoR repress Th17 negative regulators; inhibiting HDAC4/7 mitigates Th17 colitis (**PNAS 2024, PMID 38657041, peer-reviewed**). This is why it beats DOT1L, which had a Treg trap. Treg double-edge here is MS/thymic, *not* UC.
 
-⚠ Reviewer: the favorable *direction* rests on one peer-reviewed paper (PNAS 2024) — load-bearing but single-source; the wiring FDR=1.00 is engine-verified. Grade is capped at B for exactly these reasons.
+**Field activity** — active class, thin gene: PNAS 2024 (Th17-colitis mechanism), pan-HDACi vorinostat Crohn's POC recruiting. No HDAC7-selective IBD trial. On Bluesky/pre-paper: quiet on HDAC7-specific colitis — the *mechanism* is already peer-reviewed (not bleeding-edge), the *selective handle* is open.
 
-_Say **expand** for the full dossier, or I can pull the alternative handles (MBD2, KAT7, MED15) if you want to compare._
+**⚠ Reviewer** — the favorable-direction claim rests on a single peer-reviewed paper (PMID 38657041) that's load-bearing; the wiring and genetics legs are hypothesis-strength at best. Verify the direction at *your* bench before an irreversible call.
+
+**Verdict — B, trustworthy IF you lead on direction, not on "it controls the risk module."** Current UC grade is **B** (was B+ → B on 2026-07-12 stress-test). Next step: CRISPRi KD (≥2 guides + rescue) on Rest/Stim8/Stim48, readouts gated vs a STAT3/BATF positive-control floor, with a **mandatory FOXP3/Treg direction gate** — that's the one experiment that decides whether inhibition helps or backfires.
+
+_Say expand for the full dossier (module spine, experiment protocol, cross-disease read)._
 
 ---
 
