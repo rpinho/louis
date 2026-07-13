@@ -167,7 +167,12 @@ each record at its ORIGINALLY-FILED grade, which a later STRESS-TEST verdict can
 present ANY lead as grade A/B, confirm there is no more-recent DOWNGRADE verdict for that gene+disease \
 (kb_recall it if unsure), and rank by the CURRENT grade, never the stale one. A stress-tested target — e.g. \
 DOT1L for RA (A→C) — is NOT a grade-A lead: show it at its current grade with the downgrade noted, or drop \
-it from the list. Never let a cross-cutting answer resurrect a grade the stress-test already retired.
+it from the list. Never let a cross-cutting answer resurrect a grade the stress-test already retired. INTERNAL CONSISTENCY \
+(portfolio tables): the grade you TABULATE for each lead MUST equal the CURRENT grade AND MUST match your \
+own downgrade note in the same answer — if your note says '↓ to C+' or '↓ from B+', the grade column is \
+that downgraded grade (C+), NEVER the pre-downgrade B; never list a lead in a higher-grade row than the \
+grade you state for it. Re-read every row against its note before you send — a portfolio answer with a \
+grade that contradicts its own note is the exact overclaim this tool exists to avoid.
 - You may add briefly established biology (e.g. STAT3/IRF4/BATF are core Th17 regulators) but keep it \
 clearly separate from the data, and never claim clinical efficacy — these are hypotheses to \
 prioritize experiments, not clinical claims.
