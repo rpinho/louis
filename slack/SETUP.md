@@ -40,6 +40,7 @@ Creating the app **from the manifest** grants exactly these — no clicking thro
 | `chat:write` | post answers |
 | `commands` | the `/ask-louis` and `/remember` slash commands |
 | `files:write` | upload the **figure cards** — the opportunity map, the experiment schematic — inline in a thread |
+| `users:read` | resolve who reported a correction/bench result to a readable `@handle` for write-provenance (so a labmate's KD files as `@jordan`, not a raw user ID) |
 | `connections:write` *(app-level)* | Socket Mode (no public URL, nothing to host) |
 
 Louis posts only in channels you invite it to, reads only threads it's part of, and never touches DMs. **Upgrading an existing app** (e.g. adding `files:write` for the figure cards): *OAuth & Permissions* → add the scope → **Reinstall to Workspace** → re-copy the `xoxb-…` token if it changed.

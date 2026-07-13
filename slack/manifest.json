@@ -31,7 +31,8 @@
         "channels:history",
         "chat:write",
         "commands",
-        "files:write"
+        "files:write",
+        "users:read"
       ]
     }
   },
