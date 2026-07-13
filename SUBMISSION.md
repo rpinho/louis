@@ -16,8 +16,8 @@ control**, the same ranking re-derives the known Th17 masters STAT3/BATF/IRF4 �
 clears significance, Crohn's q=0.025, disease-calibrated, not a hub**. It **validates** each lead against
 Claude Science's connectors, **weighs every source by provenance** (a preprint or conference abstract is
 hypothesis-strength, never decisive), and **reviews itself** — the Claude Science reviewer, rebuilt for
-Slack. Its sharpest move is honesty: handed its own flagship RA lead **DOT1L**, Louis **red-teams it A→C** —
-the wiring is a cross-disease artifact and an inhibitor likely *worsens* RA — and returns the survivor,
+Slack. Its sharpest move is honesty: handed its own flagship RA lead **DOT1L**, Louis **stress-tests it A→C** —
+the wiring is a cross-disease artifact and the direction is an open bench question — and returns the survivor,
 **HDAC7** for Th17-driven colitis (favorable, peer-reviewed direction), with the go/no-go experiment. It
 **remembers** the whole chain with provenance, and the whole lab **writes back**. Built with Claude.
 
@@ -25,10 +25,10 @@ the wiring is a cross-disease artifact and an inhibitor likely *worsens* RA — 
 
 ## The one-liner spine (what makes it win)
 
-Louis's sharpest move is that it **red-teams its own flagship**. On the same RA panel where it first graded
+Louis's sharpest move is that it **stress-tests its own flagship**. On the same RA panel where it first graded
 **DOT1L a top novel lead (A)**, Louis turns its own trust machinery on that call and downgrades it **A→C**:
 the regulator→risk-gene "wiring" is a *non-significant cross-disease-union artifact* (DOT1L isn't even in
-RA's own regulator set), and DOT1L supports Tregs — so an inhibitor likely **worsens** RA. A discovery tool
+RA's own regulator set), and the direction is a genuine open question — DOT1L supports Tregs (an inhibitor could *worsen* RA) but also sustains effector programs, a bench go/no-go, not a claim. A discovery tool
 that kills its own darling, with receipts, is one you can trust with the survivors. And it **discriminates**:
 the *same instrument* that dims DOT1L keeps **HDAC7 for Th17-driven colitis** lit at **B** (favorable,
 peer-reviewed direction), and, run blind, re-derives the textbook Th17 masters STAT3/BATF/IRF4 (**1 of 77
@@ -58,11 +58,11 @@ story is misattributed buzz and cross-disease grade drift, not a clean grade × 
 > all on the subscription — no third-party app, no API key. TL;DR-first, scannable (it's a video). Hard **3:00**.
 
 ### Part 1 — Claude Science (before → after)
-- **Before:** naive Claude Science, *no Louis*, confidently recommends **DOT1L** for RA — and gets the
-  *direction wrong* (frames inhibition as good; never notices DOT1L props up regulatory T cells).
-- **After:** Louis's skill on, same question → Louis **recalls its own red-team and overrules its grade-A,
+- **Before:** naive Claude Science, *no Louis*, confidently recommends **DOT1L** for RA — but is
+  *overconfident on direction* (frames inhibition as good; never flags that DOT1L also props up regulatory T cells).
+- **After:** Louis's skill on, same question → Louis **recalls its own stress-test and overrules its grade-A,
   DOT1L A→C**: the RA "wiring" is a *non-significant cross-disease-union artifact* (DOT1L isn't in RA's own
-  regulator set), and an inhibitor likely *worsens* RA (Treg risk). It **tiers its evidence** — the kill
+  regulator set), and the direction is an open bench question (Treg risk vs. effector programs). It **tiers its evidence** — the kill
   rests on the engine fact; the Treg mechanism is a *preprint* its own **reviewer** flags hypothesis-strength.
   *The memory is the trust mechanism.* Paired in-frame with the survivor (**HDAC7 holds at B**), so it reads
   "calibrated instrument," never "tool was wrong."
@@ -75,7 +75,7 @@ story is misattributed buzz and cross-disease grade drift, not a clean grade × 
 - **Discovery:** `@louis` for IBD / Th17-driven colitis → **HDAC7, trust B**, led on the *peer-reviewed
   direction* (HDAC4/7 drive Th17; inhibition mitigates Th17 colitis — PNAS 2024) + the screen-unique legs
   (verified KD all 3 states, activation state); honest that the wiring is a co-cluster hypothesis and the
-  genetics is locus-ambiguous. ELI5 on demand. Pre-empts the "IL-17 blockade worsened Crohn's" objection.
+  genetics is locus-ambiguous. ELI5 on demand. Handles the "IL-17 blockade worsened Crohn's" objection honestly — HDAC7 acts *upstream* on Th17 differentiation, and a gut-barrier IL-17 **safety** readout is flagged as a recommended (untested) gate.
 - **The lab teaches Louis (the closer):** a labmate reports the co-cluster edge didn't hold → Louis files it
   *attributed to them*, **retracts that leg**, keeps the lead lit on the evidence that holds, and hands the
   sharpened go/no-go experiment. `--nolab` shows the answer before the lab weighed in. **Discover, validate,
@@ -85,8 +85,8 @@ story is misattributed buzz and cross-disease grade drift, not a clean grade × 
 
 ## How it maps to the judging criteria
 
-- **Demo (30%)** — a conversation whose spine is **honesty you can watch**: Louis red-teams its *own*
-  flagship (DOT1L A→C — the wiring is a cross-disease artifact, an inhibitor likely worsens RA), paired
+- **Demo (30%)** — a conversation whose spine is **honesty you can watch**: Louis stress-tests its *own*
+  flagship (DOT1L A→C — the wiring is a cross-disease artifact, the direction an open bench question), paired
   in-frame with a survivor that holds (HDAC7, favorable peer-reviewed direction) and the blind positive
   control, so it always reads "calibrated instrument," never "tool was wrong" — then hands over the survivor
   + its go/no-go experiment, and learns from a bench result in the Slack coda. Every claim traces to a
@@ -139,7 +139,7 @@ new leads per disease (**DOCK2, HIF1A, PPM1D, RASA2** — DOCK2 independently co
 a Bluesky post from the Waggoner Lab), two full experiment designs, and a portfolio synthesis whose
 punchline is *honesty*: the recurring handles are **module-conservation on shared GWAS hubs, not one
 convergent mechanism** — with two disjoint conserved axes, Th1/Th17 and Th2. And the sharpest recursion
-result of all: the red-team ran **on Louis's own flagship** — Claude Science, driving Louis's skill,
-downgraded **DOT1L A→C** (the RA wiring is a cross-disease artifact; an inhibitor likely worsens RA), and
-Louis wrote that verdict *back to its own KB* — so it now **recalls the red-team on its former darling**.
+result of all: the stress-test ran **on Louis's own flagship** — Claude Science, driving Louis's skill,
+downgraded **DOT1L A→C** (the RA wiring is a cross-disease artifact; the direction an open bench question), and
+Louis wrote that verdict *back to its own KB* — so it now **recalls the stress-test on its former darling**.
 A system that went looking everywhere else first, then turned that scrutiny on itself.

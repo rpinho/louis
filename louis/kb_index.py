@@ -159,6 +159,19 @@ def _ensure() -> bool:
 
 
 # ---- query ------------------------------------------------------------------
+def _current_grades(con) -> dict:
+    """{(gene, disease_lower): grade} — the CURRENT grade for a gene+disease is the most-recent dated
+    VERDICT's grade (a stress-test verdict supersedes the original screen/finding grade). Only pairs that
+    carry at least one verdict appear; everything else keeps its filed grade."""
+    cur: dict = {}
+    for row in con.execute("SELECT gene, disease, grade, date FROM records "
+                           "WHERE rec_type='verdict' AND gene IS NOT NULL AND grade IS NOT NULL"):
+        key = (row["gene"], (row["disease"] or "").lower())
+        if key not in cur or (row["date"] or "") >= (cur[key][1] or ""):   # newest dated verdict wins
+            cur[key] = (row["grade"], row["date"])
+    return {k: v[0] for k, v in cur.items()}
+
+
 def query(text: str | None = None, disease: str | None = None, gene: str | None = None,
           grade: str | None = None, rec_type: str | None = None, state: str | None = None,
           source_tier: str | None = None, evidence_strength: str | None = None,
@@ -211,7 +224,22 @@ def query(text: str | None = None, disease: str | None = None, gene: str | None 
     except sqlite3.OperationalError as e:
         con.close()
         return {"error": f"query error ({e}); check the FTS syntax in `text`", "records": []}
+    current = _current_grades(con)                       # a stress-test verdict supersedes the filed grade
     con.close()
+
+    # Verdicts supersede the original screen/finding grade. Annotate every record with its CURRENT grade,
+    # and when the caller filtered by grade, DROP rows a later verdict has moved OFF that grade — so a
+    # 'grade A' query can never resurrect DOT1L/RA (stress-tested A→C) or any other retired grade.
+    _kept = []
+    for r in rows:
+        cg = current.get((r["gene"], (r.get("disease") or "").lower()))
+        if cg and cg != r.get("grade"):
+            r["current_grade"], r["superseded"] = cg, True
+            if grade and cg != grade:
+                continue
+        _kept.append(r)
+    rows = _kept
+
     for r in rows:  # keep payload scannable
         if r.get("text") and len(r["text"]) > 400:
             r["text"] = r["text"][:400] + "…"

@@ -91,7 +91,7 @@ question (bar 3) before any in-vivo bet.
   lead is novelty+mechanism); (ii) in-vivo RA efficacy (a cell-intrinsic CD4 result is necessary, not
   sufficient — a transfer / cKO arthritis model is the next tier); (iii) selectivity beyond pinometostat's known profile (the genetic arm carries selectivity).
 
-## 10. Red-team — failure modes & the first gate (Claude Science, 2026-07-12)
+## 10. Stress-test — failure modes & the first gate (Claude Science, 2026-07-12)
 
 Three ways this design misleads, each with the cheapest fix:
 

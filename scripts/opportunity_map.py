@@ -29,7 +29,7 @@ OUT = REPO / "docs" / "figures" / "opportunity_map.svg"
 # GLS (grade swings B+->C+ across diseases) are told in the LISTEN/synthesis narrative, not this map.
 DATA = [
     ("HDAC7", "UC",        "B",  1,  "survivor lead", True),
-    ("DOT1L", "RA",        "C",  0,  "red-teamed to C", False),
+    ("DOT1L", "RA",        "C",  0,  "stress-tested to C", False),
     ("HDAC7", "MS",        "B-", 2,  "", False),
     ("PPM1D", "asthma",    "C+", 2,  "Th9 backup", False),
     ("RASA2", "eczema",    "B+", 0,  "undruggable", False),
