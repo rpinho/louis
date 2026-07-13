@@ -47,6 +47,21 @@ def _to_mrkdwn(text: str) -> str:
     return text
 
 
+def _linkify(text: str) -> str:
+    """Make every evidence identifier CLICKABLE, so a scientist can jump straight to the source —
+    the provenance a trust tool has to show. PMID -> PubMed, NCT -> ClinicalTrials.gov, rsID -> GWAS
+    Catalog, bare DOI -> doi.org. Skips ids already inside a URL/link (guarded by lookbehind + lookahead)."""
+    text = re.sub(r"(?<![\w/])PMID:?\s*(\d{6,9})(?![\d/])",
+                  r"[PMID \1](https://pubmed.ncbi.nlm.nih.gov/\1)", text)
+    text = re.sub(r"(?<![\w/])(NCT\d{8})(?![\w/])",
+                  r"[\1](https://clinicaltrials.gov/study/\1)", text)
+    text = re.sub(r"(?<![\w/])(rs\d{3,})(?![\w/])",
+                  r"[\1](https://www.ebi.ac.uk/gwas/variants/\1)", text)
+    text = re.sub(r"(?<![\w/(])(10\.\d{4,9}/[^\s)\]]+)(?<![.,;])",
+                  r"[doi](https://doi.org/\1)", text)
+    return text
+
+
 # Internal tool names → the plain-English EVIDENCE SOURCE a scientist recognizes.
 # The footer's job is to inspire confidence, so it must never expose raw function names.
 _SOURCE_LABELS = {
@@ -247,6 +262,7 @@ def _reply(raw_text: str, thread: str, say, client, channel: str, speaker=None) 
     md = _mode_header(use_memory, exclude, eli5=eli5) + "\n\n" + answer   # RAW GFM — tables render in a markdown block
     if trace:
         md += "\n\n" + _format_trace(trace)
+    md = _linkify(md)                                    # PMID/NCT/rsID/DOI -> clickable source links
     # Clear the transient status, then post the dossier fresh (no "(edited)" tag).
     try:
         client.chat_delete(channel=channel, ts=ts)
@@ -298,6 +314,7 @@ def build_app():
         md = _mode_header(use_memory, exclude, eli5=eli5) + "\n\n" + answer
         if trace:
             md += "\n\n" + _format_trace(trace)
+        md = _linkify(md)                                 # PMID/NCT/rsID/DOI -> clickable source links
         try:                                              # markdown block renders GFM tables
             respond(text=md[:400], blocks=[{"type": "markdown", "text": md}], response_type="in_channel")
         except Exception:
