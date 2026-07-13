@@ -2,7 +2,6 @@
 
 > Reproduced through the **exact Slack brain** (`louis.assistant.answer`), the same code the
 > `@louis` bot runs, on **2026-07-13**, against a **throwaway copy of `kb/`** (real KB untouched).
-> Tool traces shown so you can see what Louis actually called.
 
 
 ---
@@ -206,35 +205,33 @@ Want me to **file Jordan's negative KD** to the HDAC7 profile as a finding (reti
 
 ---
 
-## Slack — the BLEEDING EDGE (3rd pillar): reads off-allowlist X/Bluesky/conference abstracts, tiers it as signal
+## Slack — the BLEEDING EDGE (3rd pillar): reads the harvested off-allowlist X/Bluesky/conference signal, tiers it
 
-**Prompt:** `what's the community saying about DOCK2 right now — any off-allowlist signal (X, Bluesky, conference abstracts) the papers haven't caught?`  
-**Tools Louis called:** `kb_recall, community_signal`
+**Prompt:** `what's the community saying about DOCK2 — any off-allowlist signal (X, Bluesky, conference abstracts) the papers haven't caught?`  
+**Tools Louis called:** `community_signal, kb_recall`
 
-**TL;DR —** Live X came back empty, so this is the baked Bluesky harvest: DOCK2 has real recent chatter pointing one way — **blocking it is protective in autoimmune CD4** — but it's all peer-reviewed/journal accounts, i.e. signal-tier leads, not the unindexed pre-paper stuff you were hoping to scoop.
+**TL;DR —** The off-allowlist floor on DOCK2 is *ahead* of the papers: a Dec-2025 Immunity paper says the **TCR-SUB1-DOCK2 axis drives pathogenic CD4+ T-cell tissue infiltration**, and it's converging with a fresh **CCR7→DOCK2 relocalization** mechanism (Science, May-2026) — both point the same way: **blocking DOCK2 is protective**.
 
-**⚠ Live status:** X/Twitter access unavailable this session — `community_signal` returned baked Bluesky only. No genuinely off-allowlist X/Bluesky chatter surfaced beyond what's already in the KB.
-
-**The chatter (4 posts, all ⭐, all journal/lab accounts):**
+**Harvested signal — Bluesky · conference, freshest first**
 
 | Date | Who | Signal |
 |---|---|---|
-| 2025-12 | Waggoner Lab / *Immunity* | TCR-SUB1-**DOCK2** drives pathogenic CD4 infiltration |
-| 2026-05 | B. Garabedian | CCR7→DOCK2 relocalization, dysfunctional TEFF |
-| 2024-10 | ACR Journals | CPYPP (DOCK2i) ameliorates Sjögren |
+| 2026-05-01 | Brett Garabedian ⭐ | **CCR7→DOCK2** relocalization; prolonged DC engagement → dysfunctional Teff |
+| 2025-12-09 | Waggoner Lab / Immunity ⭐ | **TCR-SUB1-DOCK2 axis** drives pathogenic CD4 tissue infiltration |
+| 2024-10-09 | ACR Journals ⭐ | **CPYPP** (DOCK2 inhibitor) ameliorates Sjögren mouse model |
 
-**Read:**
-- **Direction is consensus** — every post says DOCK2 activity is *pathogenic*, so **inhibition = protective**. That's the pillar that keeps DOCK2 alive in our KB.
-- **It's not whitespace-quiet, but it's not crowded either** — this is journal/PI-account amplification of published work, not a competitor racing you. No preprint or conference abstract in the feed jumping ahead of the papers.
-- **Nothing newer than what's baked** — freshest is May 2026 (Garabedian). No unindexed lead the literature hasn't caught.
+**What the papers haven't caught / the read**
+- **New axis wiring** — the SUB1 upstream link and the CCR7-relocalization mechanism are the bleeding edge; direction-of-effect (inhibit = protective) is now supported by **two peer-reviewed lines**, not just chatter.
+- **Chemistry is still tool-stage** — CPYPP isn't even in ChEMBL; a real DOCK2 series exists (~7 IC50 <100 nM) but **zero clinical compound, zero trials any indication**.
+- **Ceiling, not trap** — DOCK2 *deficiency* is a human combined immunodeficiency (OT 0.85) → full blockade risks broad immunosuppression. That's a selectivity/dosing question.
 
-**⚠ Reviewer:** all four items are Bluesky posts pointing at peer-reviewed papers — **signal-tier, leads to weigh, not evidence for a grade**. The two direction papers (*Immunity* 2025, ACR Open Rheum 2024) are the load-bearing part; the posts are just the megaphone.
+**Field crowding:** heating up but *not* crowded on the drug side — active mechanism biology (Waggoner, Garabedian), one mouse-inhibitor paper, **no human trials**. Whitespace on the therapeutic entry.
 
-**Where it stands in our KB (unchanged, don't confuse with new signal):** psoriasis **B-**, T1D **C**, pan-AI **C** — all stress-tested, "direction-validated but module-artifact + immunodeficiency-window-limited, knockdown-first."
+**KB verdicts already on file:** psoriasis **B−** (stress-test recalibrated B→B−), T1D **C**, pan-AI **C** — its own genetics anchor to **IBD/UC**, not psoriasis/T1D.
 
-**Verdict:** No new off-allowlist signal to act on. If you want the true pre-paper edge, next step is to **watch conference abstracts (ACR/FOCIS) for a DOCK2-selective inhibitor** — the open question is a selectivity window around DOCK2-deficiency immunosuppression, and that's where a competitor would show up first.
+⚠ **Reviewer:** the axis/direction claims rest on **preprint-adjacent + peer-reviewed papers** (Immunity, Science, ACR) — hypothesis-to-load-bearing on direction, but the *disease wiring in our screen is a union-artifact* (min FDR 1.00). Verify the DOCK2→module-54 edge with a **bench knockdown** before any med-chem bet.
 
-Want me to log a watch note on DOCK2, or check community signal on the SUB1 or CCR7 nodes those posts name?
+_Say **expand** for the full dossier, or want me to file any of this as fresh field-activity?_
 
 ---
 

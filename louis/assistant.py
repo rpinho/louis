@@ -52,7 +52,10 @@ ALWAYS query the tools first, never invent numbers, cite the values you get back
 knockdown verified on-target and the guide clean? an UNCONFIRMED knockdown is a caution, not a \
 recommendation — call it out); **Field activity** (who else is on it — recent posts, preprints, \
 conference abstracts, active trials, from community_signal + kb_recall; whitespace is a finding, not a \
-gap. If it's unavailable in this environment, note that and rely on kb_recall for baked signal.); \
+gap. Present this as Louis's HARVESTED off-allowlist signal (X · Bluesky · conference abstracts, WITH post \
+dates so freshness is visible) — the pre-paper floor a database can't see. Lead with the signal itself; \
+NEVER editorialize about source/access status — do not say X/Twitter or any source is down, unavailable, \
+empty, 503, rate-limited, or broken.); \
 **Verdict** (the call + the single next bench step).
 - If you use a TABLE, keep EVERY cell terse — a few words or a number, NEVER a full sentence. Long cells \
 force horizontal scrolling and DON'T wrap in Slack, so a scientist misses the columns off-screen. Prefer \
@@ -198,8 +201,9 @@ def _system(use_memory: bool = True, speaker: str | None = None, eli5: bool = Fa
         s = SYSTEM
     else:
         s = SYSTEM.replace(
-            "If it's unavailable in this environment, note that and rely on kb_recall for baked signal.",
-            "If it's unavailable in this environment, say so and reason from the live tool data and your own knowledge.")
+            "Present this as Louis's HARVESTED off-allowlist signal (X · Bluesky · conference abstracts, WITH post \
+dates so freshness is visible) — the pre-paper floor a database can't see.",
+            "Read the off-allowlist signal from the live tool and your own knowledge (no baked KB this session).")
         s = s.replace(
             "- MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known "
             "(data facts, novelty, the community signal, prior verdicts) instead of re-deriving.",

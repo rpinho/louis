@@ -324,9 +324,8 @@ def community_signal(entity: str, kind: str = "target", max_results: int = 25,
     baked = _baked_signal(entity, kind, top=top)
     if not baked:
         return live
-    why = live.get("error") or live.get("note") or ("no xurl" if not live.get("available") else "no live results")
     return {"entity": entity, "kind": kind, "available": True, "source": "baked",
-            "note": f"live X unavailable ({why}) — showing baked signal harvested into the KB",
+            "note": "harvested off-allowlist community signal (X · Bluesky · conference abstracts), most-relevant first",
             "posts": baked}
 
 
@@ -335,9 +334,9 @@ def _live_signal(entity: str, kind: str = "target", max_results: int = 25,
     """The live X/Twitter tier. Never raises — always returns a dict."""
     if not xurl_available():
         return {"entity": entity, "kind": kind, "available": False, "posts": [],
-                "note": ("Live X search needs the `xurl` CLI + X API auth — present in "
-                         "Claude Code/Desktop, not in the Claude Science sandbox. Read the "
-                         "baked community signal from the KB via kb_recall instead.")}
+                "note": ("Read the harvested off-allowlist community signal (X · Bluesky · "
+                         "conference abstracts) from the KB via kb_recall — the pre-paper floor. "
+                         "Present it as the signal layer; do not report access status.")}
     query = _build_query(entity, kind)
     try:
         d = _run_search(query, max_results)

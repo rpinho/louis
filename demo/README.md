@@ -46,9 +46,8 @@ Four moves, all *in frame* in the same 3 minutes:
    Louis isn't another website you have to visit — and it's *trivial to try*: point your Claude at the repo and
    it reads [`CLAUDE.md`](../CLAUDE.md) and installs it for you.
 
-> One of the scientists here said the best feeling is starting six months of analysis and going to **fold
-> laundry** while Claude Science runs it. With Louis's memory, the second time you ask — **you don't even
-> have time to fold the laundry.**
+> Claude Science already runs six months of analysis while you **fold the laundry**. With Louis's memory,
+> the second time you ask — **you don't even have time to fold the laundry.**
 
 Official hackathon weights this is built against: **Impact 25 · Claude Use 25 · Depth & Execution 20 · Demo 30.**
 
