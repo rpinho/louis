@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Louis — a CD4⁺ T-cell drug-target discovery assistant</title>
+<meta name="description" content="Louis discovers CD4⁺ T-cell drug targets from a genome-scale CRISPRi screen, stress-tests its own picks by provenance, learns from your lab, and reads the bleeding edge — as a Claude skill, plugin, MCP server, or Slack bot.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Louis — a drug-target assistant that kills its own darlings">
+<meta property="og:description" content="Discovers CD4⁺ T-cell leads, stress-tests its own flagship (DOT1L A→C), learns from your lab, and reads the pre-paper floor. Built with Claude — it meets you where you work.">
+</head>
+<body>
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#0e0f13; --bg-2:#121319; --bg-3:#171922;
+    --panel:#171922; --panel-2:#1e212c;
+    --line:#2a2e3a; --line-2:#39404f;
+    --ink:#f4f2ec; --ink-2:#c9cdd7; --muted:#98a0af;
+    --accent:#e6a94a; --accent-2:#f0bd6b; --accent-text:#e8b25c; --on-accent:#20160a;
+    --accent-soft:rgba(230,169,74,.12);
+    --do:#77b0f0; --good:#79d39b; --bad:#f0837a;
+    --a:#79d39b; --b:#e6a94a; --c:#f0837a;
+    --a-soft:rgba(121,211,155,.13); --b-soft:rgba(230,169,74,.14); --c-soft:rgba(240,131,122,.14);
+    --shadow:0 1px 0 rgba(255,255,255,.02), 0 24px 50px -30px rgba(0,0,0,.85);
+    --radius:14px; --maxw:1120px;
+    --font:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme]){
+      color-scheme: light;
+      --bg:#f4f3ee; --bg-2:#efeee6; --bg-3:#ffffff;
+      --panel:#ffffff; --panel-2:#faf9f3;
+      --line:#e5e3da; --line-2:#d6d4c8;
+      --ink:#191b21; --ink-2:#43474f; --muted:#6d7280;
+      --accent:#d89a34; --accent-2:#c98a22; --accent-text:#8f5f12; --on-accent:#20160a;
+      --accent-soft:rgba(216,154,52,.12);
+      --do:#2f6fc0; --good:#2f9e63; --bad:#cf5347;
+      --a:#2f9e63; --b:#a8730f; --c:#cf5347;
+      --a-soft:rgba(47,158,99,.11); --b-soft:rgba(201,138,34,.13); --c-soft:rgba(207,83,71,.11);
+      --shadow:0 1px 2px rgba(30,25,10,.05), 0 22px 48px -30px rgba(40,32,10,.30);
+    }
+  }
+  :root[data-theme="light"]{
+    color-scheme: light;
+    --bg:#f4f3ee; --bg-2:#efeee6; --bg-3:#ffffff;
+    --panel:#ffffff; --panel-2:#faf9f3;
+    --line:#e5e3da; --line-2:#d6d4c8;
+    --ink:#191b21; --ink-2:#43474f; --muted:#6d7280;
+    --accent:#d89a34; --accent-2:#c98a22; --accent-text:#8f5f12; --on-accent:#20160a;
+    --accent-soft:rgba(216,154,52,.12);
+    --do:#2f6fc0; --good:#2f9e63; --bad:#cf5347;
+    --a:#2f9e63; --b:#a8730f; --c:#cf5347;
+    --a-soft:rgba(47,158,99,.11); --b-soft:rgba(201,138,34,.13); --c-soft:rgba(207,83,71,.11);
+    --shadow:0 1px 2px rgba(30,25,10,.05), 0 22px 48px -30px rgba(40,32,10,.30);
+  }
+  :root[data-theme="dark"]{ color-scheme: dark; }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.6;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,40px);}
+  a{color:inherit}
+  h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-.018em;line-height:1.08}
+  p{margin:0}
+  .skip{position:absolute;left:-999px;top:0;background:var(--accent);color:var(--on-accent);
+    padding:8px 14px;border-radius:8px;z-index:100;font-weight:700}
+  .skip:focus{left:12px;top:12px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+  .eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent-text);margin:0 0 14px}
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+  /* ---------- nav ---------- */
+  .nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 82%,transparent);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:12px clamp(18px,4vw,40px);
+    display:flex;align-items:center;gap:20px}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:800;
+    letter-spacing:-.01em;font-size:1.06rem}
+  .brand .mk{width:26px;height:26px;flex:none}
+  .brand span{color:var(--ink)}
+  .nav-links{display:flex;gap:22px;margin-left:auto;font-size:.92rem;font-weight:500}
+  .nav-links a{color:var(--ink-2);text-decoration:none}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{margin-left:4px}
+  @media (max-width:720px){ .nav-links{display:none} .nav-cta{margin-left:auto} }
+
+  /* ---------- buttons ---------- */
+  .btn{display:inline-flex;align-items:center;gap:7px;font-weight:650;font-size:.95rem;
+    padding:11px 18px;border-radius:10px;text-decoration:none;border:1px solid transparent;
+    transition:transform .12s ease, background .15s ease, border-color .15s ease;white-space:nowrap}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-accent{background:var(--accent);color:var(--on-accent);box-shadow:0 8px 22px -12px var(--accent)}
+  .btn-accent:hover{background:var(--accent-2)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+  .btn-ghost:hover{border-color:var(--accent);background:var(--accent-soft)}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(currentColor 1px, transparent 1.4px);
+    color:var(--line-2);background-size:26px 26px;opacity:.35;
+    -webkit-mask-image:radial-gradient(120% 90% at 78% 8%, #000 0%, transparent 62%);
+    mask-image:radial-gradient(120% 90% at 78% 8%, #000 0%, transparent 62%)}
+  .hero-in{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,5vw,64px);
+    align-items:center;padding:clamp(46px,7vw,88px) 0}
+  @media (max-width:900px){ .hero-in{grid-template-columns:1fr;gap:38px} }
+  h1{font-size:clamp(2.15rem,5.6vw,3.7rem);font-weight:800}
+  h1 .hl{color:var(--accent-text)}
+  .lede{margin:20px 0 26px;font-size:clamp(1.02rem,1.5vw,1.2rem);color:var(--ink-2);max-width:36ch}
+  .cta-row{display:flex;flex-wrap:wrap;gap:12px}
+
+  /* ---------- receipt ---------- */
+  .receipt{margin:0;background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line-2);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .receipt-head{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:.74rem;
+    letter-spacing:.06em;color:var(--muted);text-transform:uppercase;
+    padding:12px 16px;border-bottom:1px solid var(--line);background:var(--bg-3)}
+  .receipt-head .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-soft);flex:none}
+  .receipt-sub{margin-left:auto;text-transform:none;letter-spacing:0;color:var(--muted);
+    opacity:.85;font-size:.7rem}
+  @media (max-width:420px){ .receipt-sub{display:none} }
+  .verdict{padding:18px 18px 6px}
+  .v-row{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;padding:6px 0 16px}
+  .grades{display:flex;align-items:center;gap:6px;padding-top:2px}
+  .grade{position:relative;width:34px;height:34px;flex:none;display:grid;place-items:center;
+    font-family:var(--mono);font-weight:800;font-size:1.05rem;border-radius:9px;border:1px solid}
+  .grade.a{color:var(--a);background:var(--a-soft);border-color:color-mix(in srgb,var(--a) 55%,transparent)}
+  .grade.b{color:var(--b);background:var(--b-soft);border-color:color-mix(in srgb,var(--b) 55%,transparent)}
+  .grade.c{color:var(--c);background:var(--c-soft);border-color:color-mix(in srgb,var(--c) 60%,transparent)}
+  .grade.struck{opacity:.55}
+  .grade.struck .strike{position:absolute;left:3px;right:3px;top:50%;height:2px;border-radius:2px;
+    background:var(--c);transform-origin:left center;transform:scaleX(1);
+    box-shadow:0 0 6px var(--c)}
+  .grade.live{box-shadow:0 0 0 4px color-mix(in srgb,var(--c) 12%,transparent)}
+  .grade.b.live{box-shadow:0 0 0 4px color-mix(in srgb,var(--b) 12%,transparent)}
+  .arrow{font-family:var(--mono);color:var(--muted);font-size:1.1rem;font-weight:700}
+  .v-title{font-weight:750;font-size:1.02rem;letter-spacing:-.01em;margin-bottom:5px;
+    display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .v-title .v-dis{font-weight:500;color:var(--ink-2)}
+  .v-body p{font-size:.92rem;color:var(--ink-2)}
+  .v-body p b{color:var(--ink);font-weight:700}
+  .flag{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.02em;
+    padding:2px 7px;border-radius:6px;white-space:nowrap}
+  .flag.warn{color:var(--c);background:var(--c-soft)}
+  .flag.good{color:var(--a);background:var(--a-soft)}
+  .v-sep{height:1px;background:var(--line);margin:0 0 14px}
+  .receipt-foot{font-family:var(--mono);font-size:.7rem;color:var(--muted);
+    padding:11px 18px;border-top:1px solid var(--line);background:var(--bg-3)}
+
+  /* ---------- generic section ---------- */
+  section.band{padding:clamp(52px,8vw,92px) 0;border-bottom:1px solid var(--line)}
+  section.alt{background:var(--bg-2)}
+  .sec-head{max-width:60ch;margin-bottom:clamp(28px,4vw,44px)}
+  .sec-head h2{font-size:clamp(1.55rem,3.4vw,2.25rem);font-weight:780}
+  .sec-head p{margin-top:14px;font-size:1.06rem;color:var(--ink-2)}
+  .sec-head h2 .hl{color:var(--accent-text)}
+
+  /* ---------- problem / fix ---------- */
+  .pf{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media (max-width:760px){ .pf{grid-template-columns:1fr} }
+  .pf-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px}
+  .pf-card.fix{border-color:color-mix(in srgb,var(--accent) 40%,var(--line));
+    background:linear-gradient(180deg,var(--accent-soft),transparent), var(--panel)}
+  .pf-card .lbl{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+  .pf-card.fix .lbl{color:var(--accent-text)}
+  .pf-card p{font-size:1.06rem;color:var(--ink);line-height:1.55}
+  .pf-card p .dim{color:var(--ink-2)}
+
+  /* ---------- pillars ---------- */
+  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  @media (max-width:860px){ .pillars{grid-template-columns:1fr} }
+  .pil{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;display:flex;flex-direction:column;gap:12px}
+  .pil .tag{font-family:var(--mono);font-size:.72rem;font-weight:700;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--accent-text)}
+  .pil h3{font-size:1.22rem;font-weight:750;letter-spacing:-.01em}
+  .pil p{font-size:.98rem;color:var(--ink-2);line-height:1.58}
+  .pil p b{color:var(--ink);font-weight:700}
+  .pil .ex{margin-top:auto;padding-top:14px;border-top:1px dashed var(--line-2);
+    font-family:var(--mono);font-size:.8rem;color:var(--muted);line-height:1.5}
+  .pil .ex b{color:var(--ink-2);font-weight:700}
+
+  /* ---------- install ---------- */
+  .code{background:var(--bg-3);border:1px solid var(--line-2);border-radius:12px;
+    margin:0 0 26px;overflow-x:auto}
+  .code pre{margin:0;padding:18px 20px;font-family:var(--mono);font-size:.86rem;line-height:1.7;
+    color:var(--ink);min-width:max-content}
+  .code .c-cmt{color:var(--muted)} .code .c-str{color:var(--good)}
+  .install{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media (max-width:760px){ .install{grid-template-columns:1fr} }
+  .door{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 22px;display:flex;flex-direction:column;gap:9px;transition:border-color .15s,transform .12s}
+  .door:hover{border-color:var(--line-2);transform:translateY(-2px)}
+  .door-top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .door h3{font-size:1.08rem;font-weight:750}
+  .door .kind{font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--accent-text)}
+  .door p{font-size:.94rem;color:var(--ink-2);line-height:1.55}
+  .door code{font-family:var(--mono);font-size:.86em;background:var(--accent-soft);
+    color:var(--accent-text);padding:1px 6px;border-radius:5px}
+  .door .chip{margin-top:auto;align-self:flex-start;font-family:var(--mono);font-size:.7rem;
+    font-weight:700;letter-spacing:.03em;color:var(--muted);background:var(--bg-3);
+    border:1px solid var(--line);padding:3px 9px;border-radius:999px}
+
+  /* ---------- quote ---------- */
+  .quote{padding:clamp(52px,8vw,88px) 0;border-bottom:1px solid var(--line);background:var(--bg-2)}
+  .quote-in{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(30px,5vw,68px);align-items:center}
+  @media (max-width:820px){ .quote-in{grid-template-columns:1fr;gap:34px} }
+  blockquote{margin:0}
+  blockquote p{font-size:clamp(1.28rem,2.7vw,1.78rem);font-weight:600;letter-spacing:-.015em;
+    line-height:1.4;color:var(--ink)}
+  blockquote b{color:var(--accent-text);font-weight:750}
+  blockquote .attrib{display:block;margin-top:18px;font-size:.9rem;font-weight:500;
+    color:var(--muted);letter-spacing:0}
+  .recall{margin:0;background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line-2);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .recall-body{padding:16px 18px;font-family:var(--mono);font-size:.84rem;line-height:1.65}
+  .rc-q{color:var(--ink)}
+  .rc-trace{color:var(--muted);margin:5px 0 14px}
+  .rc-trace b{color:var(--accent-text);font-weight:700}
+  .rc-hit{display:flex;gap:12px;align-items:center;background:var(--bg-3);
+    border:1px solid var(--line);border-radius:10px;padding:12px 13px}
+  .rc-hit .grade{width:30px;height:30px;font-size:.95rem}
+  .rc-hit-t{color:var(--ink);font-weight:600}
+  .rc-hit-s{color:var(--ink-2);margin-top:3px;font-size:.92em}
+
+  /* ---------- footer ---------- */
+  footer{padding:clamp(40px,6vw,64px) 0}
+  .foot-grid{display:flex;flex-wrap:wrap;gap:28px 48px;align-items:flex-start;justify-content:space-between}
+  .foot-brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem}
+  .foot-brand .mk{width:28px;height:28px}
+  .foot-note{max-width:52ch;font-size:.85rem;color:var(--muted);line-height:1.6}
+  .foot-note a{color:var(--accent-text);text-decoration:none;font-weight:600}
+  .foot-note a:hover{text-decoration:underline}
+  .foot-links{display:flex;flex-direction:column;gap:8px;font-size:.92rem}
+  .foot-links a{color:var(--ink-2);text-decoration:none}
+  .foot-links a:hover{color:var(--ink)}
+
+  /* ---------- motion ---------- */
+  .reveal{animation:rise .6s cubic-bezier(.2,.7,.3,1) both}
+  .receipt.reveal{animation-delay:.08s}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .grade.struck .strike{animation:draw .5s ease .5s both}
+  @keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .grade.c.live{animation:pop .4s ease .75s both}
+  @keyframes pop{0%{opacity:.2;transform:scale(.85)}60%{transform:scale(1.06)}100%{opacity:1;transform:none}}
+  @media (prefers-reduced-motion: reduce){
+    .reveal,.grade.struck .strike,.grade.c.live{animation:none}
+  }
+</style>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="Louis — home">
+      <svg class="mk" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="29" height="29" rx="8" stroke="var(--accent)" stroke-width="1.6"/>
+        <circle cx="11" cy="11" r="2.4" fill="var(--accent)"/>
+        <circle cx="21" cy="11" r="2.4" fill="var(--muted)"/>
+        <circle cx="11" cy="21" r="2.4" fill="var(--muted)"/>
+        <circle cx="21" cy="21" r="2.4" fill="var(--accent)"/>
+      </svg>
+      <span>louis</span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#how">How it works</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/rpinho/louis">GitHub&nbsp;↗</a>
+    </nav>
+    <a class="btn btn-accent nav-cta" href="#install">Try it — four ways</a>
+  </div>
+</header>
+
+<main id="main">
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap hero-in">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">CD4⁺ T-cell drug-target discovery · built with Claude</p>
+        <h1>A drug-target assistant that <span class="hl">kills its own darlings.</span></h1>
+        <p class="lede">Louis discovers CD4⁺ T-cell leads from a genome-scale CRISPRi screen, stress-tests its own flagship, learns from your lab, and reads the bleeding edge — and it meets you where you already work.</p>
+        <div class="cta-row">
+          <a class="btn btn-accent" href="#install">Try it — four ways</a>
+          <a class="btn btn-ghost" href="https://github.com/rpinho/louis/blob/main/demo/README.md">The 3-minute demo</a>
+          <a class="btn btn-ghost" href="https://github.com/rpinho/louis">GitHub&nbsp;↗</a>
+        </div>
+      </div>
+
+      <figure class="receipt reveal">
+        <figcaption class="receipt-head">
+          <span class="dot"></span> Louis · trust verdict
+          <span class="receipt-sub">screen: CD4⁺ CRISPRi Perturb-seq</span>
+        </figcaption>
+        <div class="verdict">
+          <div class="v-row">
+            <div class="grades">
+              <span class="grade a struck" aria-label="grade A, superseded to C"><span aria-hidden="true">A</span><i class="strike"></i></span>
+              <span class="arrow" aria-hidden="true">→</span>
+              <span class="grade c live">C</span>
+            </div>
+            <div class="v-body">
+              <p class="v-title">DOT1L <span class="v-dis">rheumatoid arthritis</span> <span class="flag warn">⚠ stress-tested</span></p>
+              <p>The RA “wiring” is a cross-disease-union artifact — <b>only 1 of 77</b> regulator clusters is ever significant. Direction is an open bench question, not a claim.</p>
+            </div>
+          </div>
+          <div class="v-sep"></div>
+          <div class="v-row">
+            <div class="grades"><span class="grade b live">B</span></div>
+            <div class="v-body">
+              <p class="v-title">HDAC7 <span class="v-dis">Th17-driven colitis</span> <span class="flag good">✓ survivor</span></p>
+              <p>Favorable, <b>peer-reviewed</b> direction (PNAS 2024) + screen-unique legs. Returns the go/no-go experiment.</p>
+            </div>
+          </div>
+        </div>
+        <figcaption class="receipt-foot">Grades A–D by provenance — a preprint can’t decide a grade.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- PROBLEM / FIX -->
+  <section class="band" id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">The problem with confident tools</p>
+        <h2>Most AI target-finders hand you a ranked list and a plausible story.</h2>
+      </div>
+      <div class="pf">
+        <div class="pf-card">
+          <p class="lbl">The pattern</p>
+          <p>They surface a lead and a tidy narrative — and give you <span class="dim">no signal for when the story is an artifact of their own pipeline.</span> Confidence is the default. The one thing a bench scientist needs — <em>can I trust this?</em> — is exactly what's missing.</p>
+        </div>
+        <div class="pf-card fix">
+          <p class="lbl">What Louis does</p>
+          <p>Louis leads with the <b>trust verdict.</b> It overrules its own grade-A pick when the wiring is an artifact, tiers every claim by <b>provenance</b>, and reads what the field is saying before the papers land — then hands you the experiment that would settle it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PILLARS -->
+  <section class="band alt">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">One engine, three things it does</p>
+        <h2>Discover leads. Weigh trust. Read the bleeding edge.</h2>
+      </div>
+      <div class="pillars">
+        <div class="pil">
+          <p class="tag">Trust</p>
+          <h3>Honesty you can watch</h3>
+          <p>Handed its own flagship RA lead <b>DOT1L</b>, Louis stress-tests it <b>A→C</b>: the RA wiring is a cross-disease-union artifact — only <b>1 of 77</b> regulator clusters is ever significant — and the direction is a genuine open question. Then it returns the survivor, <b>HDAC7</b> for Th17-driven colitis, with the go/no-go experiment.</p>
+          <p class="ex"><b>the product:</b> a discovery tool that kills its own darling — with receipts.</p>
+        </div>
+        <div class="pil">
+          <p class="tag">Learns</p>
+          <h3>The whole lab writes back</h3>
+          <p>Every finding is weighed by <b>provenance</b> — a preprint can't decide a grade. Louis <b>reviews itself</b>, and the lab teaches it at the bench: results write back to <b>one shared memory</b>, so questions compound instead of restarting — self-correcting, always human-in-the-loop.</p>
+          <p class="ex"><b>the loop:</b> discover → validate → listen → remember.</p>
+        </div>
+        <div class="pil">
+          <p class="tag">Signal</p>
+          <h3>Reads the pre-paper floor</h3>
+          <p>Louis pulls the off-allowlist signal a database can't — what immunologists post on <b>X and Bluesky</b> and drop in <b>conference abstracts</b> — then <b>tiers it</b> by signal-strength: a lead to chase, never evidence for a grade.</p>
+          <p class="ex"><b>DOCK2:</b> Bluesky flagged the TCR–SUB1–DOCK2 axis; Louis surfaced it — and refused to let it inflate the grade.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section class="band" id="install">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Meets you where you work</p>
+        <h2>Every other tool is one more website to visit. <span class="hl">Louis isn't.</span></h2>
+        <p>One engine, one shared memory — exposed as four front doors. Or just point your Claude at the repo: it reads <code class="mono">CLAUDE.md</code> and installs Louis for you.</p>
+      </div>
+
+      <div class="code" role="figure" aria-label="Install commands">
+<pre><code><span class="c-cmt"># clone and set up once</span>
+git clone https://github.com/rpinho/louis && cd louis
+python3 -m venv .venv
+.venv/bin/pip install -e <span class="c-str">".[slack]"</span></code></pre>
+      </div>
+
+      <div class="install">
+        <div class="door">
+          <div class="door-top"><h3>Claude&nbsp;Science</h3><span class="kind">skill</span></div>
+          <p>Upload <code>dist/louis-skill.zip</code> as a skill, then ask. Composes with your Science connectors — Open Targets, ChEMBL, PubMed.</p>
+          <span class="chip">no API key — Claude hosts it</span>
+        </div>
+        <div class="door">
+          <div class="door-top"><h3>Claude&nbsp;Desktop</h3><span class="kind">plugin</span></div>
+          <p>Install <code>dist/louis.mcpb</code> from Settings → Extensions. The <code>louis</code> tools appear in chat.</p>
+          <span class="chip">no API key — the app hosts it</span>
+        </div>
+        <div class="door">
+          <div class="door-top"><h3>Claude&nbsp;Code</h3><span class="kind">MCP server</span></div>
+          <p><code>.mcp.json</code> registers <code>louis → louis-mcp</code>. Approve it once from the repo root and the tools are live.</p>
+          <span class="chip">runs in your repo</span>
+        </div>
+        <div class="door">
+          <div class="door-top"><h3>Slack</h3><span class="kind">bot</span></div>
+          <p>Socket Mode — nothing to host. Paste the manifest, add two tokens, then <code>/invite @louis</code>.</p>
+          <span class="chip">self-hosted · posts figure cards</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section class="quote">
+    <div class="wrap quote-in">
+      <blockquote>
+        <p>Claude Science already runs six months of analysis while you <b>fold the laundry.</b> With Louis's memory, the second time you ask — <b>you don't even have time to fold the laundry.</b></p>
+        <span class="attrib">Its shared memory turns a fresh six-month analysis into an instant recall.</span>
+      </blockquote>
+      <figure class="recall reveal" aria-label="Example: an instant memory recall">
+        <figcaption class="receipt-head">
+          <span class="dot"></span> Louis · memory
+          <span class="receipt-sub">the second time you ask</span>
+        </figcaption>
+        <div class="recall-body">
+          <p class="rc-q">&gt; @louis recall DOT1L for RA</p>
+          <p class="rc-trace">↳ kb_recall · 1 hit · <b>recalled, not re-derived</b></p>
+          <div class="rc-hit">
+            <span class="grade c live">C</span>
+            <div>
+              <p class="rc-hit-t">DOT1L / rheumatoid arthritis</p>
+              <p class="rc-hit-s">stress-tested A→C — engine artifact, direction still open.</p>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap foot-grid">
+      <div>
+        <div class="foot-brand">
+          <svg class="mk" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="29" height="29" rx="8" stroke="var(--accent)" stroke-width="1.6"/>
+            <circle cx="11" cy="11" r="2.4" fill="var(--accent)"/>
+            <circle cx="21" cy="11" r="2.4" fill="var(--muted)"/>
+            <circle cx="11" cy="21" r="2.4" fill="var(--muted)"/>
+            <circle cx="21" cy="21" r="2.4" fill="var(--accent)"/>
+          </svg>
+          <span>louis</span>
+        </div>
+        <p class="foot-note" style="margin-top:14px">
+          Data: the genome-scale CD4⁺ T-cell CRISPRi Perturb-seq screen — <em>Zhu, Dann … Pritchard &amp; Marson, bioRxiv 2025.</em>
+          Louis's outputs are hypotheses to prioritize bench work, not clinical claims.
+          Built with Claude for <a href="https://github.com/rpinho/louis">Life Sciences</a>.
+        </p>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <a href="https://github.com/rpinho/louis">Repository&nbsp;↗</a>
+        <a href="https://github.com/rpinho/louis/blob/main/demo/README.md">The 3-minute demo</a>
+        <a href="https://github.com/rpinho/louis/blob/main/CLAUDE.md">Install guide (CLAUDE.md)</a>
+        <a href="#top">Back to top</a>
+      </nav>
+    </div>
+  </footer>
+</main>
+
+</body>
+</html>
