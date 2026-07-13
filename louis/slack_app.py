@@ -234,6 +234,60 @@ def _speaker(client, user_id) -> str | None:
     return _SPEAKER_CACHE[user_id]
 
 
+# ---- rich Slack cards: attach the real repo figures --------------------------
+# A figure is UPLOADED (Slack hosts the bytes → always renders) only when the question
+# calls for that specific view, so it illustrates rather than clutters. Needs the bot's
+# `files:write` scope; without it the upload no-ops and the dossier still posts.
+_FIG_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "figures")
+_FIGURES = [
+    (r"experiment|design the|go[\s/-]?no[\s/-]?go|assay|knock ?it ?down|bench plan|two[- ]arm",
+     "hdac7_experiment_schematic.png",
+     "Experiment design — two-arm knockdown + cheap-gate-first go/no-go"),
+    (r"pan[- ]?autoimmun|synthesis|recurr|conserved|convergent|one mechanism",
+     "pan_autoimmune_synthesis.png",
+     "Pan-autoimmune synthesis — recurrence is module-conserved, not one mechanism"),
+    (r"opportunit|grade[\s-]?a\b|whitespace|novelty|portfolio|whole (board|map|portfolio)|across (all )?disease|epigenetic axis",
+     "opportunity_map.png",
+     "Opportunity map — candidate grade (y) vs novelty (x); the green corner holds the novel, well-founded survivors"),
+]
+
+
+def _figure_for(question: str) -> tuple[str, str] | None:
+    """The one figure that ILLUSTRATES this question, if any (first match wins)."""
+    q = (question or "").lower()
+    for pat, fname, alt in _FIGURES:
+        if re.search(pat, q):
+            return os.path.join(_FIG_DIR, fname), alt
+    return None
+
+
+def _post_answer(md: str, question: str, thread, say=None, respond=None, client=None, channel=None) -> None:
+    """Deliver the dossier (a markdown block → GFM tables render intact), then — when the question calls
+    for it and the bot has files:write — UPLOAD the actual repo figure into the thread. Upload beats an
+    image-block URL: Slack hosts the bytes, so it always renders. No scope (or no client) → it no-ops."""
+    def _emit(**kw):
+        if say is not None:
+            if thread is not None:
+                kw["thread_ts"] = thread
+            say(**kw)
+        else:
+            respond(response_type="in_channel", **kw)
+
+    try:                                                   # the dossier — tables render in a markdown block
+        _emit(text=md[:400], blocks=[{"type": "markdown", "text": md}])
+    except Exception:                                      # older Slack → plain-text mrkdwn
+        _emit(text=_to_mrkdwn(md))
+
+    fig = _figure_for(question)                            # a real figure, ONLY when the question calls for it
+    if fig and client is not None and channel is not None:
+        path, alt = fig
+        try:
+            client.files_upload_v2(channel=channel, thread_ts=thread, file=path,
+                                   title=alt[:150], initial_comment=f"📊 {alt}")
+        except Exception:
+            pass                                           # e.g. missing files:write scope — dossier already posted
+
+
 def _reply(raw_text: str, thread: str, say, client, channel: str, speaker=None) -> bool:
     """Post an instant placeholder, stream Louis's progress as he queries each source,
     then deliver the finished dossier as a FRESH message and clear the placeholder — so
@@ -268,10 +322,7 @@ def _reply(raw_text: str, thread: str, say, client, channel: str, speaker=None) 
         client.chat_delete(channel=channel, ts=ts)
     except Exception:
         pass
-    try:                                                  # markdown block renders GFM tables
-        say(text=md[:400], blocks=[{"type": "markdown", "text": md}], thread_ts=thread)
-    except Exception:                                     # older Slack → plain-text fallback
-        say(text=_to_mrkdwn(md), thread_ts=thread)
+    _post_answer(md, text, thread, say=say, client=client, channel=channel)  # dossier + a real figure when apt
     return True
 
 
@@ -315,10 +366,7 @@ def build_app():
         if trace:
             md += "\n\n" + _format_trace(trace)
         md = _linkify(md)                                 # PMID/NCT/rsID/DOI -> clickable source links
-        try:                                              # markdown block renders GFM tables
-            respond(text=md[:400], blocks=[{"type": "markdown", "text": md}], response_type="in_channel")
-        except Exception:
-            respond(text=_to_mrkdwn(md), response_type="in_channel")
+        _post_answer(md, text, None, respond=respond)     # trust-colored card + a real figure when apt
     app.command("/ask-louis")(on_ask)
     app.command("/ask-target")(on_ask)   # legacy alias — pre-rebrand installs registered /ask-target
 

@@ -29,6 +29,21 @@ SLACK_APP_TOKEN=xapp-...
 #ANTHROPIC_API_KEY=sk-ant-...          # optional: enables natural-language answers
 ```
 
+## Permissions the app needs (set automatically by the manifest)
+
+Creating the app **from the manifest** grants exactly these — no clicking through scope lists — but here they are so you know what Louis touches and why:
+
+| Scope | Why |
+|---|---|
+| `app_mentions:read` | see `@louis` mentions |
+| `channels:history` | read untagged thread follow-ups, so you don't re-tag him mid-conversation |
+| `chat:write` | post answers |
+| `commands` | the `/ask-louis` and `/remember` slash commands |
+| `files:write` | upload the **figure cards** — the opportunity map, the experiment schematic — inline in a thread |
+| `connections:write` *(app-level)* | Socket Mode (no public URL, nothing to host) |
+
+Louis posts only in channels you invite it to, reads only threads it's part of, and never touches DMs. **Upgrading an existing app** (e.g. adding `files:write` for the figure cards): *OAuth & Permissions* → add the scope → **Reinstall to Workspace** → re-copy the `xoxb-…` token if it changed.
+
 ## 4. Run it
 ```bash
 pip install -e ".[slack]"              # or: pip install "louis[slack]"
