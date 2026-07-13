@@ -8,6 +8,8 @@ knockdown QC), trust-verdict first. Or browse the ranked, trust-flagged targets
 directly. Built on the Marson/Pritchard genome-scale CD4+ T-cell Perturb-seq.
 """
 import os
+import base64
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import altair as alt
@@ -15,9 +17,16 @@ from louis import list_diseases, disease_targets, target_evidence, state_profile
 from louis.core import regulator_detail
 from louis import assistant
 
-st.set_page_config(page_title="Louis", page_icon="🧬", layout="wide")
+_ICON = Path(__file__).parent / "docs" / "louis_icon.png"
+st.set_page_config(page_title="Louis", page_icon=str(_ICON), layout="wide")
 
-st.title("🧬 Louis")
+st.markdown(
+    '<div style="display:flex;align-items:center;gap:14px;margin:0 0 .1em">'
+    f'<img src="data:image/png;base64,{base64.b64encode(_ICON.read_bytes()).decode()}" '
+    'alt="Louis" style="width:52px;height:52px;border-radius:12px">'
+    '<span style="font-size:2.6rem;font-weight:700;line-height:1">Louis</span></div>',
+    unsafe_allow_html=True,
+)
 st.caption(
     "**Ask what to target for an immune disease and get a grounded, trust-ranked answer** — Claude "
     "reasons over the screen's own evidence (disease enrichment, GRN influence, CRISPRi knockdown QC) "
