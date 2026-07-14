@@ -168,6 +168,12 @@
   .slack-flag .slack-go{display:inline-grid;place-items:center;width:22px;height:22px;flex:none;
     border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-weight:800;font-size:.82rem}
   @media (max-width:900px){ .slack-flag{font-size:.82rem} }
+  .hero-flags{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}
+  .hero-flags .slack-flag{margin:0}
+  .help-flag{background:var(--c-soft);border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+  .help-flag:hover{background:var(--c-soft);border-color:var(--c)}
+  .help-flag .slack-go{background:var(--c-soft);color:var(--c)}
+  .help-flag .hf-mk{display:inline-flex;align-items:center;color:var(--c)}
   .slack-head{gap:8px}
   .slack-head .slack-name{font-family:var(--font);text-transform:none;letter-spacing:-.01em;
     font-weight:750;color:var(--ink);font-size:.9rem}
@@ -318,11 +324,18 @@
   <section class="hero" id="top">
     <div class="wrap hero-in">
       <div class="hero-copy reveal">
+        <div class="hero-flags">
         <a class="slack-flag" href="#install" aria-label="Louis works in Slack — see the four install options">
           <span class="slk" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 122.8 122.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path fill="#E01E5A" d="M25.8,77.6c0,7.1-5.8,12.9-12.9,12.9S0,84.7,0,77.6s5.8-12.9,12.9-12.9h12.9V77.6z M32.3,77.6c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v32.3c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V77.6z"/><path fill="#36C5F0" d="M45.2,25.8c-7.1,0-12.9-5.8-12.9-12.9S38.1,0,45.2,0s12.9,5.8,12.9,12.9v12.9H45.2z M45.2,32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H12.9C5.8,58.1,0,52.3,0,45.2s5.8-12.9,12.9-12.9H45.2z"/><path fill="#2EB67D" d="M97,45.2c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H97V45.2z M90.5,45.2c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V12.9C64.7,5.8,70.5,0,77.6,0s12.9,5.8,12.9,12.9V45.2z"/><path fill="#ECB22E" d="M77.6,97c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V97H77.6z M77.6,90.5c-7.1,0-12.9-5.8-12.9-12.9s5.8-12.9,12.9-12.9h32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H77.6z"/></svg></span>
           <span><b>Ask @louis right in Slack</b> — where your lab already works</span>
           <span class="slack-go" aria-hidden="true">↗</span>
         </a>
+        <a class="slack-flag help-flag" href="#troubleshoot" aria-label="Having trouble installing Louis? Jump to the troubleshooting guide">
+          <span class="hf-mk" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><line x1="12" y1="7.6" x2="12" y2="7.7"/></svg></span>
+          <span><b>Having trouble installing?</b> read the fix, or hand it to your agent</span>
+          <span class="slack-go" aria-hidden="true">↓</span>
+        </a>
+        </div>
         <p class="eyebrow">CD4⁺ T-cell drug-target discovery · built with Claude</p>
         <h1>A drug-target assistant that <span class="hl">kills its own darlings.</span></h1>
         <p class="lede">Louis discovers CD4⁺ T-cell leads from a genome-scale CRISPRi screen, stress-tests its own flagship, learns from your lab, and reads the bleeding edge — and it meets you where you already work.</p>
@@ -549,6 +562,58 @@ python3 -m venv .venv
           <div class="door-top"><h3><span class="slk" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 122.8 122.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path fill="#E01E5A" d="M25.8,77.6c0,7.1-5.8,12.9-12.9,12.9S0,84.7,0,77.6s5.8-12.9,12.9-12.9h12.9V77.6z M32.3,77.6c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v32.3c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V77.6z"/><path fill="#36C5F0" d="M45.2,25.8c-7.1,0-12.9-5.8-12.9-12.9S38.1,0,45.2,0s12.9,5.8,12.9,12.9v12.9H45.2z M45.2,32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H12.9C5.8,58.1,0,52.3,0,45.2s5.8-12.9,12.9-12.9H45.2z"/><path fill="#2EB67D" d="M97,45.2c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H97V45.2z M90.5,45.2c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V12.9C64.7,5.8,70.5,0,77.6,0s12.9,5.8,12.9,12.9V45.2z"/><path fill="#ECB22E" d="M77.6,97c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V97H77.6z M77.6,90.5c-7.1,0-12.9-5.8-12.9-12.9s5.8-12.9,12.9-12.9h32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H77.6z"/></svg></span> Slack</h3><span class="kind">bot</span></div>
           <p>Socket Mode — nothing to host. Paste the manifest, add two tokens, then <code>/invite @louis</code>.</p>
           <span class="chip">self-hosted · posts figure cards</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TROUBLESHOOTING -->
+  <section class="band alt" id="troubleshoot">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Having trouble installing Louis?</p>
+        <h2>Read this — <span class="hl">or hand the block below straight to your agent.</span></h2>
+        <p>A fresh clone is missing two things the repo gitignores: the <b>screen data</b> and the <b>prebuilt skill / plugin</b>. Two commands fix both. (Heads up: the repo's <code>CLAUDE.md</code> says the data ships in-repo — that one line is wrong; it's fetched, as below.)</p>
+      </div>
+
+      <div class="code" role="figure" aria-label="One block that takes a clean clone to a fully working Louis">
+<pre><code><span class="c-cmt"># from a clean clone — run in order, expect no errors</span>
+git clone https://github.com/rpinho/louis && cd louis
+python3 -m venv .venv
+.venv/bin/pip install -e <span class="c-str">".[slack]"</span>
+
+<span class="c-cmt"># 1) the screen data is NOT in the repo (gitignored, ~34 MB, public/MIT) — fetch it</span>
+.venv/bin/python scripts/download_data.py
+
+<span class="c-cmt"># 2) sanity check — expect: "3/3 demo-invariant checks passed"</span>
+.venv/bin/python tests/test_demo_invariants.py
+
+<span class="c-cmt"># 3) dist/ is gitignored too — build the surface you want</span>
+.venv/bin/python scripts/build_skill.py   <span class="c-cmt"># -&gt; dist/louis-skill.zip  (Claude Science)</span>
+.venv/bin/python scripts/build_mcpb.py    <span class="c-cmt"># -&gt; dist/louis.mcpb       (Claude Desktop)</span>
+<span class="c-cmt"># Claude Code needs neither — approve the repo's .mcp.json and the tools are live</span></code></pre>
+      </div>
+
+      <div class="install">
+        <div class="door">
+          <div class="door-top"><h3>No such file: <code>data/*.csv</code></h3><span class="kind">missing data</span></div>
+          <p>The five screen tables are gitignored, so a clone has none — the sanity test fails, or every query comes back empty. <b>Fix:</b> <code>python scripts/download_data.py</code> pulls the small precomputed tables from the dataset authors' public MIT repo (no auth).</p>
+          <span class="chip">CLAUDE.md's "ships in the repo" line is wrong</span>
+        </div>
+        <div class="door">
+          <div class="door-top"><h3>No such file: <code>dist/louis-skill.zip</code></h3><span class="kind">not built yet</span></div>
+          <p>The prebuilt skill zip and <code>.mcpb</code> are gitignored — you build them from public sources. <b>Fix:</b> run <code>scripts/build_skill.py</code> (skill) or <code>scripts/build_mcpb.py</code> (desktop plugin) <i>before</i> you upload/install the file.</p>
+          <span class="chip">build first, then upload / install</span>
+        </div>
+        <div class="door">
+          <div class="door-top"><h3><code>ModuleNotFoundError: slack_bolt</code></h3><span class="kind">wrong Python</span></div>
+          <p>You're on the system <code>python3</code>, not the venv. <b>Fix:</b> always call <code>.venv/bin/python</code> (never bare <code>python</code>), and install with the Slack extra: <code>pip install -e ".[slack]"</code>.</p>
+          <span class="chip">the venv must be .venv in the repo root</span>
+        </div>
+        <div class="door">
+          <div class="door-top"><h3>The bleeding-edge signal already ships</h3><span class="kind">nothing to scrape</span></div>
+          <p>The X/Twitter, Bluesky and conference-abstract chatter is <b>baked into the git-tracked KB</b> (<code>kb/community_signal.md</code> + 195 target profiles, every post with its provenance URL) — present on clone, no keys needed. Live re-harvesting is optional, only where X/Bluesky access exists.</p>
+          <span class="chip">try Louis with zero API keys</span>
         </div>
       </div>
     </div>
