@@ -156,6 +156,27 @@
   .receipt-foot{font-family:var(--mono);font-size:.7rem;color:var(--muted);
     padding:11px 18px;border-top:1px solid var(--line);background:var(--bg-3)}
 
+  /* ---------- Slack spotlight ---------- */
+  .slk{display:inline-flex;flex:none;line-height:0}
+  .slk svg{display:block}
+  .slack-flag{display:inline-flex;align-items:center;gap:9px;text-decoration:none;
+    margin:0 0 22px;padding:7px 9px 7px 13px;border:1px solid var(--line-2);border-radius:999px;
+    background:var(--panel);box-shadow:var(--shadow);font-size:.86rem;color:var(--ink-2);
+    transition:border-color .15s ease,transform .12s ease,background .15s ease}
+  .slack-flag:hover{border-color:var(--accent);transform:translateY(-1px);background:var(--accent-soft)}
+  .slack-flag b{color:var(--ink);font-weight:750}
+  .slack-flag .slack-go{display:inline-grid;place-items:center;width:22px;height:22px;flex:none;
+    border-radius:999px;background:var(--accent-soft);color:var(--accent-text);font-weight:800;font-size:.82rem}
+  @media (max-width:900px){ .slack-flag{font-size:.82rem} }
+  .slack-head{gap:8px}
+  .slack-head .slack-name{font-family:var(--font);text-transform:none;letter-spacing:-.01em;
+    font-weight:750;color:var(--ink);font-size:.9rem}
+  .slack-head .slack-app{font-family:var(--mono);font-size:.58rem;font-weight:800;letter-spacing:.07em;
+    color:var(--muted);background:color-mix(in srgb,var(--muted) 15%,transparent);padding:1px 5px;border-radius:4px}
+  .slack-head .slack-chan{font-family:var(--font);text-transform:none;letter-spacing:0;
+    color:var(--muted);font-size:.82rem;font-weight:500}
+  .door-top h3 .slk{vertical-align:-2px;margin-right:1px}
+
   /* ---------- generic section ---------- */
   section.band{padding:clamp(52px,8vw,92px) 0;border-bottom:1px solid var(--line)}
   section.alt{background:var(--bg-2)}
@@ -282,6 +303,11 @@
   <section class="hero" id="top">
     <div class="wrap hero-in">
       <div class="hero-copy reveal">
+        <a class="slack-flag" href="#install" aria-label="Louis works in Slack — see the four install options">
+          <span class="slk" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 122.8 122.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path fill="#E01E5A" d="M25.8,77.6c0,7.1-5.8,12.9-12.9,12.9S0,84.7,0,77.6s5.8-12.9,12.9-12.9h12.9V77.6z M32.3,77.6c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v32.3c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V77.6z"/><path fill="#36C5F0" d="M45.2,25.8c-7.1,0-12.9-5.8-12.9-12.9S38.1,0,45.2,0s12.9,5.8,12.9,12.9v12.9H45.2z M45.2,32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H12.9C5.8,58.1,0,52.3,0,45.2s5.8-12.9,12.9-12.9H45.2z"/><path fill="#2EB67D" d="M97,45.2c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H97V45.2z M90.5,45.2c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V12.9C64.7,5.8,70.5,0,77.6,0s12.9,5.8,12.9,12.9V45.2z"/><path fill="#ECB22E" d="M77.6,97c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V97H77.6z M77.6,90.5c-7.1,0-12.9-5.8-12.9-12.9s5.8-12.9,12.9-12.9h32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H77.6z"/></svg></span>
+          <span><b>Ask @louis right in Slack</b> — where your lab already works</span>
+          <span class="slack-go" aria-hidden="true">↗</span>
+        </a>
         <p class="eyebrow">CD4⁺ T-cell drug-target discovery · built with Claude</p>
         <h1>A drug-target assistant that <span class="hl">kills its own darlings.</span></h1>
         <p class="lede">Louis discovers CD4⁺ T-cell leads from a genome-scale CRISPRi screen, stress-tests its own flagship, learns from your lab, and reads the bleeding edge — and it meets you where you already work.</p>
@@ -293,9 +319,11 @@
       </div>
 
       <figure class="receipt reveal">
-        <figcaption class="receipt-head">
-          <span class="dot"></span> Louis · trust verdict
-          <span class="receipt-sub">screen: CD4⁺ CRISPRi Perturb-seq</span>
+        <figcaption class="receipt-head slack-head">
+          <span class="slk" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 122.8 122.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path fill="#E01E5A" d="M25.8,77.6c0,7.1-5.8,12.9-12.9,12.9S0,84.7,0,77.6s5.8-12.9,12.9-12.9h12.9V77.6z M32.3,77.6c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v32.3c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V77.6z"/><path fill="#36C5F0" d="M45.2,25.8c-7.1,0-12.9-5.8-12.9-12.9S38.1,0,45.2,0s12.9,5.8,12.9,12.9v12.9H45.2z M45.2,32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H12.9C5.8,58.1,0,52.3,0,45.2s5.8-12.9,12.9-12.9H45.2z"/><path fill="#2EB67D" d="M97,45.2c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H97V45.2z M90.5,45.2c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V12.9C64.7,5.8,70.5,0,77.6,0s12.9,5.8,12.9,12.9V45.2z"/><path fill="#ECB22E" d="M77.6,97c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V97H77.6z M77.6,90.5c-7.1,0-12.9-5.8-12.9-12.9s5.8-12.9,12.9-12.9h32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H77.6z"/></svg></span>
+          <span class="slack-name">Louis</span><span class="slack-app">app</span>
+          <span class="slack-chan">#target-discovery</span>
+          <span class="receipt-sub">trust verdict</span>
         </figcaption>
         <div class="verdict">
           <div class="v-row">
@@ -318,7 +346,7 @@
             </div>
           </div>
         </div>
-        <figcaption class="receipt-foot">Grades A–D by provenance — a preprint can’t decide a grade.</figcaption>
+        <figcaption class="receipt-foot">CD4⁺ CRISPRi Perturb-seq · Grades A–D by provenance — a preprint can’t decide a grade.</figcaption>
       </figure>
     </div>
   </section>
@@ -406,7 +434,7 @@ python3 -m venv .venv
           <span class="chip">runs in your repo</span>
         </div>
         <div class="door">
-          <div class="door-top"><h3>Slack</h3><span class="kind">bot</span></div>
+          <div class="door-top"><h3><span class="slk" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 122.8 122.8" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path fill="#E01E5A" d="M25.8,77.6c0,7.1-5.8,12.9-12.9,12.9S0,84.7,0,77.6s5.8-12.9,12.9-12.9h12.9V77.6z M32.3,77.6c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9v32.3c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V77.6z"/><path fill="#36C5F0" d="M45.2,25.8c-7.1,0-12.9-5.8-12.9-12.9S38.1,0,45.2,0s12.9,5.8,12.9,12.9v12.9H45.2z M45.2,32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H12.9C5.8,58.1,0,52.3,0,45.2s5.8-12.9,12.9-12.9H45.2z"/><path fill="#2EB67D" d="M97,45.2c0-7.1,5.8-12.9,12.9-12.9s12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H97V45.2z M90.5,45.2c0,7.1-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V12.9C64.7,5.8,70.5,0,77.6,0s12.9,5.8,12.9,12.9V45.2z"/><path fill="#ECB22E" d="M77.6,97c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9s-12.9-5.8-12.9-12.9V97H77.6z M77.6,90.5c-7.1,0-12.9-5.8-12.9-12.9s5.8-12.9,12.9-12.9h32.3c7.1,0,12.9,5.8,12.9,12.9s-5.8,12.9-12.9,12.9H77.6z"/></svg></span> Slack</h3><span class="kind">bot</span></div>
           <p>Socket Mode — nothing to host. Paste the manifest, add two tokens, then <code>/invite @louis</code>.</p>
           <span class="chip">self-hosted · posts figure cards</span>
         </div>
