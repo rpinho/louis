@@ -21,7 +21,7 @@ python3 -m venv .venv                      # a venv named .venv IN THE REPO ROOT
 .venv/bin/python tests/test_demo_invariants.py   # sanity: expect "3/3 demo-invariant checks passed"
 ```
 
-The screen data ships in the repo (`data/*.csv`); nothing to download. Python ≥ 3.11.
+The screen data is public (MIT) — fetch it once with `python scripts/download_data.py` (~34 MB from the dataset authors' repo). Python ≥ 3.11.
 
 ---
 

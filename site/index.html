@@ -525,18 +525,19 @@
 <pre><code><span class="c-cmt"># clone and set up once</span>
 git clone https://github.com/rpinho/louis && cd louis
 python3 -m venv .venv
-.venv/bin/pip install -e <span class="c-str">".[slack]"</span></code></pre>
+.venv/bin/pip install -e <span class="c-str">".[slack]"</span>
+.venv/bin/python scripts/download_data.py   <span class="c-cmt"># fetch the screen — ~34 MB, public (MIT)</span></code></pre>
       </div>
 
       <div class="install">
         <div class="door">
           <div class="door-top"><h3>Claude&nbsp;Science</h3><span class="kind">skill</span></div>
-          <p>Upload <code>dist/louis-skill.zip</code> as a skill, then ask. Composes with your Science connectors — Open Targets, ChEMBL, PubMed.</p>
+          <p><b>Build it</b> — <code>python scripts/build_skill.py</code> — then upload <code>dist/louis-skill.zip</code> as a skill. Composes with your Science connectors — Open Targets, ChEMBL, PubMed.</p>
           <span class="chip">no API key — Claude hosts it</span>
         </div>
         <div class="door">
           <div class="door-top"><h3>Claude&nbsp;Desktop</h3><span class="kind">plugin</span></div>
-          <p>Install <code>dist/louis.mcpb</code> from Settings → Extensions. The <code>louis</code> tools appear in chat.</p>
+          <p><b>Build it</b> — <code>python scripts/build_mcpb.py</code> — then install <code>dist/louis.mcpb</code> from Settings → Extensions. The <code>louis</code> tools appear in chat.</p>
           <span class="chip">no API key — the app hosts it</span>
         </div>
         <div class="door">
