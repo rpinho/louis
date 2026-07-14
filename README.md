@@ -12,9 +12,18 @@ An **MCP server**: no separate app, no API key, no metered credits. You talk to 
 
 *Built for the Built with Claude: Life Sciences hackathon (Builder track).*
 
+<p align="center">
+  <b><a href="https://claude.ai/code/artifact/b4a412b5-2eeb-4447-992c-0771fad5398c">🌐 Try Louis live</a> &nbsp;·&nbsp; <a href="https://github.com/rpinho/louis/blob/main/demo/README.md">🎥 The 3-minute demo</a> &nbsp;·&nbsp; <a href="#install--three-ways-to-use-louis">Install</a></b>
+</p>
+
 > **✓ Blind positive control.** Told only a disease's GWAS risk genes — *no* known targets — Louis re-derives the textbook **Th17 master-regulator triad STAT3 · BATF · IRF4** as its top-3 blind candidates for the core inflammatory diseases (the validated Th17 network core, Ciofani et al., *Cell* 2012). **1 of 77 regulator clusters clears significance, and the top hit survives a global BH correction across all 1,309 tests (Crohn's q=0.025) — disease-calibrated, dark in RA/SLE/T1D, not a hub.** This calibrates the *method*; it **licenses no single pick** — every novel lead still earns its own grade on its own evidence. Reproduce in one command: `python scripts/positive_control.py` ([details](#what-it-found--validated-across-9-diseases)).
 
 ---
+
+<p align="center">
+  <img src="docs/figures/opportunity_map.png" width="92%" alt="The opportunity map — every lead plotted by trust grade (y-axis) against novelty (x-axis, PubMed papers for that gene × disease × CD4 T cell). The green top-left corner holds the novel, well-founded survivors (HDAC7-UC highlighted, RASA2, HIF1A, DOCK2); DOT1L (RA) sits at C — the stress-tested former flagship, not a green-corner win; IL21R / STAT3 / ZAP70 / AHR sit right as validated-but-crowded.">
+</p>
+<p align="center"><em><b>The whole board in one picture.</b> Ask Louis <em>“what are your grade-A leads across all diseases?”</em> and it plots every lead by <b>trust grade</b> (how good) × <b>novelty</b> (how understudied, in T cells). A database sends you to the crowded right; Louis is built for the <b>green corner</b>. <a href="#what-it-found--validated-across-9-diseases">Full read-out ↓</a></em></p>
 
 ## The problem (a real one)
 
