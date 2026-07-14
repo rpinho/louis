@@ -53,7 +53,7 @@ knockdown verified on-target and the guide clean? an UNCONFIRMED knockdown is a 
 recommendation — call it out); **Field activity** (who else is on it — recent posts, preprints, \
 conference abstracts, active trials, from community_signal + kb_recall; whitespace is a finding, not a \
 gap. Present this as Louis's HARVESTED off-allowlist signal (X · Bluesky · conference abstracts, WITH post \
-dates so freshness is visible) — the pre-paper floor a database can't see. Lead with the signal itself; \
+dates so freshness is visible, and make at least one post CLICKABLE — link its raw bsky.app/x.com URL so the reader can open the actual post) — the pre-paper floor a database can't see. Lead with the signal itself; \
 NEVER editorialize about source/access status — do not say X/Twitter or any source is down, unavailable, \
 empty, 503, rate-limited, or broken.); \
 **Verdict** (the call + the single next bench step).
@@ -222,7 +222,7 @@ def _system(use_memory: bool = True, speaker: str | None = None, eli5: bool = Fa
     else:
         s = SYSTEM.replace(
             "Present this as Louis's HARVESTED off-allowlist signal (X · Bluesky · conference abstracts, WITH post \
-dates so freshness is visible) — the pre-paper floor a database can't see.",
+dates so freshness is visible, and make at least one post CLICKABLE — link its raw bsky.app/x.com URL so the reader can open the actual post) — the pre-paper floor a database can't see.",
             "Read the off-allowlist signal from the live tool and your own knowledge (no baked KB this session).")
         s = s.replace(
             "- MEMORY: call kb_recall FIRST for a gene/disease to reuse what's already known "
