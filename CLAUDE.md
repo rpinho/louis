@@ -80,9 +80,14 @@ set -a; . .secrets/slack.env; set +a
    natural language grounded in the same tools. For the **skill** and **desktop/Code** surfaces the
    Claude host *is* the brain — no separate key.
 4. **Secrets live in `.secrets/` (gitignored).** Never commit them. The bot loads `.secrets/slack.env`.
-5. **The knowledge base is markdown under `kb/`** (source of truth) + a regenerable SQLite/FTS index
-   (`kb/index.sqlite`, gitignored — the first query rebuilds it). Point `LOUIS_KB_DIR` at a copy if
-   you want to exercise the write path without touching the real KB.
+5. **The knowledge base is markdown under `kb/`** (the shipped **seed**, source of truth) + a
+   regenerable SQLite/FTS index (`kb/index.sqlite`, gitignored — the first query rebuilds it).
+   **Runtime writes are isolated from the git tree:** the `louis-mcp` / `louis-slack` console
+   scripts (see `louis/launch.py`) seed `~/.louis/kb` from `kb/` on first run and write there, so a
+   lab's private `kb_remember` / `kb_verdict` writes never land in a tracked dir. Direct `louis.kb`
+   importers (scripts, tests, the Streamlit app) still default to the repo `kb/`. To **curate the
+   shipped seed** through a server, set `LOUIS_KB_DIR=./kb`; to exercise the write path elsewhere,
+   point `LOUIS_KB_DIR` at any scratch copy.
 
 ## Verify it works
 ```bash

@@ -15,7 +15,7 @@ Env:
   SLACK_BOT_TOKEN    xoxb-...    Bot User OAuth token (scopes: app_mentions:read, chat:write, commands)
   SLACK_APP_TOKEN    xapp-...    App-level token for Socket Mode (scope: connections:write)
   ANTHROPIC_API_KEY  sk-ant-...  the NL brain (optional; without it, a deterministic engine summary is used)
-  LOUIS_KB_DIR       optional    shared KB location (defaults to the repo's kb/)
+  LOUIS_KB_DIR       optional    shared KB location (defaults to ~/.louis/kb, seeded from the packaged kb/ on first run; set =./kb to curate the shipped seed)
 
 Run:  pip install "louis[slack]"  &&  python -m louis.slack_app
 """

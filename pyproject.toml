@@ -17,8 +17,8 @@ app = ["streamlit>=1.50", "altair>=5.0", "anthropic>=0.40"]
 slack = ["slack-bolt>=1.18", "anthropic>=0.40", "certifi"]
 
 [project.scripts]
-louis-mcp = "louis.mcp_server:main"
-louis-slack = "louis.slack_app:main"
+louis-mcp = "louis.launch:mcp"
+louis-slack = "louis.launch:slack"
 
 [build-system]
 requires = ["setuptools>=68"]

@@ -97,6 +97,8 @@ python -m louis.core                  # sanity check — asserts the Crohn's→S
 
 Restart Claude, then ask: *"Using louis, what should I target for rheumatoid arthritis, and which are verified?"*
 
+> **Your KB stays yours.** On first run the server seeds a private, writable knowledge base at `~/.louis/kb` (from the shipped `kb/`) and writes everything you `remember` there — *outside* the git tree, so your lab's findings never end up in a repo. Point `LOUIS_KB_DIR` elsewhere to relocate it.
+
 ### B) Skill — Claude Science / Claude
 
 Package Louis (engine + dataset + validated KB) into one self-contained skill that runs *inside* Claude's own compute and composes with its scientific-web connectors:
