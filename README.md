@@ -13,7 +13,7 @@ An **MCP server**: no separate app, no API key, no metered credits. You talk to 
 *Built for the Built with Claude: Life Sciences hackathon (Builder track).*
 
 <p align="center">
-  <b><a href="https://claude.ai/code/artifact/b4a412b5-2eeb-4447-992c-0771fad5398c">🌐 Try Louis live</a> &nbsp;·&nbsp; <a href="https://github.com/rpinho/louis/blob/main/demo/README.md">🎥 The 3-minute demo</a> &nbsp;·&nbsp; <a href="#install--three-ways-to-use-louis">Install</a></b>
+  <b><a href="https://claude.ai/code/artifact/b4a412b5-2eeb-4447-992c-0771fad5398c">🌐 Try Louis live</a> &nbsp;·&nbsp; <a href="https://www.loom.com/share/4e9ab966e3c848828d0ebbe9b33c7b47">🎥 The 3-minute demo</a> &nbsp;·&nbsp; <a href="#install--three-ways-to-use-louis">Install</a> &nbsp;·&nbsp; <a href="https://www.linkedin.com/in/rpinho1">👤 Ricardo Pinho</a></b>
 </p>
 
 > **✓ Blind positive control.** Told only a disease's GWAS risk genes — *no* known targets — Louis re-derives the textbook **Th17 master-regulator triad STAT3 · BATF · IRF4** as its top-3 blind candidates for the core inflammatory diseases (the validated Th17 network core, Ciofani et al., *Cell* 2012). **1 of 77 regulator clusters clears significance, and the top hit survives a global BH correction across all 1,309 tests (Crohn's q=0.025) — disease-calibrated, dark in RA/SLE/T1D, not a hub.** This calibrates the *method*; it **licenses no single pick** — every novel lead still earns its own grade on its own evidence. Reproduce in one command: `python scripts/positive_control.py` ([details](#what-it-found--validated-across-9-diseases)).
